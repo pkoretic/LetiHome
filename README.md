@@ -1,5 +1,8 @@
 # LetiHome
 
+[![License MIT](https://cdn.rawgit.com/qaap/letihome/badges/license.svg)](https://github.com/qaap/letihome/blob/master/LICENSE)
+[![Language (Qt)](https://cdn.rawgit.com/qaap/letihome/badges/qt.svg)](https://www.qt.io)
+
 Android launcher optimized for embedded and TV/STB devices. It is intended to be very performant, correct and simple minimizing memory usage.
 
 ## Building
