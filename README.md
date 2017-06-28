@@ -5,6 +5,8 @@
 
 Android launcher optimized for embedded and TV/STB devices. It is intended to be very performant, correct and simple minimizing memory usage.
 
+![LetiHome Screenshot](https://raw.githubusercontent.com/qaap/LetiHome/badges/screenshot.png)
+
 ## Building
 
 It is written using Qt/QML and requires Qt 5.9, although it will run fine with 5.7 or older if
