@@ -15,8 +15,7 @@ module versions are lowered in `main.qml`.
 It is a regular Qt android application. For more info see
 http://doc.qt.io/qt-5/android-support.html.
 
-Open `LetiHome.pro` in QtCreator and your are good to
-go.
+Open `LetiHome.pro` in QtCreator and your are good to go.
 
 ## Usage
 
@@ -25,3 +24,8 @@ Navigational keys are used to move through application list and `Enter/Return (O
 used to open currently selected application.<br/>
 `Menu` key or mouse `right click` can be used to open wallpaper picker.<br/>
 Mouse `left click` also opens application.
+
+## Support
+
+Launcher can be easily extended to support many different scenarios that suit commercial usage. For
+support contact us at **support@qaap.io**.
