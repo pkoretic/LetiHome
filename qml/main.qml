@@ -15,7 +15,10 @@ Window
     // slightly transparent background
     color: "#aa000000"
 
-    // load apps when component ready
+    // main date object
+    property var date
+
+    // load apps when component is ready
     Component.onCompleted: all.model = __platform.applicationList()
 
     // when packages are changed (installed/removed) update list
@@ -25,11 +28,48 @@ Window
         onPackagesChanged: all.model = __platform.applicationList()
     }
 
-    // wrapper item used for padding
-    Item
+    // clock and date timer
+    // update in acceptable interval and ignore updates if application is not shown
+    Timer
+    {
+        running: Qt.application.state === Qt.ApplicationActive
+        interval: 5000
+        repeat: true
+        triggeredOnStart: true
+        onTriggered: date = new Date()
+    }
+
+    // wrapper item used for padding, spacing and layout
+    ColumnLayout
     {
         anchors.fill: parent
         anchors.margins: 20
+        spacing: 30
+
+        Item
+        {
+            height: childrenRect.height
+            Layout.fillWidth: true
+
+            // clock in locale format depenending if 24 hour format is set or not in the system
+            Text
+            {
+                text: Qt.formatTime(date, __platform.is24HourFormat() ? "hh:mm" : "hh:mm ap")
+                font.pixelSize: 22
+                font.italic: true
+                color: "#ffffff"
+            }
+
+            // date in system locale format
+            Text
+            {
+                text: Qt.formatDate(date, Qt.SystemLocaleLongDate)
+                font.pixelSize: 20
+                font.italic: true
+                color: "#ffffff"
+                anchors.right: parent.right
+            }
+        }
 
         // main application grid
         GridView
@@ -40,8 +80,8 @@ Window
 
            focus: true
 
-           height: parent.height
-           width: Math.min(model.length, Math.floor(parent.width/cellWidth)) * cellWidth
+           Layout.fillHeight: true
+           Layout.preferredWidth: Math.min(model.length, Math.floor(parent.width/cellWidth)) * cellWidth
            anchors.horizontalCenter: parent.horizontalCenter
 
            cellWidth: Math.max(Math.min(160, Math.min(parent.width, parent.height) / 5), 80)

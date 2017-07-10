@@ -93,3 +93,15 @@ void Platform::pickWallpaper()
 
     #endif
 }
+
+// return if system clock is in 24 hour format
+bool Platform::is24HourFormat()
+{
+    #ifdef Q_OS_ANDROID
+
+    return QtAndroid::androidActivity().callMethod<jboolean>("is24HourFormat");
+
+    #endif
+
+    return true;
+}

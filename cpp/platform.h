@@ -20,6 +20,9 @@ public slots:
         // open wallpaper picker menu
         void pickWallpaper();
 
+        // return if system clock is in 24 hour format
+        bool is24HourFormat();
+
 public:
 
     // singleton, so we can propagate notifications from java

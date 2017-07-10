@@ -11,6 +11,7 @@ import android.util.Log;
 import android.graphics.drawable.Drawable;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.text.format.DateFormat;
 import java.io.ByteArrayOutputStream;
 
 public class LetiHome extends org.qtproject.qt5.android.bindings.QtActivity
@@ -81,5 +82,11 @@ public class LetiHome extends org.qtproject.qt5.android.bindings.QtActivity
     {
         Intent intent = new Intent(Intent.ACTION_SET_WALLPAPER);
         startActivity(Intent.createChooser(intent, "Select Wallpaper"));
+    }
+
+    // return if system clock is in 24 hour format
+    public boolean is24HourFormat()
+    {
+        return DateFormat.is24HourFormat(this);
     }
 }
