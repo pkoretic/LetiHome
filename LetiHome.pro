@@ -13,8 +13,7 @@ RESOURCES += qml/qml.qrc
 # Default rules for deployment.
 include(deployment.pri)
 
-android-g++
-{
+android-g++ {
     QT += androidextras
     ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
 
