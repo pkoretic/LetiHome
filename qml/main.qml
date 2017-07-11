@@ -110,12 +110,8 @@ Window
                    break
 
                    case Qt.Key_Menu:
-                       __platform.pickWallpaper()
-                       event.accepted = true
-                   break
-
-                   // ignore back key as we do not want to minimize or exit launcher
                    case Qt.Key_Back:
+                       __platform.pickWallpaper()
                        event.accepted = true
                    break
                }
