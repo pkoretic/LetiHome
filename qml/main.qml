@@ -43,7 +43,7 @@ Window
     ColumnLayout
     {
         anchors.fill: parent
-        anchors.margins: 20
+        anchors.margins: 30
         spacing: 30
 
         Item
@@ -84,8 +84,8 @@ Window
            Layout.preferredWidth: Math.min(model.length, Math.floor(parent.width/cellWidth)) * cellWidth
            anchors.horizontalCenter: parent.horizontalCenter
 
-           cellWidth: Math.max(Math.min(160, Math.min(parent.width, parent.height) / 5), 80)
-           cellHeight: cellWidth + 80
+           cellWidth: 140
+           cellHeight: 200
 
            highlight: Rectangle
            {
