@@ -43,8 +43,8 @@ Window
     ColumnLayout
     {
         anchors.fill: parent
-        anchors.margins: 30
-        spacing: 30
+        anchors.margins: 25
+        spacing: 25
 
         Item
         {
@@ -79,13 +79,14 @@ Window
            boundsBehavior: GridView.StopAtBounds
 
            focus: true
+           clip: true
 
            Layout.fillHeight: true
            Layout.preferredWidth: Math.min(model.length, Math.floor(parent.width/cellWidth)) * cellWidth
            anchors.horizontalCenter: parent.horizontalCenter
 
-           cellWidth: 140
-           cellHeight: 200
+           cellWidth: 160
+           cellHeight: 160
 
            highlight: Rectangle
            {
@@ -93,7 +94,6 @@ Window
                border.width: 2
                border.color: "#ccffffff"
                radius: 3
-               scale: 1.1
            }
 
            highlightMoveDuration: 50
@@ -121,40 +121,37 @@ Window
            delegate: MouseArea
            {
                property bool isCurrent: GridView.isCurrentItem
-               acceptedButtons: Qt.LeftButton | Qt.RightButton
 
-               width: GridView.view.cellWidth
-               height: childrenRect.height
+               width: GridView.view.cellWidth - 10
+               height: GridView.view.cellHeight - 10
 
-               // on left click open app, on right click open wallpaper picker
-               onClicked: mouse.button === Qt.LeftButton
-                          && __platform.launchApplication(modelData.packageName)
-                          || __platform.pickWallpaper()
+               // open application on click
+               onClicked: __platform.launchApplication(modelData.packageName)
 
-               Image
+               ColumnLayout
                {
-                   id: icon
-                   source: "image://icon/" + modelData.packageName
-                   width: parent.width - x * 2
-                   height: width
-                   asynchronous: true
-                   fillMode: Image.PreserveAspectFit
-                   x: 15
-               }
+                   anchors.fill: parent
+                   anchors.margins: 15
+                   Image
+                   {
+                       source: "image://icon/" + modelData.packageName
+                       Layout.fillWidth: true
+                       Layout.fillHeight: true
+                       asynchronous: true
+                       fillMode: Image.PreserveAspectFit
+                   }
 
-               Text
-               {
-                   id: applicationName
-                   text: modelData.applicationName
-                   color: "#ffffff"
-                   style: Text.Outline
-                   width: parent.width
-                   wrapMode: Label.WordWrap
-                   elide: Label.ElideRight
-                   horizontalAlignment: Label.AlignHCenter
-                   font.bold: isCurrent
-                   anchors.top: icon.bottom
-                   anchors.topMargin: 5
+                   Text
+                   {
+                       text: modelData.applicationName
+                       color: "#ffffff"
+                       style: Text.Outline
+                       Layout.fillWidth: true
+                       wrapMode: Text.WordWrap
+                       elide: Label.ElideRight
+                       horizontalAlignment: Label.AlignHCenter
+                       font.bold: isCurrent
+                   }
                }
            }
         }
