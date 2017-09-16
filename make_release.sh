@@ -43,13 +43,13 @@ update_android()
     echo ": updating android version"
 
     # replace android manifest version
-    sed -i '' "s/android:versionName=[^ ]*/android:versionName=\"$version\"/" $android_manifest
+    sed -i.bak "s/android:versionName=[^ ]*/android:versionName=\"$version\"/" $android_manifest
 
     # increment version code
-    version_code=$(fgrep android:versionCode android/AndroidManifest.xml | sed 's/.*versionCode//' | sed 's/android.*//' | sed 's/[^0-9]*//g')
+    version_code=$(fgrep android:versionCode $android_manifest | sed 's/.*versionCode//' | sed 's/android.*//' | sed 's/[^0-9]*//g')
     version_code_target=$((version_code + 1))
 
-    sed -i '' "s/android:versionCode=\"$version_code\"/android:versionCode=\"$version_code_target\"/" android/AndroidManifest.xml
+    sed -i.bak "s/android:versionCode=\"$version_code\"/android:versionCode=\"$version_code_target\"/" $android_manifest
 
     echo ":: version code increased from: $version_code to: $version_code_target"
     echo ": android version updated"
