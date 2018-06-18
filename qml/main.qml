@@ -83,7 +83,7 @@ Window
 
            Layout.fillHeight: true
            Layout.preferredWidth: Math.min(model.length, Math.floor(parent.width/cellWidth)) * cellWidth
-           anchors.horizontalCenter: parent.horizontalCenter
+           Layout.alignment: Qt.AlignHCenter
 
            cellWidth: 160
            cellHeight: 160
@@ -91,12 +91,12 @@ Window
            highlight: Rectangle
            {
                color: "#cc000000"
-               border.width: 2
-               border.color: "#ccffffff"
-               radius: 3
+               border.width: 1
+               border.color: "#cc666666"
+               radius: 20
            }
 
-           highlightMoveDuration: 50
+           highlightMoveDuration: 150
 
            // additional keys handling, default navigation is handled by gridview
            Keys.onPressed:
