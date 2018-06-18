@@ -1,6 +1,7 @@
 QT += qml quick quickcontrols2
 
 CONFIG += c++14
+CONFIG += qtquickcompiler
 
 SOURCES += cpp/main.cpp
 SOURCES += cpp/iconprovider.cpp
