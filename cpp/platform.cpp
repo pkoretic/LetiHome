@@ -81,6 +81,10 @@ void Platform::launchApplication(const QString &packageName)
         "(Ljava/lang/String;)V",
         QAndroidJniObject::fromString(packageName).object<jstring>());
 
+    #else
+
+    Q_UNUSED(packageName);
+
     #endif
 }
 
