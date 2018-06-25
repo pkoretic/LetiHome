@@ -1,4 +1,4 @@
-package com.qaap.letihome;
+package hr.envizia.letihome;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

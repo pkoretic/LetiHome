@@ -1,18 +1,19 @@
-package com.qaap.letihome;
+package hr.envizia.letihome;
 
-import java.util.List;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import java.util.HashMap;
-import java.util.Map;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.util.Log;
 import android.graphics.drawable.Drawable;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.text.format.DateFormat;
+import android.util.Log;
+
 import java.io.ByteArrayOutputStream;
+import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class LetiHome extends org.qtproject.qt5.android.bindings.QtActivity
 {

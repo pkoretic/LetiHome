@@ -21,8 +21,8 @@ android-g++ {
     DISTFILES += \
         android/AndroidManifest.xml \
         android/res/values/libs.xml \
-        android/src/com/qaap/letihome/LetiHome.java \
-        android/src/com/qaap/letihome/PackagesChangedReceiver.java
+        android/src/hr/envizia/letihome/LetiHome.java \
+        android/src/hr/envizia/letihome/PackagesChangedReceiver.java
 }
 
 CONFIG(debug, debug|release) {

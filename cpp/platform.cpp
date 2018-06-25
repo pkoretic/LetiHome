@@ -25,7 +25,7 @@ jint JNICALL JNI_OnLoad(JavaVM* vm, void*)
         return JNI_ERR;
 
     // get main receiver class
-    QAndroidJniObject receiver = QAndroidJniObject("com/qaap/letihome/PackagesChangedReceiver");
+    QAndroidJniObject receiver = QAndroidJniObject("hr/envizia/letihome/PackagesChangedReceiver");
     jclass receiverClass = env->GetObjectClass(receiver.object<jobject>());
     if (!receiverClass)
     {
