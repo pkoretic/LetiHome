@@ -1,12 +1,12 @@
 # LetiHome
 
-[![License MIT](https://cdn.rawgit.com/qaap/letihome/badges/license.svg)](https://github.com/qaap/letihome/blob/master/LICENSE)
-[![Language (Qt)](https://cdn.rawgit.com/qaap/letihome/badges/qt.svg)](https://www.qt.io)
+[![License MIT](https://cdn.rawgit.com/pkoretic/letihome/badges/license.svg)](https://github.com/pkoretic/letihome/blob/master/LICENSE)
+[![Language (Qt)](https://cdn.rawgit.com/pkoretic/letihome/badges/qt.svg)](https://www.qt.io)
 
 Android launcher optimized for the big screen. Targets embedded and TV/STB devices. It is intended
 to be very performant, correct and simple minimizing memory usage.
 
-![LetiHome Screenshot](https://raw.githubusercontent.com/qaap/LetiHome/badges/screenshot.jpg)
+![LetiHome Screenshot](https://raw.githubusercontent.com/pkoretic/LetiHome/badges/screenshot.jpg)
 
 Google Play
 ----------------
@@ -34,4 +34,4 @@ Mouse `left click` also opens application.
 ## Support
 
 Launcher can be easily extended to support many different scenarios that suit commercial usage. For
-support contact us at **support@qaap.io**.
+support contact **petar.koretic@gmail.com**.
