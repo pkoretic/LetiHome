@@ -3,9 +3,15 @@
 [![License MIT](https://cdn.rawgit.com/qaap/letihome/badges/license.svg)](https://github.com/qaap/letihome/blob/master/LICENSE)
 [![Language (Qt)](https://cdn.rawgit.com/qaap/letihome/badges/qt.svg)](https://www.qt.io)
 
-Android launcher optimized for embedded and TV/STB devices. It is intended to be very performant, correct and simple minimizing memory usage.
+Android launcher optimized for the big screen. Targets embedded and TV/STB devices. It is intended
+to be very performant, correct and simple minimizing memory usage.
 
 ![LetiHome Screenshot](https://raw.githubusercontent.com/qaap/LetiHome/badges/screenshot.jpg)
+
+Google Play
+----------------
+
+[![Get it on Google Play](https://developer.android.com/images/brand/en_generic_rgb_wo_60.png)](https://play.google.com/store/apps/details?id=hr.envizia.letihome)
 
 ## Building
 
