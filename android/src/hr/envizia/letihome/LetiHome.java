@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.drawable.Drawable;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.text.format.DateFormat;
 import android.util.Log;
@@ -57,8 +58,10 @@ public class LetiHome extends org.qtproject.qt5.android.bindings.QtActivity
         }
 
         // convert to byte array
-        Bitmap bitmap = ((BitmapDrawable) icon).getBitmap();
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        Bitmap bitmap = Bitmap.createBitmap(icon.getIntrinsicWidth(), icon.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        final Canvas canvas = new Canvas(bitmap);
+        icon.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        icon.draw(canvas);        ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100 /* ignored for PNG */, stream);
         byte[] iconData = stream.toByteArray();
 
