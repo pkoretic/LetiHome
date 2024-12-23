@@ -30,9 +30,8 @@ then
     echo "Version not changed. Aborting."
     exit 1
 fi
-
-android_manifest=$(find android -name AndroidManifest.xml -type f)
-if [ ! -f $android_manifest ]; then echo "'AndroidManifest.xml' file not found. Aborting."; exit 1;  fi
+profile=$(find . -name LetiHome.pro -type f)
+if [ ! -f $profile ]; then echo "'LetiHome.pro' file not found. Aborting."; exit 1;  fi
 
 #### --------------
 #### ANDROID
@@ -42,14 +41,14 @@ update_android()
 {
     echo ": updating android version"
 
-    # replace android manifest version
-    sed -i.bak "s/android:versionName=[^ ]*/android:versionName=\"$version\"/" $android_manifest
+    # update android version name
+    sed -i.bak "s/ANDROID_VERSION_NAME = [^ ]*/ANDROID_VERSION_NAME = \"$version\"/" $profile
 
-    # increment version code
-    version_code=$(fgrep android:versionCode $android_manifest | sed 's/.*versionCode//' | sed 's/android.*//' | sed 's/[^0-9]*//g')
+    # increment android version code
+    version_code=$(grep -F ANDROID_VERSION_CODE $profile | sed 's/.*ANDROID_VERSION_CODE//' | sed 's/[^0-9]*//g')
     version_code_target=$((version_code + 1))
 
-    sed -i.bak "s/android:versionCode=\"$version_code\"/android:versionCode=\"$version_code_target\"/" $android_manifest
+    sed -i.bak "s/ANDROID_VERSION_CODE.*/ANDROID_VERSION_CODE = \"$version_code_target\"/" $profile
 
     echo ":: version code increased from: $version_code to: $version_code_target"
     echo ": android version updated"

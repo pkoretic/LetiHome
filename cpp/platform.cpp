@@ -1,11 +1,11 @@
+#include <QCoreApplication>
 #include <QImage>
 
 #include "platform.h"
 
 // maybe we will support some other platform in the future
 #ifdef Q_OS_ANDROID
-#include <QtAndroidExtras>
-#include <QtAndroid>
+#include <QJniObject>
 
 /*
  these are JNI functions called from java
@@ -25,7 +25,7 @@ jint JNICALL JNI_OnLoad(JavaVM* vm, void*)
         return JNI_ERR;
 
     // get main receiver class
-    QAndroidJniObject receiver = QAndroidJniObject("hr/envizia/letihome/PackagesChangedReceiver");
+    QJniObject receiver = QJniObject("hr/envizia/letihome/PackagesChangedReceiver");
     jclass receiverClass = env->GetObjectClass(receiver.object<jobject>());
     if (!receiverClass)
     {
@@ -48,9 +48,11 @@ QVariantList Platform::applicationList()
 {
     QVariantList appList;
 
-    #ifdef Q_OS_ANDROID
+#ifdef Q_OS_ANDROID
 
-    QAndroidJniObject applications = QtAndroid::androidActivity().callObjectMethod("applicationList", "()Ljava/util/Map;");
+    QJniObject activity = QNativeInterface::QAndroidApplication::context();
+
+    QJniObject applications = activity.callObjectMethod("applicationList", "()Ljava/util/Map;");
     auto entriesSet = applications.callObjectMethod("entrySet", "()Ljava/util/Set;");
     auto entriesSetIterator = entriesSet.callObjectMethod("iterator", "()Ljava/util/Iterator;");
 
@@ -66,7 +68,7 @@ QVariantList Platform::applicationList()
         appList.append(data);
     }
 
-    #endif
+#endif
 
     return appList;
 }
@@ -74,38 +76,41 @@ QVariantList Platform::applicationList()
 // launch application by package name
 void Platform::launchApplication(const QString &packageName)
 {
-    #ifdef Q_OS_ANDROID
+#ifdef Q_OS_ANDROID
 
-    QtAndroid::androidActivity().callMethod<void>(
+    QJniObject activity = QNativeInterface::QAndroidApplication::context();
+    activity.callMethod<void>(
         "launchApplication",
         "(Ljava/lang/String;)V",
-        QAndroidJniObject::fromString(packageName).object<jstring>());
+        QJniObject::fromString(packageName).object<jstring>());
 
-    #else
+#else
 
     Q_UNUSED(packageName);
 
-    #endif
+#endif
 }
 
 // open wallpaper picker menu
 void Platform::pickWallpaper()
 {
-    #ifdef Q_OS_ANDROID
+#ifdef Q_OS_ANDROID
 
-    QtAndroid::androidActivity().callMethod<void>("pickWallpaper");
+    QJniObject activity = QNativeInterface::QAndroidApplication::context();
+    activity.callMethod<void>("pickWallpaper");
 
-    #endif
+#endif
 }
 
 // return if system clock is in 24 hour format
 bool Platform::is24HourFormat()
 {
-    #ifdef Q_OS_ANDROID
+#ifdef Q_OS_ANDROID
 
-    return QtAndroid::androidActivity().callMethod<jboolean>("is24HourFormat");
+    QJniObject activity = QNativeInterface::QAndroidApplication::context();
+    return activity.callMethod<jboolean>("is24HourFormat");
 
-    #endif
+#endif
 
     return true;
 }

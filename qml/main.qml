@@ -1,60 +1,66 @@
-import QtQuick 2.11
-import QtQuick.Controls 2.4
-import QtQuick.Layouts 1.11
-import QtQuick.Window 2.11
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
+import QtQuick.Window
 
 Window
 {
-    visible: true
+    id: root
+
     title: qsTr("LetiHome")
 
     // this is set to native resolution on android
     width: 1920
     height: 1080
 
+    visible: true
+    visibility: Window.FullScreen
+
+    flags: Qt.FramelessWindowHint
+
     // slightly transparent background
     color: "#aa000000"
 
     // main date object
-    property var date
+    property date currentDate: new Date()
 
     // load apps when component is ready
-    Component.onCompleted: all.model = __platform.applicationList()
+    Component.onCompleted: { grid.model = __platform.applicationList() }
 
     // when packages are changed (installed/removed) update list
     Connections
     {
         target: __platform
-        onPackagesChanged: all.model = __platform.applicationList()
+        function onPackagesChanged(event) { grid.model = __platform.applicationList() }
     }
 
     // clock and date timer
-    // update in acceptable interval and ignore updates if application is not shown
+    // update in acceptable interval and ignore updates if application is not active (another app open)
     Timer
     {
-        running: Qt.application.state === Qt.ApplicationActive
+        running: Qt.application.active
         interval: 5000
         repeat: true
         triggeredOnStart: true
-        onTriggered: date = new Date()
+        onTriggered: root.currentDate = new Date()
     }
 
     // wrapper item used for padding, spacing and layout
     ColumnLayout
     {
         anchors.fill: parent
-        anchors.margins: 25
-        spacing: 25
+        anchors.margins: 20
+        spacing: 20
 
         Item
         {
-            height: childrenRect.height
             Layout.fillWidth: true
+            height: childrenRect.height
 
-            // clock in locale format depenending if 24 hour format is set or not in the system
+            // clock in locale format depending if 24 hour format is set in the system
             Text
             {
-                text: Qt.formatTime(date, __platform.is24HourFormat() ? "hh:mm" : "hh:mm ap")
+                text: Qt.formatTime(root.currentDate, __platform.is24HourFormat() ? "hh:mm" : "hh:mm ap")
                 font.pixelSize: 22
                 font.italic: true
                 color: "#ffffff"
@@ -63,7 +69,7 @@ Window
             // date in system locale format
             Text
             {
-                text: Qt.formatDate(date, Qt.SystemLocaleLongDate)
+                text: root.currentDate.toLocaleDateString()
                 font.pixelSize: 20
                 font.italic: true
                 color: "#ffffff"
@@ -74,7 +80,7 @@ Window
         // main application grid
         GridView
         {
-           id: all
+           id: grid
 
            boundsBehavior: GridView.StopAtBounds
 
@@ -82,24 +88,24 @@ Window
            clip: true
 
            Layout.fillHeight: true
-           Layout.preferredWidth: Math.min(model.length, Math.floor(parent.width/cellWidth)) * cellWidth
+           Layout.preferredWidth: Math.min(model?.length ?? 0, Math.floor(parent.width/cellWidth)) * cellWidth
            Layout.alignment: Qt.AlignHCenter
 
-           cellWidth: 160
-           cellHeight: 160
+           cellHeight: grid.height / 3.4 // show a bit of next row
+           cellWidth: cellHeight
 
            highlight: Rectangle
            {
                color: "#cc000000"
                border.width: 1
                border.color: "#cc666666"
-               radius: 20
+               radius: 12
            }
 
-           highlightMoveDuration: 150
+           highlightMoveDuration: 100
 
            // additional keys handling, default navigation is handled by gridview
-           Keys.onPressed:
+           Keys.onPressed: (event) =>
            {
                switch(event.key)
                {
@@ -120,18 +126,23 @@ Window
            // enable click support
            delegate: MouseArea
            {
+               id: mouseArea
                property bool isCurrent: GridView.isCurrentItem
 
                width: GridView.view.cellWidth - 10
                height: GridView.view.cellHeight - 10
 
                // open application on click
-               onClicked: __platform.launchApplication(modelData.packageName)
+               onClicked:
+               {
+                   __platform.launchApplication(modelData.packageName)
+                   GridView.currentIndex = index
+               }
 
                ColumnLayout
                {
                    anchors.fill: parent
-                   anchors.margins: 15
+                   anchors.margins: 10
                    Image
                    {
                        source: "image://icon/" + modelData.packageName
@@ -144,13 +155,14 @@ Window
                    Text
                    {
                        text: modelData.applicationName
+                       font.pixelSize: 14
                        color: "#ffffff"
                        style: Text.Outline
                        Layout.fillWidth: true
                        wrapMode: Text.WordWrap
                        elide: Label.ElideRight
                        horizontalAlignment: Label.AlignHCenter
-                       font.bold: isCurrent
+                       font.bold: mouseArea.isCurrent
                    }
                }
            }

@@ -14,13 +14,15 @@ RESOURCES += qml/qml.qrc
 # Default rules for deployment.
 include(deployment.pri)
 
-android-g++ {
-    QT += androidextras
+android {
     ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
+    ANDROID_VERSION_CODE = "8"
+    ANDROID_VERSION_NAME = "1.3.0"
 
     DISTFILES += \
         android/AndroidManifest.xml \
         android/res/values/libs.xml \
+        android/res/xml/qtprovider_paths.xml \
         android/src/hr/envizia/letihome/LetiHome.java \
         android/src/hr/envizia/letihome/PackagesChangedReceiver.java
 }

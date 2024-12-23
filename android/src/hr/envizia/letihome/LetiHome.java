@@ -16,7 +16,9 @@ import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
 
-public class LetiHome extends org.qtproject.qt5.android.bindings.QtActivity
+import org.qtproject.qt.android.bindings.QtActivity;
+
+public class LetiHome extends QtActivity
 {
     private PackageManager manager;
 

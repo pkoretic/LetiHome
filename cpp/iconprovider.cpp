@@ -1,11 +1,12 @@
-#include "iconprovider.h"
-
+#include <QCoreApplication>
+#if defined(Q_OS_ANDROID)
+#include <QJniEnvironment>
+#include <QJniObject>
+#endif
 #include <QDebug>
 
-#if defined(Q_OS_ANDROID)
-#include <QtAndroidExtras>
-#include <QtAndroid>
-#endif
+#include "iconprovider.h"
+
 
 ImageProvider::ImageProvider()
     : QQuickImageProvider(QQuickImageProvider::Image)
@@ -24,11 +25,12 @@ QImage ImageProvider::getApplicationIcon(const QString &packageName)
     QImage image;
 
 #ifdef Q_OS_ANDROID
-    QAndroidJniObject appIcon = QtAndroid::androidActivity().callObjectMethod("getApplicationIcon",
-    "(Ljava/lang/String;)[B",
-    QAndroidJniObject::fromString(packageName).object<jstring>());
+    QJniObject activity = QNativeInterface::QAndroidApplication::context();
+    QJniObject appIcon = activity.callObjectMethod("getApplicationIcon",
+      "(Ljava/lang/String;)[B",
+      QJniObject::fromString(packageName).object<jstring>());
 
-    QAndroidJniEnvironment env;
+    QJniEnvironment env;
     jbyteArray iconDataArray = appIcon.object<jbyteArray>();
 
     if (!iconDataArray)
