@@ -17,7 +17,7 @@ then
 fi
 
 # always run from root dir
-cd "$( dirname "${BASH_SOURCE[0]}" )"
+cd "$( dirname "${BASH_SOURCE[0]}" )"/..
 
 if [ ! -f RELEASE ]; then echo "'RELEASE' file not found. Aborting."; exit 1;  fi
 
