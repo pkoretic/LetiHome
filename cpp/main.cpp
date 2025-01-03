@@ -1,6 +1,7 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
+#include <QQuickView>
 
 #include "platform.h"
 #include "iconprovider.h"
@@ -8,6 +9,8 @@
 int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);
+
+    QQuickView::setDefaultAlphaBuffer(true);
 
     QQmlApplicationEngine engine;
 
