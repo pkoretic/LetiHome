@@ -68,6 +68,13 @@ QVariantList Platform::applicationList()
         appList.append(data);
     }
 
+    // Sort the appList by "applicationName" (case-sensitive)
+    std::sort(appList.begin(), appList.end(), [](const QVariant &a, const QVariant &b) {
+        QString nameA = a.toMap().value("applicationName").toString();
+        QString nameB = b.toMap().value("applicationName").toString();
+        return nameA < nameB; // Case-sensitive comparison
+    });
+
 #endif
 
     return appList;
