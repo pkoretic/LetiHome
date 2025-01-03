@@ -16,10 +16,7 @@ Window
     visible: true
     visibility: Window.FullScreen
 
-    flags: Qt.FramelessWindowHint
-
-    // slightly transparent background
-    color: "#aa000000"
+    color: "#aa000000" // QTBUG-132497
 
     // main date object
     property date currentDate: new Date()
