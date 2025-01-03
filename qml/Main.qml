@@ -92,92 +92,106 @@ Window
         // main application grid
         GridView
         {
-           id: grid
+            id: grid
 
-           boundsBehavior: GridView.StopAtBounds
+            boundsBehavior: GridView.StopAtBounds
 
-           focus: true
-           clip: true
+            focus: true
+            clip: true
 
-           Layout.fillHeight: true
-           Layout.preferredWidth: Math.min(model?.length ?? 0, Math.floor(parent.width/cellWidth)) * cellWidth
-           Layout.alignment: Qt.AlignHCenter
+            Layout.fillHeight: true
+            Layout.preferredWidth: Math.min(model.length, Math.floor(parent.width/cellWidth)) * cellWidth
+            Layout.alignment: Qt.AlignHCenter
 
-           cellHeight: grid.height / 3.4 // show a bit of next row
-           cellWidth: cellHeight
+            cellHeight: grid.height / 3.4 // show a bit of next row
+            cellWidth: cellHeight
 
-           highlight: Rectangle
-           {
-               color: "#cc000000"
-               border.width: 1
-               border.color: "#cc666666"
-               radius: 12
-           }
+            highlight: Rectangle
+            {
+                color: "#cc000000"
+                border.width: 1
+                border.color: "#cc666666"
+                radius: 12
+            }
 
-           highlightMoveDuration: 100
+            highlightMoveDuration: 100
 
-           // additional keys handling, default navigation is handled by gridview
-           Keys.onPressed: (event) =>
-           {
-               switch(event.key)
-               {
-                   case Qt.Key_Enter:
-                   case Qt.Key_Return:
-                       __platform.launchApplication(model[currentIndex].packageName)
-                       event.accepted = true
-                   break
+            // additional keys handling, default navigation is handled by gridview
+            property int keyPressCount: 0
 
-                   case Qt.Key_Menu:
-                   case Qt.Key_Back:
-                       __platform.pickWallpaper()
-                       event.accepted = true
-                   break
-               }
-           }
+            // long press handling
+            Keys.onPressed: (event) => ++keyPressCount
+            Keys.onReleased: function (event) {
+                switch(event.key) {
+                case Qt.Key_Enter:
+                case Qt.Key_Return:
+                    event.accepted = true
 
-           // enable click support
-           delegate: MouseArea
-           {
-               id: mouseArea
-               property bool isCurrent: GridView.isCurrentItem
+                    if (keyPressCount > 2) {
+                        keyPressCount = 0
+                        // long press detected
+                    }
 
-               width: GridView.view.cellWidth - 10
-               height: GridView.view.cellHeight - 10
+                    else {
+                        __platform.launchApplication(model[currentIndex].packageName)
+                    }
+                    break
 
-               // open application on click
-               onClicked:
-               {
-                   __platform.launchApplication(modelData.packageName)
-                   GridView.currentIndex = index
-               }
+                case Qt.Key_Menu:
+                case Qt.Key_Back:
+                    event.accepted = true
 
-               ColumnLayout
-               {
-                   anchors.fill: parent
-                   anchors.margins: 10
-                   Image
-                   {
-                       source: "image://icon/" + modelData.packageName
-                       Layout.fillWidth: true
-                       Layout.fillHeight: true
-                       asynchronous: true
-                       fillMode: Image.PreserveAspectFit
-                   }
+                    __platform.pickWallpaper()
+                    break
 
-                   Text
-                   {
-                       text: modelData.applicationName
-                       font.pixelSize: 14
-                       color: "#ffffff"
-                       style: Text.Outline
-                       Layout.fillWidth: true
-                       wrapMode: Text.WordWrap
-                       elide: Label.ElideRight
-                       horizontalAlignment: Label.AlignHCenter
-                       font.bold: mouseArea.isCurrent
-                   }
-               }
-           }
+                default:
+                    keyPressCount = 0
+                }
+            }
+
+            // enable click support
+            delegate: MouseArea
+            {
+                id: mouseArea
+                property bool isCurrent: GridView.isCurrentItem
+
+                width: GridView.view.cellWidth - 10
+                height: GridView.view.cellHeight - 10
+
+                // open application on click
+                onClicked:
+                {
+                    grid.currentIndex = index
+                    __platform.launchApplication(modelData.packageName)
+                }
+
+                ColumnLayout
+                {
+                    anchors.fill: parent
+                    anchors.margins: 10
+                    Image
+                    {
+                        source: "image://icon/" + modelData.packageName
+                        Layout.fillWidth: true
+                        Layout.fillHeight: true
+                        asynchronous: true
+                        fillMode: Image.PreserveAspectFit
+                    }
+
+                    Text
+                    {
+                        text: modelData.applicationName
+                        font.pixelSize: 14
+                        color: "#ffffff"
+                        style: Text.Outline
+                        Layout.fillWidth: true
+                        wrapMode: Text.WordWrap
+                        elide: Label.ElideRight
+                        horizontalAlignment: Label.AlignHCenter
+                        font.bold: mouseArea.isCurrent
+                    }
+                }
+            }
         }
     }
 }
