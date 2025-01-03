@@ -50,7 +50,16 @@ QImage ImageProvider::getApplicationIcon(const QString &packageName)
     }
 #else
     Q_UNUSED(packageName);
-    image = QImage("://icon/application.png");
+
+    static const char * const start_xpm[] = {
+        "2 2 2 1",
+        "r c #FF0000",
+        "b c #FFEEBB",
+        "aa",
+        "bb"
+    };
+
+    image = QImage(start_xpm);
 
 #endif
     return image;
