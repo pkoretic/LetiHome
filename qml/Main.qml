@@ -22,13 +22,28 @@ Window
     property date currentDate: new Date()
 
     // load apps when component is ready
-    Component.onCompleted: { grid.model = __platform.applicationList() }
+    Component.onCompleted: grid.model = __platform.applicationList()
 
     // when packages are changed (installed/removed) update list
     Connections
     {
         target: __platform
-        function onPackagesChanged(event) { grid.model = __platform.applicationList() }
+        onPackagesChanged: () => grid.model = __platform.applicationList()
+    }
+
+    // random wallpaper
+    Image {
+        source: "https://picsum.photos/1920/1080"
+        anchors.fill: parent
+        fillMode: Image.PreserveAspectCrop
+        asynchronous: true
+        cache: true
+        smooth: false
+
+        Rectangle {
+            anchors.fill: parent
+            color: "#aa000000"
+        }
     }
 
     // clock and date timer
