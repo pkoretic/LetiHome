@@ -29,6 +29,7 @@ int main(int argc, char *argv[])
     // Listen to network reachability
     QNetworkInformation::loadDefaultBackend();
     auto networkInfo = QNetworkInformation::instance();
+    Platform::instance().setOnline(networkInfo->reachability() == QNetworkInformation::Reachability::Online);
     QObject::connect(networkInfo, &QNetworkInformation::reachabilityChanged, [](auto reachability) {
         Platform::instance().setOnline(reachability == QNetworkInformation::Reachability::Online);
     });
