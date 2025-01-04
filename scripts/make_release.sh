@@ -30,8 +30,8 @@ then
     echo "Version not changed. Aborting."
     exit 1
 fi
-profile=$(find . -name LetiHome.pro -type f)
-if [ ! -f $profile ]; then echo "'LetiHome.pro' file not found. Aborting."; exit 1;  fi
+profile=$(find . -name CMakeLists.txt -type f)
+if [ ! -f $profile ]; then echo "'CMakeLists.txt' file not found. Aborting."; exit 1;  fi
 
 #### --------------
 #### ANDROID
@@ -105,7 +105,7 @@ EOF
 commit_release()
 {
     git reset HEAD .
-    git add $android_manifest $release_file $changelog_file
+    git add $android_manifest $release_file $profile $changelog_file
     git commit -sm "$version_format"
     git tag -a "$version" -m "$version_format"
 }
