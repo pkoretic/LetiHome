@@ -33,15 +33,22 @@ Window
     }
 
     // random wallpaper
-    Image {
+    Image
+    {
+        id: wallpaper
         source: "https://picsum.photos/720/576"
         anchors.fill: parent
         fillMode: Image.PreserveAspectCrop
         asynchronous: true
-        cache: true
         smooth: false
 
-        Rectangle {
+        function updateWallpaper()
+        {
+            wallpaper.source = "https://picsum.photos/720/576?" + Math.random()
+        }
+
+        Rectangle
+        {
             anchors.fill: parent
             color: "#aa000000"
         }
@@ -145,8 +152,7 @@ Window
                 case Qt.Key_Menu:
                 case Qt.Key_Back:
                     event.accepted = true
-
-                    __platform.pickWallpaper()
+                    wallpaper.updateWallpaper()
                     break
 
                 default:
@@ -158,13 +164,13 @@ Window
             {
                 property bool isCurrentItem: GridView.isCurrentItem
 
-                width: appGrid.cellWidth
-                height: appGrid.cellHeight
+                width: appGrid.cellWidth - 10
+                height: appGrid.cellHeight - 10
 
                 color: "#333333"
 
                 z: isCurrentItem ? 1 : 0
-                scale: isCurrentItem ? 1.2 : 0.9
+                scale: isCurrentItem ? 1.3 : 1
                 Behavior on scale { NumberAnimation { duration: 150; easing.type: Easing.InOutQuad } }
 
                 Image {
