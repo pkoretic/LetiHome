@@ -20,9 +20,9 @@ qt_add_qml_module(LetiHome
     VERSION 1.0
     QML_FILES
         qml/Main.qml
+    RESOURCES
         qml/network-offline.svg
         qml/network-online.svg
-    SOURCES
         android/AndroidManifest.xml
         android/src/hr/envizia/letihome/LetiHome.java
         android/src/hr/envizia/letihome/PackagesChangedReceiver.java
