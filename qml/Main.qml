@@ -16,7 +16,7 @@ Window
     visible: true
     visibility: Window.FullScreen
 
-    color: "#aa000000" // QTBUG-132497
+    // color: "#bb000000" // QTBUG-132497
 
     // main date object
     property date currentDate: new Date()
@@ -33,7 +33,7 @@ Window
 
     // random wallpaper
     Image {
-        source: "https://picsum.photos/1920/1080"
+        source: "https://picsum.photos/720/576"
         anchors.fill: parent
         fillMode: Image.PreserveAspectCrop
         asynchronous: true
@@ -108,9 +108,8 @@ Window
 
             highlight: Rectangle
             {
-                color: "#cc000000"
-                border.width: 1
-                border.color: "#cc666666"
+                color: "#55000000"
+                border.color: "#666666"
                 radius: 12
             }
 

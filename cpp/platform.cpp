@@ -1,5 +1,4 @@
 #include <QCoreApplication>
-#include <QImage>
 
 #include "platform.h"
 
