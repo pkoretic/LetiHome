@@ -129,7 +129,7 @@ Window
             Layout.alignment: Qt.AlignHCenter
 
             cellWidth: (width / 5) |0
-            cellHeight: cellWidth * 9/16
+            cellHeight: cellWidth * 0.5625 // 9/16
 
             // additional keys handling, default navigation is handled by gridview
             property int keyPressCount: 0
@@ -168,7 +168,7 @@ Window
                 property bool isCurrentItem: GridView.isCurrentItem
 
                 width: appGrid.cellWidth - 10
-                height: appGrid.cellHeight - 10
+                height: width * 0.5625 // 9/16
 
                 color: "#333333"
 
@@ -180,7 +180,6 @@ Window
                     id: image
 
                     anchors.fill: parent
-                    anchors.margins: 1
 
                     source: "image://icon/" + modelData.packageName
                     asynchronous: true
