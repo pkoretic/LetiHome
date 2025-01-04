@@ -20,21 +20,21 @@ import org.qtproject.qt.android.bindings.QtActivity;
 
 public class LetiHome extends QtActivity
 {
-    private PackageManager manager;
+    private PackageManager packageManager;
 
     // get applications as Map<packageName, applicationName>
     public Map<String, String> applicationList()
     {
         Map<String, String> applications = new HashMap<String, String>();
-        manager = getPackageManager();
+        packageManager = getPackageManager();
 
         Intent i = new Intent(Intent.ACTION_MAIN, null);
         i.addCategory(Intent.CATEGORY_LAUNCHER);
 
-        List<ResolveInfo> availableActivities = manager.queryIntentActivities(i, 0);
+        List<ResolveInfo> availableActivities = packageManager.queryIntentActivities(i, 0);
         for(ResolveInfo ri:availableActivities)
         {
-            String applicationName = ri.loadLabel(manager).toString();
+            String applicationName = ri.loadLabel(packageManager).toString();
             String packageName = ri.activityInfo.packageName;
 
             applications.put(packageName, applicationName);
@@ -50,7 +50,7 @@ public class LetiHome extends QtActivity
 
         try
         {
-            icon = manager.getApplicationIcon(packageName);
+            icon = packageManager.getApplicationIcon(packageName);
         }
         catch(Exception e)
         {
@@ -76,10 +76,14 @@ public class LetiHome extends QtActivity
         return getResources().getDrawable(android.R.mipmap.sym_def_app_icon);
     }
 
-    // launch application
+    // launch application by packageName | LeanBack = TV optimized app
     public void launchApplication(String packageName)
     {
-        Intent intent = manager.getLaunchIntentForPackage(packageName);
+        Intent intent = packageManager.getLeanbackLaunchIntentForPackage(packageName);
+
+        if (intent == null)
+            intent = packageManager.getLaunchIntentForPackage(packageName);
+
         startActivity(intent);
     }
 
