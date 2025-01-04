@@ -22,13 +22,14 @@ Window
     property date currentDate: new Date()
 
     // load apps when component is ready
-    Component.onCompleted: grid.model = __platform.applicationList()
+    Component.onCompleted: connections.onPackagesChanged()
 
     // when packages are changed (installed/removed) update list
     Connections
     {
+        id: connections
         target: __platform
-        onPackagesChanged: () => grid.model = __platform.applicationList()
+        function onPackagesChanged() { appGrid.model = __platform.applicationList() }
     }
 
     // random wallpaper
@@ -69,6 +70,8 @@ Window
             Layout.fillWidth: true
             height: childrenRect.height
 
+            z: 1
+
             // clock in locale format depending if 24 hour format is set in the system
             Text
             {
@@ -76,6 +79,7 @@ Window
                 font.pixelSize: 22
                 font.italic: true
                 color: "#ffffff"
+                style: Text.Outline
             }
 
             // date in system locale format
@@ -86,34 +90,26 @@ Window
                 font.italic: true
                 color: "#ffffff"
                 anchors.right: parent.right
+                style: Text.Outline
             }
         }
 
         // main application grid
         GridView
         {
-            id: grid
+            id: appGrid
 
             boundsBehavior: GridView.StopAtBounds
 
             focus: true
-            clip: true
+            // clip: true
 
             Layout.fillHeight: true
-            Layout.preferredWidth: Math.min(model.length, Math.floor(parent.width/cellWidth)) * cellWidth
+            Layout.fillWidth: true
             Layout.alignment: Qt.AlignHCenter
 
-            cellHeight: grid.height / 3.4 // show a bit of next row
-            cellWidth: cellHeight
-
-            highlight: Rectangle
-            {
-                color: "#55000000"
-                border.color: "#666666"
-                radius: 12
-            }
-
-            highlightMoveDuration: 100
+            cellWidth: (width / 5) |0
+            cellHeight: cellWidth * 9/16
 
             // additional keys handling, default navigation is handled by gridview
             property int keyPressCount: 0
@@ -148,46 +144,62 @@ Window
                 }
             }
 
-            // enable click support
-            delegate: MouseArea
+            delegate: Rectangle
             {
-                id: mouseArea
-                property bool isCurrent: GridView.isCurrentItem
+                property bool isCurrentItem: GridView.isCurrentItem
 
-                width: GridView.view.cellWidth - 10
-                height: GridView.view.cellHeight - 10
+                width: appGrid.cellWidth
+                height: appGrid.cellHeight
 
-                // open application on click
-                onClicked:
-                {
-                    grid.currentIndex = index
-                    __platform.launchApplication(modelData.packageName)
+                color: "#333333"
+
+                z: isCurrentItem ? 1 : 0
+                scale: isCurrentItem ? 1.2 : 0.9
+                Behavior on scale { NumberAnimation { duration: 150; easing.type: Easing.InOutQuad } }
+
+                Image {
+                    id: image
+
+                    anchors.fill: parent
+                    anchors.margins: 1
+
+                    source: "image://icon/" + modelData.packageName
+                    asynchronous: true
+                    fillMode: Image.PreserveAspectFit
                 }
 
-                ColumnLayout
+                // app name background so it's readable on any background image
+                Rectangle
+                {
+                    visible: isCurrentItem
+                    width: parent.width
+                    height: appName.height
+                    anchors.bottom: parent.bottom
+                    color: "#a6000000"
+
+                }
+                // app name
+                Text
+                {
+                    id: appName
+                    x: 4
+                    width: parent.width - x * 2
+                    text: modelData.applicationName
+                    color: "#ffffff"
+                    elide: Text.ElideRight
+                    anchors.bottom: parent.bottom
+                    visible: isCurrentItem
+                    horizontalAlignment: Text.AlignHCenter
+                }
+
+                MouseArea
                 {
                     anchors.fill: parent
-                    anchors.margins: 10
-                    Image
+                    // open application on mouse click/finger tap
+                    onClicked:
                     {
-                        source: "image://icon/" + modelData.packageName
-                        Layout.fillWidth: true
-                        Layout.fillHeight: true
-                        asynchronous: true
-                        fillMode: Image.PreserveAspectFit
-                    }
-
-                    Text
-                    {
-                        text: modelData.applicationName
-                        font.pixelSize: 14
-                        color: "#ffffff"
-                        style: Text.Outline
-                        Layout.fillWidth: true
-                        wrapMode: Text.WordWrap
-                        elide: Label.ElideRight
-                        horizontalAlignment: Label.AlignHCenter
-                        font.bold: mouseArea.isCurrent
+                        appGrid.currentIndex = index
+                        __platform.launchApplication(modelData.packageName)
                     }
                 }
             }

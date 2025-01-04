@@ -28,10 +28,24 @@ public class LetiHome extends QtActivity
         Map<String, String> applications = new HashMap<String, String>();
         packageManager = getPackageManager();
 
+        // we could be running on Android TV or non TV OS so for backward compatibility we need to show both
         Intent i = new Intent(Intent.ACTION_MAIN, null);
-        i.addCategory(Intent.CATEGORY_LAUNCHER);
+
+        i.addCategory(Intent.CATEGORY_LEANBACK_LAUNCHER);
 
         List<ResolveInfo> availableActivities = packageManager.queryIntentActivities(i, 0);
+        for(ResolveInfo ri:availableActivities)
+        {
+            String applicationName = ri.loadLabel(packageManager).toString();
+            String packageName = ri.activityInfo.packageName;
+
+            applications.put(packageName, applicationName);
+        }
+
+        i = new Intent(Intent.ACTION_MAIN, null);
+        i.addCategory(Intent.CATEGORY_LAUNCHER); // regular non TV OS apps
+
+        availableActivities = packageManager.queryIntentActivities(i, 0);
         for(ResolveInfo ri:availableActivities)
         {
             String applicationName = ri.loadLabel(packageManager).toString();
@@ -50,7 +64,10 @@ public class LetiHome extends QtActivity
 
         try
         {
-            icon = packageManager.getApplicationIcon(packageName);
+            // try leanback/tv version first
+            icon = packageManager.getApplicationBanner(packageName);
+            if (icon == null)
+                icon = packageManager.getApplicationIcon(packageName);
         }
         catch(Exception e)
         {
