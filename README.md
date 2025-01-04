@@ -28,8 +28,7 @@ Keys or mouse can be used to open applications.<br/>
 Navigational keys are used to move through application list and `Enter/Return (OK on remotes)` are
 used to open currently selected application.<br/>
 Mouse `left click` also opens application.
-`Menu` key or mouse `right click` or `Back` can be used to open wallpaper picker.<br/>
-Note that Android's `WallpaperManager` is not available on some Android TV devices
+`Menu` key or mouse `right click` or `Back` will update wallpaper in the background.<br/>
 
 ## Set LetiHome Launcher as default launcher on Android TV / Google TV
 
