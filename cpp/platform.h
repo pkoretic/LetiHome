@@ -8,6 +8,7 @@
 class Platform : public QObject
 {
     Q_OBJECT
+    Q_PROPERTY(bool isOnline READ getOnline WRITE setOnline NOTIFY onlineChanged FINAL)
 
 public slots:
 
@@ -32,11 +33,19 @@ public:
         return platform;
     }
 
+    bool getOnline() const { return m_online; };
+    void setOnline(bool online) { m_online = online; emit onlineChanged(); };
+
 signals:
     // signal when packages have changed (installed/uninstalled)
     void packagesChanged();
 
+    // signal when network connectivity state has changed
+    void onlineChanged();
+
 private:
+    int m_online;
+
 };
 
 #endif // PLATFORM_H

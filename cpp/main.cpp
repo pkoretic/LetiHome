@@ -2,6 +2,7 @@
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include <QQuickView>
+#include <QNetworkInformation>
 
 #include "platform.h"
 #include "iconprovider.h"
@@ -24,6 +25,13 @@ int main(int argc, char *argv[])
 
     // load main file
     engine.loadFromModule("LetiHomeModule", "Main");
+
+    // Listen to network reachability
+    QNetworkInformation::loadDefaultBackend();
+    auto networkInfo = QNetworkInformation::instance();
+    QObject::connect(networkInfo, &QNetworkInformation::reachabilityChanged, [](auto reachability) {
+        Platform::instance().setOnline(reachability == QNetworkInformation::Reachability::Online);
+    });
 
     return app.exec();
 }

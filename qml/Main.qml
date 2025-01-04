@@ -68,29 +68,40 @@ Window
         Item
         {
             Layout.fillWidth: true
-            height: childrenRect.height
+            Layout.preferredHeight: datetime.height
 
             z: 1
 
             // clock in locale format depending if 24 hour format is set in the system
             Text
             {
+                id: datetime
                 text: Qt.formatTime(root.currentDate, __platform.is24HourFormat() ? "hh:mm" : "hh:mm ap")
                 font.pixelSize: 22
-                font.italic: true
                 color: "#ffffff"
                 style: Text.Outline
             }
 
-            // date in system locale format
-            Text
+            Row
             {
-                text: root.currentDate.toLocaleDateString()
-                font.pixelSize: 20
-                font.italic: true
-                color: "#ffffff"
                 anchors.right: parent.right
-                style: Text.Outline
+                spacing: 20
+
+                Image
+                {
+                    source: "network-%1.svg".arg(__platform.isOnline ? "online" : "offline")
+                    height: datetime.height
+                    width: height
+                }
+
+                // date in system locale format
+                Text
+                {
+                    text: root.currentDate.toDateString()
+                    font.pixelSize: 22
+                    color: "#ffffff"
+                    style: Text.Outline
+                }
             }
         }
 
@@ -102,7 +113,6 @@ Window
             boundsBehavior: GridView.StopAtBounds
 
             focus: true
-            // clip: true
 
             Layout.fillHeight: true
             Layout.fillWidth: true

@@ -1,4 +1,5 @@
 #include <QCoreApplication>
+#include <QNetworkInformation>
 
 #include "platform.h"
 

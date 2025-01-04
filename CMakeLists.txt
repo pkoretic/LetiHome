@@ -5,7 +5,7 @@ project(LetiHome VERSION 0.1 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Qt6 REQUIRED COMPONENTS Quick)
+find_package(Qt6 REQUIRED COMPONENTS Quick Network)
 
 qt_standard_project_setup(REQUIRES 6.5)
 
@@ -20,6 +20,8 @@ qt_add_qml_module(LetiHome
     VERSION 1.0
     QML_FILES
         qml/Main.qml
+        qml/network-offline.svg
+        qml/network-online.svg
     SOURCES
         android/AndroidManifest.xml
         android/src/hr/envizia/letihome/LetiHome.java
@@ -43,7 +45,7 @@ if (ANDROID)
     add_android_openssl_libraries(LetiHome)
 endif()
 
-target_link_libraries(LetiHome PRIVATE Qt6::Quick)
+target_link_libraries(LetiHome PRIVATE Qt6::Quick Qt6::Network)
 
 include(GNUInstallDirs)
 install(TARGETS LetiHome
