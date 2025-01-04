@@ -26,25 +26,22 @@ qt_add_qml_module(LetiHome
         android/src/hr/envizia/letihome/PackagesChangedReceiver.java
 )
 
+set_target_properties(LetiHome PROPERTIES
+    QT_ANDROID_PACKAGE_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/android
+    QT_ANDROID_VERSION_CODE 8
+    QT_ANDROID_VERSION_NAME "1.3.0"
+)
+
 if (ANDROID)
     FetchContent_Declare(
       android_openssl
       DOWNLOAD_EXTRACT_TIMESTAMP true
-      URL      https://github.com/KDAB/android_openssl/archive/refs/heads/master.zip
+      URL https://github.com/KDAB/android_openssl/archive/refs/heads/master.zip
     )
     FetchContent_MakeAvailable(android_openssl)
     include(${android_openssl_SOURCE_DIR}/android_openssl.cmake)
-
     add_android_openssl_libraries(LetiHome)
 endif()
-
-
-set_property(TARGET LetiHome APPEND PROPERTY QT_ANDROID_VERSION_CODE 8)
-set_property(TARGET LetiHome APPEND PROPERTY QT_ANDROID_VERSION_NAME "1.3.0")
-
-set_target_properties(LetiHome PROPERTIES
-    QT_ANDROID_PACKAGE_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/android
-)
 
 target_link_libraries(LetiHome PRIVATE Qt6::Quick)
 
