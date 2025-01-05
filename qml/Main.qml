@@ -1,5 +1,4 @@
 import QtQuick
-import QtQuick.Controls
 import QtQuick.Layouts
 import QtQuick.Window
 
@@ -34,26 +33,15 @@ Window
         function onPackagesChanged() { appGrid.model = __platform.applicationList() }
     }
 
-    // random wallpaper
-    Image
+    // background
+    Rectangle
     {
-        id: wallpaper
         anchors.fill: parent
-        fillMode: Image.PreserveAspectCrop
-        asynchronous: true
-
-        Component.onCompleted: updateWallpaper()
-
-        function updateWallpaper()
+        gradient: Gradient
         {
-            console.info("Updating wallpaper", root.width, root.height)
-            wallpaper.source = "https://picsum.photos/%1/%2?%3".arg(root.width).arg(root.height).arg(Math.random())
-        }
-
-        Rectangle
-        {
-            anchors.fill: parent
-            color: "#55000000"
+             GradientStop { position: 0.0; color: "#111317" }
+             GradientStop { position: 0.5; color: "#12151d" }
+             GradientStop { position: 1.0; color: "#161f2d" }
         }
     }
 
@@ -161,7 +149,6 @@ Window
                 case Qt.Key_Menu:
                 case Qt.Key_Back:
                     event.accepted = true
-                    wallpaper.updateWallpaper()
                     break
 
                 default:
