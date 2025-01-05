@@ -17,13 +17,7 @@ Google Play
 
 [![Get it on Google Play](https://developer.android.com/images/brand/en_generic_rgb_wo_60.png)](https://play.google.com/store/apps/details?id=hr.envizia.letihome)
 
-## Building
-
-It is written using [Qt/QML](https://www.qt.io) as regular Qt android
-application.
-
-Open `CmakeFiles.txt` in QtCreator and follow
-https://doc.qt.io/qt-6/android.html.
+or download from [Releases](../../releases).
 
 ## Usage
 
@@ -73,4 +67,12 @@ On Chromecast with Google TV (maybe others), the "YouTube" remote button will
 stop working if the default launcher is disabled. As a workaround, you can use
 [Button Mapper](https://play.google.com/store/apps/details?id=flar2.homebutton)
 to remap it correctly.
+
+## Building
+
+It is written using [Qt/QML](https://www.qt.io) as regular Qt android
+application.
+
+Open `CmakeFiles.txt` in QtCreator and follow
+https://doc.qt.io/qt-6/android.html.
 
