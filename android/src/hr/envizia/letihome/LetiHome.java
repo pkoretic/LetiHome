@@ -104,13 +104,6 @@ public class LetiHome extends QtActivity
         startActivity(intent);
     }
 
-    // open wallpaper picker
-    public void pickWallpaper()
-    {
-        Intent intent = new Intent(Intent.ACTION_SET_WALLPAPER);
-        startActivity(Intent.createChooser(intent, "Select Wallpaper"));
-    }
-
     // return if system clock is in 24 hour format
     public boolean is24HourFormat()
     {
