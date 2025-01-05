@@ -3,9 +3,6 @@
 
 #include "platform.h"
 
-// maybe we will support some other platform in the future
-#ifdef Q_OS_ANDROID
-#include <QJniObject>
 
 void Platform::init()
 {
@@ -19,6 +16,10 @@ void Platform::init()
 
     this->setIsTelevision(this->isTelevision());
 }
+
+// maybe we will support some other platform in the future
+#ifdef Q_OS_ANDROID
+#include <QJniObject>
 
 /*
  these are JNI functions called from java
