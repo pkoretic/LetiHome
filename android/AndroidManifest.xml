@@ -6,7 +6,7 @@
     <!-- we support TV and non-TV interfaces -->
     <uses-feature android:name="android.hardware.touchscreen" android:required="false"/>
     <uses-feature android:name="android.software.leanback" android:required="false"/>
-    <uses-feature android:name="android.hardware.wifi" android:required="false" />
+    <uses-feature android:name="android.hardware.wifi" android:required="false"/>
 
     <queries>
         <intent>
@@ -35,14 +35,6 @@
             <meta-data android:name="android.app.lib_name" android:value="-- %%INSERT_APP_LIB_NAME%% --"/>
             <meta-data android:name="android.app.arguments" android:value="-- %%INSERT_APP_ARGUMENTS%% --"/>
         </activity>
-
-        <receiver android:name=".PackagesChangedReceiver" android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.PACKAGE_ADDED"/>
-                <action android:name="android.intent.action.PACKAGE_REMOVED"/>
-                <data android:scheme="package"/>
-            </intent-filter>
-        </receiver>
     </application>
 <uses-sdk android:minSdkVersion="23" android:targetSdkVersion="34"/>
 </manifest>

@@ -28,6 +28,9 @@ public class LetiHome extends QtActivity
     {
         super.onCreate(savedInstanceState);
         packageManager = getPackageManager();
+
+        // Register the intent receiver
+        PackagesChangedReceiver.register(this);
     }
 
     // get applications as Map<packageName, applicationName>
