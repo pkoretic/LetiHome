@@ -19,12 +19,11 @@ Google Play
 
 ## Building
 
-It is written using Qt/QML and requires Qt 6.x.
+It is written using [Qt/QML](https://www.qt.io) as regular Qt android
+application.
 
-It is a regular Qt android application. For more info see
+Open `CmakeFiles.txt` in QtCreator and follow
 https://doc.qt.io/qt-6/android.html.
-
-Open `LetiHome.pro` in QtCreator and your are good to go.
 
 ## Usage
 
