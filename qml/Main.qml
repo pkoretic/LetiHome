@@ -38,21 +38,21 @@ Window
     Image
     {
         id: wallpaper
-        source: "https://picsum.photos/720/576"
+        source: "https://picsum.photos/%1/%2".arg(root.width).arg(root.height)
         anchors.fill: parent
         fillMode: Image.PreserveAspectCrop
         asynchronous: true
-        smooth: false
 
         function updateWallpaper()
         {
-            wallpaper.source = "https://picsum.photos/720/576?" + Math.random()
+            console.info("Updating wallpaper", root.width, root.height)
+            wallpaper.source = "https://picsum.photos/%1/%2?%3".arg(root.width).arg(root.height).arg(Math.random())
         }
 
         Rectangle
         {
             anchors.fill: parent
-            color: "#aa000000"
+            color: "#55000000"
         }
     }
 
