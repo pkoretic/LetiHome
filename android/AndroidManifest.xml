@@ -20,7 +20,7 @@
 
     <application android:name="org.qtproject.qt.android.bindings.QtApplication" android:hardwareAccelerated="true" android:label="-- %%INSERT_APP_NAME%% --" android:requestLegacyExternalStorage="true" android:allowBackup="true" android:fullBackupOnly="false" android:banner="@drawable/banner" android:icon="@drawable/icon">
 
-        <activity android:name="hr.envizia.letihome.LetiHome" android:configChanges="orientation|uiMode|screenLayout|screenSize|smallestScreenSize|layoutDirection|locale|fontScale|keyboard|keyboardHidden|navigation|mcc|mnc|density" android:launchMode="singleTask" android:windowSoftInputMode="adjustResize" android:screenOrientation="landscape" android:exported="true" android:label="-- %%INSERT_APP_NAME%% --">
+        <activity android:name="hr.envizia.letihome.LetiHome" android:configChanges="orientation|uiMode|screenLayout|screenSize|smallestScreenSize|layoutDirection|locale|fontScale|keyboard|keyboardHidden|navigation|mcc|mnc|density" android:launchMode="singleTask" android:windowSoftInputMode="adjustResize" android:screenOrientation="unspecified" android:exported="true" android:label="-- %%INSERT_APP_NAME%% --">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
