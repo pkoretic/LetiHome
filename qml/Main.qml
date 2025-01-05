@@ -149,6 +149,7 @@ Window
                 case Qt.Key_Menu:
                 case Qt.Key_Back:
                     event.accepted = true
+                    __platform.launchSettings()
                     break
 
                 default:
