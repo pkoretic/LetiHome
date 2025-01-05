@@ -6,7 +6,8 @@
 Android launcher optimized for the big screen. Targets embedded and TV/STB devices. It is intended
 to be very performant, correct and simple minimizing memory usage.
 
-![LetiHome Screenshot](https://raw.githubusercontent.com/pkoretic/LetiHome/badges/screenshot.jpg)
+![LetiHome TVScreenshot](https://raw.githubusercontent.com/pkoretic/LetiHome/badges/tvscreenshot.png)
+![LetiHome NonTVScreenshot](https://raw.githubusercontent.com/pkoretic/LetiHome/badges/nontvscreenshot.png)
 
 Google Play
 ----------------
