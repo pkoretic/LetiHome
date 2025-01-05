@@ -3,8 +3,8 @@
 [![License MIT](https://cdn.rawgit.com/pkoretic/letihome/badges/license.svg)](https://github.com/pkoretic/letihome/blob/master/LICENSE)
 [![Language (Qt)](https://cdn.rawgit.com/pkoretic/letihome/badges/qt.svg)](https://www.qt.io)
 
-Android launcher optimized for the big screen. Targets embedded and TV/STB devices. It is intended
-to be very performant, correct and simple minimizing memory usage.
+Android launcher optimized for the big screen. Targets embedded and TV/STB
+devices. It is intended to be very lightweight and simple.
 
 Android TV OS / Google Play OS<br/>
 <img src="https://raw.githubusercontent.com/pkoretic/LetiHome/badges/tvscreenshot.png" width="600" />
