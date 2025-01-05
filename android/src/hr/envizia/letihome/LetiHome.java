@@ -60,12 +60,14 @@ public class LetiHome extends QtActivity
     // get application icon as byte array
     public byte[] getApplicationIcon(String packageName)
     {
-        Drawable icon;
+        Drawable icon = null;
 
         try
         {
             // try leanback/tv version first
-            icon = packageManager.getApplicationBanner(packageName);
+            if (isTelevision())
+                icon = packageManager.getApplicationBanner(packageName);
+
             if (icon == null)
                 icon = packageManager.getApplicationIcon(packageName);
         }
@@ -96,7 +98,10 @@ public class LetiHome extends QtActivity
     // launch application by packageName | LeanBack = TV optimized app
     public void launchApplication(String packageName)
     {
-        Intent intent = packageManager.getLeanbackLaunchIntentForPackage(packageName);
+        Intent intent = null;
+
+        if (isTelevision())
+            intent = packageManager.getLeanbackLaunchIntentForPackage(packageName);
 
         if (intent == null)
             intent = packageManager.getLaunchIntentForPackage(packageName);
@@ -108,5 +113,11 @@ public class LetiHome extends QtActivity
     public boolean is24HourFormat()
     {
         return DateFormat.is24HourFormat(this);
+    }
+
+    // https://developer.android.com/training/tv/get-started/hardware#runtime-check
+    public boolean isTelevision()
+    {
+        return packageManager.hasSystemFeature(PackageManager.FEATURE_LEANBACK);
     }
 }

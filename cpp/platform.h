@@ -9,6 +9,7 @@ class Platform : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(bool isOnline READ getOnline WRITE setOnline NOTIFY onlineChanged FINAL)
+    Q_PROPERTY(bool isTelevision READ getIsTelevision WRITE setIsTelevision NOTIFY isTelevisionChanged FINAL)
 
 public slots:
 
@@ -24,6 +25,9 @@ public slots:
         // return if system clock is in 24 hour format
         bool is24HourFormat();
 
+        // return if Android TV OS device
+        bool isTelevision();
+
 public:
 
     // singleton, so we can propagate notifications from java
@@ -36,6 +40,9 @@ public:
     bool getOnline() const { return m_online; };
     void setOnline(bool online) { m_online = online; emit onlineChanged(); };
 
+    bool getIsTelevision() const { return m_isTelevision; };
+    void setIsTelevision(bool isTelevision) { m_isTelevision = isTelevision; emit isTelevisionChanged(); };
+
 signals:
     // signal when packages have changed (installed/uninstalled)
     void packagesChanged();
@@ -43,8 +50,12 @@ signals:
     // signal when network connectivity state has changed
     void onlineChanged();
 
+    // signal when device is television
+    void isTelevisionChanged();
+
 private:
     int m_online;
+    int m_isTelevision;
 
 };
 

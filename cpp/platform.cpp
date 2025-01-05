@@ -121,3 +121,16 @@ bool Platform::is24HourFormat()
 
     return true;
 }
+
+// return if Android TV OS device
+bool Platform::isTelevision()
+{
+#ifdef Q_OS_ANDROID
+
+    QJniObject activity = QNativeInterface::QAndroidApplication::context();
+    return activity.callMethod<jboolean>("isTelevision");
+
+#endif
+
+    return false;
+}

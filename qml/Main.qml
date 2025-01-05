@@ -18,6 +18,8 @@ Window
 
     // color: "#bb000000" // QTBUG-132497
 
+    property bool isTelevision: __platform.isTelevision
+
     // main date object
     property date currentDate: new Date()
 
@@ -69,7 +71,7 @@ Window
     ColumnLayout
     {
         anchors.fill: parent
-        anchors.margins: 20
+        anchors.margins: 40
         spacing: 20
 
         Item
@@ -176,10 +178,12 @@ Window
                 scale: isCurrentItem ? 1.3 : 1
                 Behavior on scale { NumberAnimation { duration: 150; easing.type: Easing.InOutQuad } }
 
-                Image {
+                Image
+                {
                     id: image
 
                     anchors.fill: parent
+                    anchors.margins: isTelevision ? 0 : 30
 
                     source: "image://icon/" + modelData.packageName
                     asynchronous: true
@@ -189,13 +193,13 @@ Window
                 // app name background so it's readable on any background image
                 Rectangle
                 {
-                    visible: isCurrentItem
+                    visible: isTelevision && isCurrentItem
                     width: parent.width
                     height: appName.height
                     anchors.bottom: parent.bottom
                     color: "#a6000000"
-
                 }
+
                 // app name
                 Text
                 {
@@ -206,8 +210,18 @@ Window
                     color: "#ffffff"
                     elide: Text.ElideRight
                     anchors.bottom: parent.bottom
-                    visible: isCurrentItem
+                    visible: isCurrentItem || !isTelevision
                     horizontalAlignment: Text.AlignHCenter
+                }
+
+                // border around current item
+                Rectangle
+                {
+                    anchors.fill: parent
+                    visible: isCurrentItem
+                    color: "transparent"
+                    border.width: 1
+                    border.color: "#222222"
                 }
 
                 MouseArea
