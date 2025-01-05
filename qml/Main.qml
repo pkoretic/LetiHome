@@ -38,10 +38,11 @@ Window
     Image
     {
         id: wallpaper
-        source: "https://picsum.photos/%1/%2".arg(root.width).arg(root.height)
         anchors.fill: parent
         fillMode: Image.PreserveAspectCrop
         asynchronous: true
+
+        Component.onCompleted: updateWallpaper()
 
         function updateWallpaper()
         {
