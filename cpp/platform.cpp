@@ -7,6 +7,19 @@
 #ifdef Q_OS_ANDROID
 #include <QJniObject>
 
+void Platform::init()
+{
+    // Listen to network reachability
+    QNetworkInformation::loadDefaultBackend();
+    auto networkInfo = QNetworkInformation::instance();
+    this->setOnline(networkInfo->reachability() == QNetworkInformation::Reachability::Online);
+    QObject::connect(networkInfo, &QNetworkInformation::reachabilityChanged, [this](auto reachability) {
+        this->setOnline(reachability == QNetworkInformation::Reachability::Online);
+    });
+
+    this->setIsTelevision(this->isTelevision());
+}
+
 /*
  these are JNI functions called from java
 */

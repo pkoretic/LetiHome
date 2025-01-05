@@ -101,8 +101,6 @@ Window
                     source: "network-%1.svg".arg(__platform.isOnline ? "online" : "offline")
                     height: datetime.height - 10
                     width: height
-                    smooth: true
-                    mipmap: true
                     anchors.verticalCenter: parent.verticalCenter
                 }
 

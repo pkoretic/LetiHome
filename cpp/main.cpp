@@ -25,18 +25,11 @@ int main(int argc, char *argv[])
     engine.addImageProvider(QLatin1String("icon"), new ImageProvider());
     engine.rootContext()->setContextProperty("__platform", &platform);
 
+    // initialize platform variables and listeners
+    platform.init();
+
     // load main file
     engine.loadFromModule("LetiHomeModule", "Main");
-
-    // Listen to network reachability
-    QNetworkInformation::loadDefaultBackend();
-    auto networkInfo = QNetworkInformation::instance();
-    platform.setOnline(networkInfo->reachability() == QNetworkInformation::Reachability::Online);
-    QObject::connect(networkInfo, &QNetworkInformation::reachabilityChanged, [&platform](auto reachability) {
-        platform.setOnline(reachability == QNetworkInformation::Reachability::Online);
-    });
-
-    platform.setIsTelevision(platform.isTelevision());
 
     return app.exec();
 }

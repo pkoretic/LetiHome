@@ -10,6 +10,7 @@ import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.text.format.DateFormat;
 import android.util.Log;
+import android.os.Bundle;
 
 import java.io.ByteArrayOutputStream;
 import java.util.List;
@@ -22,11 +23,17 @@ public class LetiHome extends QtActivity
 {
     private PackageManager packageManager;
 
+    @Override
+    public void onCreate(Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+        packageManager = getPackageManager();
+    }
+
     // get applications as Map<packageName, applicationName>
     public Map<String, String> applicationList()
     {
         Map<String, String> applications = new HashMap<String, String>();
-        packageManager = getPackageManager();
 
         // we could be running on Android TV or non TV OS so for backward compatibility we need to show both
         Intent i = new Intent(Intent.ACTION_MAIN, null);

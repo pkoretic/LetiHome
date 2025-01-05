@@ -30,6 +30,8 @@ public slots:
 
 public:
 
+    void init();
+
     // singleton, so we can propagate notifications from java
     static Platform &instance()
     {
