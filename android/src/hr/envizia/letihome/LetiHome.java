@@ -127,4 +127,18 @@ public class LetiHome extends QtActivity
     {
         return packageManager.hasSystemFeature(PackageManager.FEATURE_LEANBACK);
     }
+
+    // launch system settings
+    public void launchSettings()
+    {
+        startActivity(new Intent(android.provider.Settings.ACTION_SETTINGS));
+    }
+
+    // open system application info dialog
+    public void openAppInfo(String packageName)
+    {
+        Intent intent = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        intent.setData(android.net.Uri.fromParts("package", packageName, null));
+        startActivity(intent);
+    }
 }

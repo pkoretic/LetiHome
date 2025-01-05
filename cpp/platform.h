@@ -28,6 +28,10 @@ public slots:
         // return if Android TV OS device
         bool isTelevision();
 
+        void launchSettings();
+
+        void openAppInfo(const QString &packageName);
+
 public:
 
     void init();

@@ -147,3 +147,26 @@ bool Platform::isTelevision()
 
     return false;
 }
+
+void Platform::launchSettings()
+{
+#ifdef Q_OS_ANDROID
+
+    QJniObject activity = QNativeInterface::QAndroidApplication::context();
+    activity.callMethod<void>("launchSettings");
+
+#endif
+}
+
+void Platform::openAppInfo(const QString &packageName)
+{
+#ifdef Q_OS_ANDROID
+
+    QJniObject activity = QNativeInterface::QAndroidApplication::context();
+    activity.callMethod<void>(
+        "openAppInfo",
+        "(Ljava/lang/String;)V",
+        QJniObject::fromString(packageName).object<jstring>());
+
+#endif
+}

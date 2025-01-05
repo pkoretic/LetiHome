@@ -142,13 +142,18 @@ Window
                 case Qt.Key_Return:
                     event.accepted = true
 
+                    var packageName = model[currentIndex].packageName
+
+                    // long press detected
                     if (keyPressCount > 2) {
                         keyPressCount = 0
-                        // long press detected
-                    }
 
-                    else {
-                        __platform.launchApplication(model[currentIndex].packageName)
+                        // open application info
+                        __platform.openAppInfo(packageName)
+                    }
+                    // ignore repeated press/release on platforms that don't have long press
+                    else if (Qt.application.active) {
+                        __platform.launchApplication(packageName)
                     }
                     break
 

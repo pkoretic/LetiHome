@@ -24,10 +24,10 @@ Open `LetiHome.pro` in QtCreator and your are good to go.
 
 ## Usage
 
-Keys or mouse can be used to open applications.<br/>
+Keys (OK, Enter) or mouse (Left click) can be used to open applications.<br/>
+Long Press will open Application Info.<br/>
 Navigational keys are used to move through application list and `Enter/Return (OK on remotes)` are
 used to open currently selected application.<br/>
-Mouse `left click` also opens application.
 `Menu` key or mouse `right click` or `Back` will update wallpaper in the background.<br/>
 
 ## Set LetiHome Launcher as default launcher on Android TV / Google TV
