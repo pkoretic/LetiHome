@@ -1,6 +1,7 @@
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Window
+import QtQuick.Controls.Material
 
 Window
 {
@@ -15,7 +16,8 @@ Window
     visible: true
     visibility: Window.FullScreen
 
-    // color: "#bb000000" // QTBUG-132497
+    Material.theme: Material.Dark
+    Material.accent: Material.Blue
 
     property bool isTelevision: __platform.isTelevision
 
