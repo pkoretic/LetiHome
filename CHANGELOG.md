@@ -1,3 +1,16 @@
+## 2025-01-08, Version 2.1.1
+
+### Notable changes
+
+#### The following significant changes have been made since the previous LetiHome 2.1.0 release.
+
+Minor update
+
+### commits
+
+ - [9c83419](https://github.com/qaap/LetiHome/commit/9c83419) minor fix
+ - [89e9c64](https://github.com/qaap/LetiHome/commit/89e9c64) update screenshots
+
 ## 2025-01-08, Version 2.1.0
 
 ### Notable changes
