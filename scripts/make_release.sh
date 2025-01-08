@@ -42,7 +42,7 @@ update_android()
     echo ": updating android version"
 
     # update android version name
-    sed -i.bak "s/ANDROID_VERSION_NAME = [^ ]*/ANDROID_VERSION_NAME \"$version\"/" $profile
+    sed -i.bak "s/ANDROID_VERSION_NAME [^ ]*/ANDROID_VERSION_NAME \"$version\"/" $profile
 
     # increment android version code
     version_code=$(grep -F ANDROID_VERSION_CODE $profile | sed 's/.*ANDROID_VERSION_CODE//' | sed 's/[^0-9]*//g')
