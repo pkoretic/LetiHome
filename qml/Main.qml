@@ -20,25 +20,28 @@ Window
     Material.accent: Material.Blue
 
     property bool isTelevision: __platform.isTelevision
+    property bool isOnline: __platform.isOnline
 
     // main date object
     property date currentDate: new Date()
 
     // load apps when component is ready
-    Component.onCompleted: connections.onPackagesChanged()
+    Component.onCompleted: loadApplications()
 
     // when packages are changed (installed/removed) update list
     Connections
     {
         id: connections
         target: __platform
-        function onPackagesChanged() { appGrid.model = __platform.applicationList() }
+        function onPackagesChanged() { loadApplications() }
     }
 
+    // controllers
     function loadApplications() { appGrid.model = __platform.applicationList() }
+    function openApplication(packageName) { if(packageName === "hr.envizia.letihome") aboutPopup.open(); else __platform.openApplication(packageName) }
     function openAppInfo(packageName) { __platform.openAppInfo(packageName) }
-    function launchSettings() { __platform.launchSettings() }
-    function launchApplication(packageName) { (packageName === "hr.envizia.letihome") && aboutPopup.open() || __platform.launchApplication(packageName) }
+    function openSettings() { __platform.openSettings() }
+    function openLetiHomePage() { __platform.openLetiHomePage() }
 
     // background
     Rectangle
@@ -94,7 +97,7 @@ Window
 
                 Image
                 {
-                    source: "network-%1.svg".arg(__platform.isOnline ? "online" : "offline")
+                    source: "network-%1.svg".arg(isOnline ? "online" : "offline")
                     height: datetime.height - 10
                     width: height
                     anchors.verticalCenter: parent.verticalCenter
@@ -136,7 +139,7 @@ Window
                 {
                     case Qt.Key_Return:
                     case Qt.Key_Enter:
-                        launchApplication(packageName)
+                        openApplication(packageName)
                     break
 
                     case Qt.Key_Back:
@@ -145,7 +148,7 @@ Window
                     break
 
                     case Qt.Key_Menu:
-                        launchSettings()
+                        openSettings()
                     break
 
                     default:
@@ -219,7 +222,7 @@ Window
                     onClicked:
                     {
                         appGrid.currentIndex = index
-                        launchApplication(modelData.packageName)
+                        openApplication(modelData.packageName)
                     }
                 }
             }
@@ -265,7 +268,7 @@ Window
                     highlighted: activeFocus
                     Keys.onReturnPressed: clicked()
                     Keys.onEnterPressed: clicked()
-                    onClicked: launchSettings()
+                    onClicked: openSettings()
 
                     KeyNavigation.right: reviewButton
                 }
@@ -278,7 +281,7 @@ Window
                     highlighted: activeFocus
                     Keys.onReturnPressed: clicked()
                     Keys.onEnterPressed: clicked()
-                    onClicked: __platform.openLetiHomePage()
+                    onClicked: openLetiHomePage()
 
                     KeyNavigation.right: closeButton
                 }

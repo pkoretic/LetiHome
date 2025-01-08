@@ -16,8 +16,8 @@ public slots:
         // get application list from java and convert to QVariantList format that can be used directly in QML
         QVariantList applicationList();
 
-        // launch application by package name
-        void launchApplication(const QString &packageName);
+        // open application by package name
+        void openApplication(const QString &packageName);
 
         // open wallpaper picker menu
         void pickWallpaper();
@@ -28,13 +28,13 @@ public slots:
         // return if Android TV OS device
         bool isTelevision();
 
-        // launch android system settings
-        void launchSettings();
+        // open android system settings
+        void openSettings();
 
         // open application information dialog with open, install, remove etc options
         void openAppInfo(const QString &packageName);
 
-        // launch play store with leti home app
+        // open play store with leti home app
         void openLetiHomePage();
 
 public:

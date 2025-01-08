@@ -88,20 +88,19 @@ QVariantList Platform::applicationList()
         QString nameB = b.toMap().value("applicationName").toString();
         return nameA < nameB; // Case-sensitive comparison
     });
-
 #endif
 
     return appList;
 }
 
-// launch application by package name
-void Platform::launchApplication(const QString &packageName)
+// open application by package name
+void Platform::openApplication(const QString &packageName)
 {
 #ifdef Q_OS_ANDROID
 
     QJniObject activity = QNativeInterface::QAndroidApplication::context();
     activity.callMethod<void>(
-        "launchApplication",
+        "openApplication",
         "(Ljava/lang/String;)V",
         QJniObject::fromString(packageName).object<jstring>());
 
@@ -149,12 +148,12 @@ bool Platform::isTelevision()
     return false;
 }
 
-void Platform::launchSettings()
+void Platform::openSettings()
 {
 #ifdef Q_OS_ANDROID
 
     QJniObject activity = QNativeInterface::QAndroidApplication::context();
-    activity.callMethod<void>("launchSettings");
+    activity.callMethod<void>("openSettings");
 
 #endif
 }

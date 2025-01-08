@@ -106,8 +106,8 @@ public class LetiHome extends QtActivity
         return getResources().getDrawable(android.R.mipmap.sym_def_app_icon);
     }
 
-    // launch application by packageName | LeanBack = TV optimized app
-    public void launchApplication(String packageName)
+    // open application by packageName | LeanBack = TV optimized app
+    public void openApplication(String packageName)
     {
         Intent intent = null;
 
@@ -132,8 +132,8 @@ public class LetiHome extends QtActivity
         return packageManager.hasSystemFeature(PackageManager.FEATURE_LEANBACK);
     }
 
-    // launch system settings
-    public void launchSettings()
+    // open system settings
+    public void openSettings()
     {
         startActivity(new Intent(android.provider.Settings.ACTION_SETTINGS));
     }
@@ -146,7 +146,7 @@ public class LetiHome extends QtActivity
         startActivity(intent);
     }
 
-    // launch playstore for letiplus
+    // open playstore for letiplus
     public void openLetiHomePage()
     {
         Intent intent = new Intent(Intent.ACTION_VIEW);
