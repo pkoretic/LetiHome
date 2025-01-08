@@ -76,8 +76,7 @@ public class LetiHome extends QtActivity
         try
         {
             // try leanback/tv version first
-            if (isTelevision())
-                icon = packageManager.getApplicationBanner(packageName);
+            icon = packageManager.getApplicationBanner(packageName);
 
             if (icon == null)
                 icon = packageManager.getApplicationIcon(packageName);
@@ -109,10 +108,7 @@ public class LetiHome extends QtActivity
     // open application by packageName | LeanBack = TV optimized app
     public void openApplication(String packageName)
     {
-        Intent intent = null;
-
-        if (isTelevision())
-            intent = packageManager.getLeanbackLaunchIntentForPackage(packageName);
+        Intent intent = packageManager.getLeanbackLaunchIntentForPackage(packageName);
 
         if (intent == null)
             intent = packageManager.getLaunchIntentForPackage(packageName);
