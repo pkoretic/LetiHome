@@ -35,6 +35,11 @@ Window
         function onPackagesChanged() { appGrid.model = __platform.applicationList() }
     }
 
+    function loadApplications() { appGrid.model = __platform.applicationList() }
+    function openAppInfo(packageName) { __platform.openAppInfo(packageName) }
+    function launchSettings() { __platform.launchSettings() }
+    function launchApplication(packageName) { (packageName === "hr.envizia.letihome") && aboutPopup.open() || __platform.launchApplication(packageName) }
+
     // background
     Rectangle
     {
@@ -122,40 +127,29 @@ Window
             cellWidth: (width / 5) |0
             cellHeight: cellWidth * 0.5625 // 9/16
 
-            // additional keys handling, default navigation is handled by gridview
-            property int keyPressCount: 0
+            Keys.onPressed: function(event)
+            {
+                event.accepted = true
+                const packageName = appGrid.model[appGrid.currentIndex].packageName
 
-            // long press handling
-            Keys.onPressed: (event) => ++keyPressCount
-            Keys.onReleased: function (event) {
-                switch(event.key) {
-                case Qt.Key_Enter:
-                case Qt.Key_Return:
-                    event.accepted = true
-
-                    var packageName = model[currentIndex].packageName
-
-                    // long press detected
-                    if (keyPressCount > 2) {
-                        keyPressCount = 0
-
-                        // open application info
-                        __platform.openAppInfo(packageName)
-                    }
-                    // ignore repeated press/release on platforms that don't have long press
-                    else if (Qt.application.active) {
-                        __platform.launchApplication(packageName)
-                    }
+                switch(event.key)
+                {
+                    case Qt.Key_Return:
+                    case Qt.Key_Enter:
+                        launchApplication(packageName)
                     break
 
-                case Qt.Key_Menu:
-                case Qt.Key_Back:
-                    event.accepted = true
-                    __platform.launchSettings()
+                    case Qt.Key_Back:
+                    case Qt.Key_Esc:
+                        openAppInfo(packageName)
                     break
 
-                default:
-                    keyPressCount = 0
+                    case Qt.Key_Menu:
+                        launchSettings()
+                    break
+
+                    default:
+                        event.accepted = false
                 }
             }
 
@@ -225,8 +219,80 @@ Window
                     onClicked:
                     {
                         appGrid.currentIndex = index
-                        __platform.launchApplication(modelData.packageName)
+                        launchApplication(modelData.packageName)
                     }
+                }
+            }
+        }
+    }
+
+    Popup
+    {
+        id: aboutPopup
+
+        width: parent.width * 0.9
+        height: parent.height * 0.9
+        anchors.centerIn: parent
+        modal: true
+        focus: true
+        closePolicy: Popup.CloseOnPressOutside | Popup.CloseOnEscape
+        onClosed: appGrid.focus = true
+
+        Column
+        {
+            anchors.centerIn: parent
+            spacing: 10
+
+            Label
+            {
+                textFormat: Text.StyledText
+                font.pixelSize: 20
+                text: `<p>Thanks for using <strong>LetiHome</strong> application!</p><br/>
+                <strong>LetiHome</strong> is a lightweight app launcher application<br/>
+                that aims to works on as many TV devices as possible, <br/>especially low power ones.<br/><br/>
+                As there is <u>zero</u> data collection, please provide your feedback <br/>and suggestions on project source page.<br/>
+                `
+            }
+
+            Row
+            {
+                spacing: 20
+
+                Button
+                {
+                    text: "Open System Settings"
+                    height: 60
+                    highlighted: activeFocus
+                    Keys.onReturnPressed: clicked()
+                    Keys.onEnterPressed: clicked()
+                    onClicked: launchSettings()
+
+                    KeyNavigation.right: reviewButton
+                }
+
+                Button
+                {
+                    id: reviewButton
+                    text: "Leave a review"
+                    height: 60
+                    highlighted: activeFocus
+                    Keys.onReturnPressed: clicked()
+                    Keys.onEnterPressed: clicked()
+                    onClicked: __platform.openLetiHomePage()
+
+                    KeyNavigation.right: closeButton
+                }
+
+                Button
+                {
+                    id: closeButton
+                    text: "Close"
+                    height: 60
+                    focus: true
+                    highlighted: activeFocus
+                    Keys.onReturnPressed: clicked()
+                    Keys.onEnterPressed: clicked()
+                    onClicked: aboutPopup.close()
                 }
             }
         }

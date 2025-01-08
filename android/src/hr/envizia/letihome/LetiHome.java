@@ -11,6 +11,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.os.Bundle;
+import android.net.Uri;
 
 import java.io.ByteArrayOutputStream;
 import java.util.List;
@@ -144,4 +145,14 @@ public class LetiHome extends QtActivity
         intent.setData(android.net.Uri.fromParts("package", packageName, null));
         startActivity(intent);
     }
+
+    // launch playstore for letiplus
+    public void openLetiHomePage()
+    {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse("https://play.google.com/store/apps/details?id=hr.envizia.letihome"));
+        intent.setPackage("com.android.vending");
+        startActivity(intent);
+    }
+
 }

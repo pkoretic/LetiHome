@@ -171,3 +171,13 @@ void Platform::openAppInfo(const QString &packageName)
 
 #endif
 }
+
+void Platform::openLetiHomePage()
+{
+#ifdef Q_OS_ANDROID
+
+    QJniObject activity = QNativeInterface::QAndroidApplication::context();
+    activity.callMethod<void>("openLetiHomePage");
+
+#endif
+}

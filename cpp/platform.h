@@ -28,9 +28,14 @@ public slots:
         // return if Android TV OS device
         bool isTelevision();
 
+        // launch android system settings
         void launchSettings();
 
+        // open application information dialog with open, install, remove etc options
         void openAppInfo(const QString &packageName);
+
+        // launch play store with leti home app
+        void openLetiHomePage();
 
 public:
 
