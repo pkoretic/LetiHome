@@ -3,6 +3,9 @@ import QtQuick.Layouts
 import QtQuick.Window
 import QtQuick.Controls.Material
 
+import "."
+import "./Controller.js" as Controller
+
 Window
 {
     id: root
@@ -19,29 +22,23 @@ Window
     Material.theme: Material.Dark
     Material.accent: Material.Blue
 
-    property bool isTelevision: __platform.isTelevision
-    property bool isOnline: __platform.isOnline
+    property bool isTelevision: _Platform.isTelevision
+    property bool isOnline: _Platform.isOnline
+    property bool is24HourFormat: _Platform.is24HourFormat()
 
     // main date object
     property date currentDate: new Date()
 
     // load apps when component is ready
-    Component.onCompleted: loadApplications()
+    Component.onCompleted: Controller.init()
 
     // when packages are changed (installed/removed) update list
     Connections
     {
         id: connections
-        target: __platform
-        function onPackagesChanged() { loadApplications() }
+        target: _Platform
+        function onPackagesChanged() { Controller.loadApplications() }
     }
-
-    // controllers
-    function loadApplications() { appGrid.model = __platform.applicationList() }
-    function openApplication(packageName) { if(packageName === "hr.envizia.letihome") aboutPopup.open(); else __platform.openApplication(packageName) }
-    function openAppInfo(packageName) { __platform.openAppInfo(packageName) }
-    function openSettings() { __platform.openSettings() }
-    function openLetiHomePage() { __platform.openLetiHomePage() }
 
     // background
     Rectangle
@@ -55,7 +52,6 @@ Window
         }
     }
 
-    // clock and date timer
     // update in acceptable interval and ignore updates if application is not active (another app open)
     Timer
     {
@@ -63,7 +59,7 @@ Window
         interval: 5000
         repeat: true
         triggeredOnStart: true
-        onTriggered: root.currentDate = new Date()
+        onTriggered: Controller.updateDate()
     }
 
     // wrapper item used for padding, spacing and layout
@@ -84,7 +80,7 @@ Window
             Text
             {
                 id: datetime
-                text: Qt.formatTime(root.currentDate, __platform.is24HourFormat() ? "hh:mm" : "hh:mm ap")
+                text: Qt.formatTime(root.currentDate, is24HourFormat ? "hh:mm" : "hh:mm ap")
                 font.pixelSize: 22
                 color: "#ffffff"
                 style: Text.Outline
@@ -130,31 +126,7 @@ Window
             cellWidth: (width / 5) |0
             cellHeight: cellWidth * 0.5625 // 9/16
 
-            Keys.onPressed: function(event)
-            {
-                event.accepted = true
-                const packageName = appGrid.model[appGrid.currentIndex].packageName
-
-                switch(event.key)
-                {
-                    case Qt.Key_Return:
-                    case Qt.Key_Enter:
-                        openApplication(packageName)
-                    break
-
-                    case Qt.Key_Back:
-                    case Qt.Key_Esc:
-                        openAppInfo(packageName)
-                    break
-
-                    case Qt.Key_Menu:
-                        openSettings()
-                    break
-
-                    default:
-                        event.accepted = false
-                }
-            }
+            Keys.onPressed: Controller.onKeyPress(event)
 
             delegate: Rectangle
             {
@@ -174,7 +146,7 @@ Window
                     id: image
 
                     anchors.fill: parent
-                    anchors.margins: isTelevision ? 0 : 30
+                    anchors.margins: isTelevision ? 0 : 20
 
                     source: "image://icon/" + modelData.packageName
                     asynchronous: true
@@ -215,89 +187,19 @@ Window
                     border.color: "#222222"
                 }
 
+                // open application on mouse click/finger tap
                 MouseArea
                 {
                     anchors.fill: parent
-                    // open application on mouse click/finger tap
                     onClicked:
                     {
                         appGrid.currentIndex = index
-                        openApplication(modelData.packageName)
+                        Controller.openApplication(modelData.packageName)
                     }
                 }
             }
         }
     }
 
-    Popup
-    {
-        id: aboutPopup
-
-        width: parent.width * 0.9
-        height: parent.height * 0.9
-        anchors.centerIn: parent
-        modal: true
-        focus: true
-        closePolicy: Popup.CloseOnPressOutside | Popup.CloseOnEscape
-        onClosed: appGrid.focus = true
-
-        Column
-        {
-            anchors.centerIn: parent
-            spacing: 10
-
-            Label
-            {
-                textFormat: Text.StyledText
-                font.pixelSize: 20
-                text: `<p>Thanks for using <strong>LetiHome</strong> application!</p><br/>
-                <strong>LetiHome</strong> is a lightweight app launcher application<br/>
-                that aims to works on as many TV devices as possible, <br/>especially low power ones.<br/><br/>
-                As there is <u>zero</u> data collection, please provide your feedback <br/>and suggestions on project source page.<br/>
-                `
-            }
-
-            Row
-            {
-                spacing: 20
-
-                Button
-                {
-                    text: "Open System Settings"
-                    height: 60
-                    highlighted: activeFocus
-                    Keys.onReturnPressed: clicked()
-                    Keys.onEnterPressed: clicked()
-                    onClicked: openSettings()
-
-                    KeyNavigation.right: reviewButton
-                }
-
-                Button
-                {
-                    id: reviewButton
-                    text: "Leave a review"
-                    height: 60
-                    highlighted: activeFocus
-                    Keys.onReturnPressed: clicked()
-                    Keys.onEnterPressed: clicked()
-                    onClicked: openLetiHomePage()
-
-                    KeyNavigation.right: closeButton
-                }
-
-                Button
-                {
-                    id: closeButton
-                    text: "Close"
-                    height: 60
-                    focus: true
-                    highlighted: activeFocus
-                    Keys.onReturnPressed: clicked()
-                    Keys.onEnterPressed: clicked()
-                    onClicked: aboutPopup.close()
-                }
-            }
-        }
-    }
+    Options { id: optionsPopup; onClosed: appGrid.focus = true }
 }

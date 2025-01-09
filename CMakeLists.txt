@@ -20,12 +20,15 @@ qt_add_qml_module(LetiHome
     VERSION 1.0
     QML_FILES
         qml/Main.qml
+        qml/Options.qml
     RESOURCES
+        qml/qmldir
         qml/network-offline.svg
         qml/network-online.svg
         android/AndroidManifest.xml
         android/src/hr/envizia/letihome/LetiHome.java
         android/src/hr/envizia/letihome/PackagesChangedReceiver.java
+        QML_FILES qml/Controller.js
 )
 
 set_target_properties(LetiHome PROPERTIES
