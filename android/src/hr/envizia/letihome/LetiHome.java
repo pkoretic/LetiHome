@@ -92,11 +92,11 @@ public class LetiHome extends QtActivity
         Bitmap bitmap = Bitmap.createBitmap(icon.getIntrinsicWidth(), icon.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
         final Canvas canvas = new Canvas(bitmap);
         icon.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
-        icon.draw(canvas);        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        icon.draw(canvas);
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100 /* ignored for PNG */, stream);
-        byte[] iconData = stream.toByteArray();
 
-        return iconData;
+        return stream.toByteArray();
     }
 
     // get generic application icon
