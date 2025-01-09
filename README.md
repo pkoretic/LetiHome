@@ -30,8 +30,8 @@ or download from [Releases](../../releases).
 ## Usage
 
 Keys `Enter/Return/OK` or mouse (Left click) can be used to open applications.<br/>
-Long press will open Application Info.<br/>
-`Menu/Back` key or mouse `right click` will open system Settings.
+`Menu/Back` or mouse right click will open Application Info.<br/>
+Opening LetiHome (Pressing Enter/Return/OK) will open About page with System Settings option.
 
 ## Set LetiHome Launcher as default launcher on Android TV / Google TV
 
