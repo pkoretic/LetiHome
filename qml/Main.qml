@@ -135,7 +135,7 @@ Window
                 width: appGrid.cellWidth - 10
                 height: width * 0.5625 // 9/16
 
-                color: "#333333"
+                color: isTelevision ? "#333333" : Controller.logoByIndex(index)
 
                 z: isCurrentItem ? 1 : 0
                 scale: isCurrentItem ? 1.3 : 1
@@ -146,11 +146,12 @@ Window
                     id: image
 
                     anchors.fill: parent
-                    anchors.margins: isTelevision ? 0 : 20
-
+                    anchors.margins: isTelevision || isTVIcon ? 0 : 20
                     source: "image://icon/" + modelData.packageName
                     asynchronous: true
                     fillMode: Image.PreserveAspectFit
+
+                    property bool isTVIcon: sourceSize.height != sourceSize.width
                 }
 
                 // app name background so it's readable on any background image
