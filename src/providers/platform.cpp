@@ -88,6 +88,15 @@ QVariantList Platform::applicationList()
         QString nameB = b.toMap().value("applicationName").toString();
         return nameA < nameB; // Case-sensitive comparison
     });
+
+#else
+    for (int i = 0; i < 20; i++)
+    {
+        QVariantMap data;
+        data["packageName"] = "hr.envizia.letihome";
+        data["applicationName"] = "App " + QString::number(i);
+        appList.append(data);
+    }
 #endif
 
     return appList;

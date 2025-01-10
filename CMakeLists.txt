@@ -5,14 +5,14 @@ project(LetiHome VERSION 0.1 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Qt6 REQUIRED COMPONENTS Quick Network)
+find_package(Qt6 REQUIRED COMPONENTS Quick Network Multimedia)
 
 qt_standard_project_setup(REQUIRES 6.5)
 
 qt_add_executable(LetiHome
-    cpp/main.cpp
-    cpp/platform.cpp
-    cpp/iconprovider.cpp
+    src/main.cpp
+    src/providers/platform.cpp
+    src/providers/iconprovider.cpp
     android/AndroidManifest.xml
     android/src/hr/envizia/letihome/LetiHome.java
     android/src/hr/envizia/letihome/PackagesChangedReceiver.java
@@ -22,13 +22,17 @@ qt_add_qml_module(LetiHome
     URI LetiHomeModule
     VERSION 1.0
     QML_FILES
-        qml/Main.qml
-        qml/Options.qml
-        qml/Controller.js
+        src/App.qml
+        src/App.js
+        src/About.qml
+        src/qmldir
+        src/components/TopBar.qml
+        src/components/AppsGrid.qml
+        src/components/ColorLogo.js
+        src/components/qmldir
     RESOURCES
-        qml/qmldir
-        qml/network-offline.svg
-        qml/network-online.svg
+        assets/network-offline.svg
+        assets/network-online.svg
 )
 
 set_target_properties(LetiHome PROPERTIES
@@ -37,7 +41,7 @@ set_target_properties(LetiHome PROPERTIES
     QT_ANDROID_VERSION_NAME "2.2.0"
     QT_ANDROID_MIN_SDK_VERSION 23
     QT_ANDROID_TARGET_SDK_VERSION 34
-    QT_ANDROID_BUILD_ALL_ABIS ON
+    QT_ANDROID_BUILD_ALL_ABIS OFF
     QT_ANDROID_ABIS "armeabi-v7a;arm64-v8a;x86;x86_64"
 )
 
@@ -52,7 +56,7 @@ if (ANDROID)
     add_android_openssl_libraries(LetiHome)
 endif()
 
-target_link_libraries(LetiHome PRIVATE Qt6::Quick Qt6::Network)
+target_link_libraries(LetiHome PRIVATE Qt6::Quick Qt6::Network Qt6::Multimedia)
 
 include(GNUInstallDirs)
 install(TARGETS LetiHome

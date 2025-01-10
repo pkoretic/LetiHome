@@ -1,8 +1,6 @@
 import QtQuick
 import QtQuick.Controls.Material
 
-import "./Controller.js" as Controller
-
 Popup
 {
     id: optionsPopup
@@ -41,7 +39,7 @@ Popup
                 highlighted: activeFocus
                 Keys.onReturnPressed: clicked()
                 Keys.onEnterPressed: clicked()
-                onClicked: Controller.openSettings()
+                onClicked: _Platform.openSettings()
 
                 KeyNavigation.right: reviewButton
             }
@@ -54,7 +52,7 @@ Popup
                 highlighted: activeFocus
                 Keys.onReturnPressed: clicked()
                 Keys.onEnterPressed: clicked()
-                onClicked: Controller.openLetiHomePage()
+                onClicked: _Platform.openLetiHomePage()
 
                 KeyNavigation.right: closeButton
             }

@@ -4,8 +4,8 @@
 #include <QQuickView>
 #include <QNetworkInformation>
 
-#include "platform.h"
-#include "iconprovider.h"
+#include "providers/platform.h"
+#include "providers/iconprovider.h"
 
 int main(int argc, char *argv[])
 {
@@ -16,6 +16,10 @@ int main(int argc, char *argv[])
     QQmlApplicationEngine engine;
 
     auto &platform = Platform::instance();
+
+    app.setApplicationDisplayName("LetiHome");
+    app.setApplicationName("letihome");
+    app.setOrganizationDomain("hr.envizia");
 
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreationFailed,
                      &app, []() { QCoreApplication::exit(-1); },
@@ -28,8 +32,8 @@ int main(int argc, char *argv[])
     // initialize platform variables and listeners
     platform.init();
 
-    // load main file
-    engine.loadFromModule("LetiHomeModule", "Main");
+    // load main app module
+    engine.loadFromModule("LetiHomeModule", "App");
 
     return app.exec();
 }
