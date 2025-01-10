@@ -13,6 +13,9 @@ qt_add_executable(LetiHome
     cpp/main.cpp
     cpp/platform.cpp
     cpp/iconprovider.cpp
+    android/AndroidManifest.xml
+    android/src/hr/envizia/letihome/LetiHome.java
+    android/src/hr/envizia/letihome/PackagesChangedReceiver.java
 )
 
 qt_add_qml_module(LetiHome
@@ -21,14 +24,11 @@ qt_add_qml_module(LetiHome
     QML_FILES
         qml/Main.qml
         qml/Options.qml
+        qml/Controller.js
     RESOURCES
         qml/qmldir
         qml/network-offline.svg
         qml/network-online.svg
-        android/AndroidManifest.xml
-        android/src/hr/envizia/letihome/LetiHome.java
-        android/src/hr/envizia/letihome/PackagesChangedReceiver.java
-        QML_FILES qml/Controller.js
 )
 
 set_target_properties(LetiHome PROPERTIES
