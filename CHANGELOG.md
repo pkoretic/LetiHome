@@ -1,3 +1,22 @@
+## 2025-01-10, Version 2.2.0
+
+### Notable changes
+
+#### The following significant changes have been made since the previous LetiHome 2.1.1 release.
+
+Update layout for readability
+
+### commits
+
+ - [1f6c743](https://github.com/qaap/LetiHome/commit/1f6c743) update default icon spacing
+ - [37657a9](https://github.com/qaap/LetiHome/commit/37657a9) minor key fix
+ - [d95c204](https://github.com/qaap/LetiHome/commit/d95c204) minor update
+ - [e328500](https://github.com/qaap/LetiHome/commit/e328500) add rectangle color by index
+ - [74a4a40](https://github.com/qaap/LetiHome/commit/74a4a40) minor changes
+ - [5092db6](https://github.com/qaap/LetiHome/commit/5092db6) code restructure
+ - [0a931ac](https://github.com/qaap/LetiHome/commit/0a931ac) update readme
+ - [2b87e1b](https://github.com/qaap/LetiHome/commit/2b87e1b) make a multi-abi build
+
 ## 2025-01-08, Version 2.1.1
 
 ### Notable changes
