@@ -126,7 +126,7 @@ Window
             cellWidth: (width / 5) |0
             cellHeight: cellWidth * 0.5625 // 9/16
 
-            Keys.onPressed: Controller.onKeyPress
+            Keys.onPressed: event => Controller.onKeyPress(event)
 
             delegate: Rectangle
             {
