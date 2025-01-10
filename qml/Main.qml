@@ -132,7 +132,7 @@ Window
             {
                 property bool isCurrentItem: GridView.isCurrentItem
 
-                width: appGrid.cellWidth - 10
+                width: appGrid.cellWidth - 20
                 height: width * 0.5625 // 9/16
 
                 color: isTelevision ? "#333333" : Controller.logoByIndex(index)
