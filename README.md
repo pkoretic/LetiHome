@@ -16,7 +16,7 @@ Android TV OS / Google Play OS<br/>
 </p>
 
 Android Box / Tablet OS<br/>
-<p align="center">
+<p align="left">
 <img src="https://raw.githubusercontent.com/pkoretic/LetiHome/refs/heads/badges/nontvscreenshot.png" width=300 />
 </p>
 
