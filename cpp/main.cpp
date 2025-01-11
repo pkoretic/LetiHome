@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
 
     // expose C++ classes to QML
     engine.addImageProvider(QLatin1String("icon"), new ImageProvider());
-    engine.rootContext()->setContextProperty("_Platform", &platform);
+    engine.rootContext()->setContextProperty("_platform", &platform);
 
     // initialize platform variables and listeners
     platform.init();

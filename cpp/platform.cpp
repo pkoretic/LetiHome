@@ -111,17 +111,6 @@ void Platform::openApplication(const QString &packageName)
 #endif
 }
 
-// open wallpaper picker menu
-void Platform::pickWallpaper()
-{
-#ifdef Q_OS_ANDROID
-
-    QJniObject activity = QNativeInterface::QAndroidApplication::context();
-    activity.callMethod<void>("pickWallpaper");
-
-#endif
-}
-
 // return if system clock is in 24 hour format
 bool Platform::is24HourFormat()
 {

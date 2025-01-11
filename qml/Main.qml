@@ -1,14 +1,15 @@
+pragma ComponentBehavior: Bound
+
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Window
 import QtQuick.Controls.Material
 
-import "."
-import "./Controller.js" as Controller
+import "Main.js" as Controller
 
-Window
+ApplicationWindow
 {
-    id: root
+    id: app
 
     title: qsTr("LetiHome")
 
@@ -22,9 +23,10 @@ Window
     Material.theme: Material.Dark
     Material.accent: Material.Blue
 
-    property bool isTelevision: _Platform.isTelevision
-    property bool isOnline: _Platform.isOnline
-    property bool is24HourFormat: _Platform.is24HourFormat()
+    // Platform abstraction inserted from main.cpp
+    property bool isTelevision: _platform.isTelevision
+    property bool isOnline: _platform.isOnline
+    property bool is24HourFormat: _platform.is24HourFormat()
 
     // main date object
     property date currentDate: new Date()
@@ -36,7 +38,7 @@ Window
     Connections
     {
         id: connections
-        target: _Platform
+        target: _platform
         function onPackagesChanged() { Controller.loadApplications() }
     }
 
@@ -55,14 +57,14 @@ Window
     // update in acceptable interval and ignore updates if application is not active (another app open)
     Timer
     {
-        running: Qt.application.active
+        running: Application.state == Qt.ApplicationActive
         interval: 5000
         repeat: true
         triggeredOnStart: true
         onTriggered: Controller.updateDate()
     }
 
-    // wrapper item used for padding, spacing and layout
+    // Layout used for padding, spacing and layout
     ColumnLayout
     {
         anchors.fill: parent
@@ -72,7 +74,7 @@ Window
         Item
         {
             Layout.fillWidth: true
-            Layout.preferredHeight: datetime.height
+            Layout.preferredHeight: childrenRect.height
 
             z: 1
 
@@ -80,7 +82,7 @@ Window
             Text
             {
                 id: datetime
-                text: Qt.formatTime(root.currentDate, is24HourFormat ? "hh:mm" : "hh:mm ap")
+                text: Qt.formatTime(app.currentDate, app.is24HourFormat ? "hh:mm" : "hh:mm ap")
                 font.pixelSize: 22
                 color: "#ffffff"
                 style: Text.Outline
@@ -89,11 +91,11 @@ Window
             Row
             {
                 anchors.right: parent.right
-                spacing: 20
+                spacing: 10
 
                 Image
                 {
-                    source: "network-%1.svg".arg(isOnline ? "online" : "offline")
+                    source: "network-%1.svg".arg(app.isOnline ? "online" : "offline")
                     height: datetime.height - 10
                     width: height
                     anchors.verticalCenter: parent.verticalCenter
@@ -102,7 +104,7 @@ Window
                 // date in system locale format
                 Text
                 {
-                    text: root.currentDate.toDateString()
+                    text: app.currentDate.toDateString()
                     font.pixelSize: 22
                     color: "#ffffff"
                     style: Text.Outline
@@ -130,24 +132,28 @@ Window
 
             delegate: Rectangle
             {
+                id: delegate
                 property bool isCurrentItem: GridView.isCurrentItem
 
-                width: appGrid.cellWidth - 20
+                width: GridView.view.cellWidth - 20
                 height: width * 0.5625 // 9/16
 
-                color: isTelevision ? "#333333" : Controller.logoByIndex(index)
+                color: Controller.logoByIndex(index)
 
-                z: isCurrentItem ? 1 : 0
-                scale: isCurrentItem ? 1.3 : 1
+                z: delegate.isCurrentItem ? 1 : 0
+                scale: delegate.isCurrentItem ? 1.3 : 1
                 Behavior on scale { NumberAnimation { duration: 150; easing.type: Easing.InOutQuad } }
+
+                required property int index
+                required property var modelData
 
                 Image
                 {
                     id: image
 
                     anchors.fill: parent
-                    anchors.margins: isTelevision || isTVIcon ? 0 : 20
-                    source: "image://icon/" + modelData.packageName
+                    anchors.margins: app.isTelevision || isTVIcon ? 0 : 20
+                    source: "image://icon/" + delegate.modelData.packageName
                     asynchronous: true
                     fillMode: Image.PreserveAspectFit
 
@@ -157,7 +163,7 @@ Window
                 // app name background so it's readable on any background image
                 Rectangle
                 {
-                    visible: isTelevision && isCurrentItem
+                    visible: app.isTelevision && delegate.isCurrentItem
                     width: parent.width
                     height: appName.height
                     anchors.bottom: parent.bottom
@@ -170,11 +176,11 @@ Window
                     id: appName
                     x: 4
                     width: parent.width - x * 2
-                    text: modelData.applicationName
+                    text: delegate.modelData.applicationName
                     color: "#ffffff"
                     elide: Text.ElideRight
                     anchors.bottom: parent.bottom
-                    visible: isCurrentItem || !isTelevision
+                    visible: delegate.isCurrentItem || !app.isTelevision
                     horizontalAlignment: Text.AlignHCenter
                 }
 
@@ -182,7 +188,7 @@ Window
                 Rectangle
                 {
                     anchors.fill: parent
-                    visible: isCurrentItem
+                    visible: delegate.isCurrentItem
                     color: "transparent"
                     border.width: 1
                     border.color: "#222222"
@@ -194,13 +200,82 @@ Window
                     anchors.fill: parent
                     onClicked:
                     {
-                        appGrid.currentIndex = index
-                        Controller.openApplication(modelData.packageName)
+                        appGrid.currentIndex = delegate.index
+                        Controller.openApplication(delegate.modelData.packageName)
                     }
                 }
             }
         }
     }
 
-    Options { id: optionsPopup; onClosed: appGrid.focus = true }
+    Popup
+    {
+        id: aboutPopup
+
+        width: parent.width * 0.9
+        height: parent.height * 0.9
+        anchors.centerIn: parent
+        modal: true
+        focus: true
+        closePolicy: Popup.CloseOnPressOutside | Popup.CloseOnEscape
+
+        Column
+        {
+            anchors.centerIn: parent
+            spacing: 10
+
+            Label
+            {
+                textFormat: Text.StyledText
+                font.pixelSize: 20
+                text: `<p>Thanks for using <strong>LetiHome</strong> application!</p><br/>
+                <strong>LetiHome</strong> is a lightweight app launcher application<br/>
+                that aims to works on as many TV devices as possible, <br/>especially low power ones.<br/><br/>
+                As there is <u>zero</u> data collection, please provide your feedback <br/>and suggestions on project source page.<br/>
+                `
+            }
+
+            Row
+            {
+                spacing: 20
+
+                Button
+                {
+                    text: "Open System Settings"
+                    height: 60
+                    highlighted: activeFocus
+                    Keys.onReturnPressed: clicked()
+                    Keys.onEnterPressed: clicked()
+                    onClicked: Controller.openSettings()
+
+                    KeyNavigation.right: reviewButton
+                }
+
+                Button
+                {
+                    id: reviewButton
+                    text: "Leave a review"
+                    height: 60
+                    highlighted: activeFocus
+                    Keys.onReturnPressed: clicked()
+                    Keys.onEnterPressed: clicked()
+                    onClicked: Controller.openLetiHomePage()
+
+                    KeyNavigation.right: closeButton
+                }
+
+                Button
+                {
+                    id: closeButton
+                    text: "Close"
+                    height: 60
+                    focus: true
+                    highlighted: activeFocus
+                    Keys.onReturnPressed: clicked()
+                    Keys.onEnterPressed: clicked()
+                    onClicked: aboutPopup.close()
+                }
+            }
+        }
+    }
 }

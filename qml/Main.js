@@ -6,35 +6,35 @@ function init()
 // controllers
 function loadApplications()
 {
-    appGrid.model = _Platform.applicationList()
+    appGrid.model = _platform.applicationList()
 }
 
 function openApplication(packageName)
 {
     if(packageName === "hr.envizia.letihome")
-        optionsPopup.open()
+        aboutPopup.open()
     else
-        _Platform.openApplication(packageName)
+        _platform.openApplication(packageName)
 }
 
 function openAppInfo(packageName)
 {
-    _Platform.openAppInfo(packageName)
+    _platform.openAppInfo(packageName)
 }
 
 function openSettings()
 {
-    _Platform.openSettings()
+    _platform.openSettings()
 }
 
 function openLetiHomePage()
 {
-    _Platform.openLetiHomePage()
+    _platform.openLetiHomePage()
 }
 
 function updateDate()
 {
-    root.currentDate = new Date()
+    app.currentDate = new Date()
 }
 
 function onKeyPress(event)

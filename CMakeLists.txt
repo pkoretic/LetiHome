@@ -23,10 +23,8 @@ qt_add_qml_module(LetiHome
     VERSION 1.0
     QML_FILES
         qml/Main.qml
-        qml/Options.qml
-        qml/Controller.js
+        qml/Main.js
     RESOURCES
-        qml/qmldir
         qml/network-offline.svg
         qml/network-online.svg
 )

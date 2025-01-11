@@ -19,9 +19,6 @@ public slots:
         // open application by package name
         void openApplication(const QString &packageName);
 
-        // open wallpaper picker menu
-        void pickWallpaper();
-
         // return if system clock is in 24 hour format
         bool is24HourFormat();
 
