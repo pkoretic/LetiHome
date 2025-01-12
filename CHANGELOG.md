@@ -1,3 +1,15 @@
+## 2025-01-12, Version 2.2.2
+
+### Notable changes
+
+#### The following significant changes have been made since the previous LetiHome 2.2.1 release.
+
+Update branding
+
+### commits
+
+ - [5e10dc5](https://github.com/qaap/LetiHome/commit/5e10dc5) update icons according to Google Play guidelines
+
 ## 2025-01-12, Version 2.2.1
 
 ### Notable changes
