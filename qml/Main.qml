@@ -138,7 +138,8 @@ ApplicationWindow
                 width: GridView.view.cellWidth - 20
                 height: width * 0.5625 // 9/16
 
-                color: Controller.logoByIndex(index)
+                // on TV devices logo covers the background fully
+                color: app.isTelevision ? "#333333" : Controller.logoByIndex(index)
 
                 z: delegate.isCurrentItem ? 1 : 0
                 scale: delegate.isCurrentItem ? 1.3 : 1
