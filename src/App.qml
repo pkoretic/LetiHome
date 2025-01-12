@@ -7,9 +7,9 @@ import QtMultimedia
 import "components"
 import "App.js" as Controller
 
-Window
+ApplicationWindow
 {
-    id: root
+    id: app
 
     title: qsTr("LetiHome")
 
@@ -63,8 +63,8 @@ Window
             z: 1
             Layout.fillWidth: true
             Layout.preferredHeight: childrenRect.height
-            isOnline: root.isOnline
-            is24HourFormat: root.is24HourFormat
+            isOnline: app.isOnline
+            is24HourFormat: app.is24HourFormat
         }
 
         // Main Content display
@@ -77,12 +77,12 @@ Window
 
             focus: true
 
-            isTelevision: root.isTelevision
+            isTelevision: app.isTelevision
             onKeyPressed: event => Controller.onKeyPress(event)
             onClicked: packageName => Controller.openApplication(packageName)
         }
     }
 
     // LetiHome About / Options screen
-    About { id: aboutPopup; onClosed: appsGrid.focus = true }
+    About { id: aboutPopup }
 }
