@@ -42,4 +42,9 @@ Item
         _Platform.openLetiHomePage()
     }
 
+    function applicationList()
+    {
+        return _Platform.applicationList()
+    }
+
 }

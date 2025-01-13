@@ -56,6 +56,7 @@ public:
 
 signals:
     // signal when packages have changed (installed/uninstalled/enabled/disabled)
+    // action can be PACKAGE_CHANGED, PACKAGE_ADDED, PACKAGE_DELETED
     void packagesChanged(QString action);
 
     // signal when network connectivity state has changed
