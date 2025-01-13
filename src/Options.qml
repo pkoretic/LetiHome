@@ -1,29 +1,38 @@
+pragma ComponentBehavior: Bound
+
 import QtQuick
 import QtQuick.Controls.Material
+import QtQuick.Layouts
 
 Popup
 {
-    id: optionsPopup
+    id: options
 
     modal: true
     focus: true
 
-    closePolicy: Popup.CloseOnPressOutside | Popup.CloseOnEscape
+    property var settingsProvider
 
     Column
     {
         anchors.centerIn: parent
         spacing: 10
 
-        Label
+        Frame
         {
-            textFormat: Text.StyledText
-            font.pixelSize: 20
-            text: `<p>Thanks for using <strong>LetiHome</strong> application!</p><br/>
-            <strong>LetiHome</strong> is a lightweight app launcher application<br/>
-            that aims to works on as many TV devices as possible, <br/>especially low power ones.<br/><br/>
-            As there is <u>zero</u> data collection, please provide your feedback <br/>and suggestions on project source page.<br/>
-            `
+            ColumnLayout
+            {
+                anchors.fill: parent
+                Switch
+                {
+                    text: qsTr("Show app labels on selection")
+                    KeyNavigation.down: closeButton
+                    Keys.onEnterPressed: checked = !checked
+                    Keys.onReturnPressed: checked = !checked
+                    checked: settingsProvider.showAppNames
+                    onCheckedChanged: settingsProvider.showAppNames = checked
+                }
+            }
         }
 
         Row
@@ -32,13 +41,12 @@ Popup
 
             Button
             {
-                id: reviewButton
-                text: qsTr("Leave a review")
+                text: "Open System Settings"
                 height: 60
                 highlighted: activeFocus
                 Keys.onReturnPressed: clicked()
                 Keys.onEnterPressed: clicked()
-                onClicked: _Platform.openLetiHomePage()
+                onClicked: _Platform.openSettings()
 
                 KeyNavigation.right: closeButton
             }
@@ -46,7 +54,7 @@ Popup
             Button
             {
                 id: closeButton
-                text: qsTr("Close")
+                text: "Close"
                 height: 60
                 focus: true
                 highlighted: activeFocus
@@ -56,4 +64,5 @@ Popup
             }
         }
     }
+
 }

@@ -25,6 +25,7 @@ qt_add_qml_module(LetiHome
         src/App.qml
         src/App.js
         src/About.qml
+        src/Options.qml
         src/qmldir
         src/components/TopBar.qml
         src/components/AppsGrid.qml

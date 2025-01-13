@@ -11,10 +11,21 @@ function loadApplications()
 
 function openApplication(packageName)
 {
+    // open internal pages
     if(packageName === "hr.envizia.letihome")
-        aboutPopup.open()
+        letiHomeContextMenu.popup(appsGrid.currentItem)
     else
         _Platform.openApplication(packageName)
+}
+
+function openAbout()
+{
+    aboutPopup.open()
+}
+
+function openOptions()
+{
+    optionsPopup.open()
 }
 
 function openAppInfo(packageName)
@@ -45,8 +56,8 @@ function onKeyPress(event)
         break
 
         case Qt.Key_Back:
-        case Qt.Key_Esc:
-            openAppInfo(packageName)
+        case Qt.Key_Escape:
+            appsGrid.openContextualMenu()
         break
 
         case Qt.Key_Menu:
