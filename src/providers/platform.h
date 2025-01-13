@@ -55,8 +55,8 @@ public:
     void setIsTelevision(bool isTelevision) { m_isTelevision = isTelevision; emit isTelevisionChanged(); };
 
 signals:
-    // signal when packages have changed (installed/uninstalled)
-    void packagesChanged();
+    // signal when packages have changed (installed/uninstalled/enabled/disabled)
+    void packagesChanged(QString action);
 
     // signal when network connectivity state has changed
     void onlineChanged();

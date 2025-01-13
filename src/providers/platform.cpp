@@ -25,9 +25,14 @@ void Platform::init()
  these are JNI functions called from java
 */
 
-void onPackagesChanged(JNIEnv /* *env */, jobject /* self */)
+void onPackagesChanged(JNIEnv *env , jobject /* self */, jstring action)
 {
-    QMetaObject::invokeMethod(&Platform::instance(), "packagesChanged", Qt::AutoConnection);
+    // Convert the jstring (Java string) to a QString
+    const char *nativeString = env->GetStringUTFChars(action, nullptr);
+    QString actionString = QString::fromUtf8(nativeString);
+    env->ReleaseStringUTFChars(action, nativeString);
+
+    QMetaObject::invokeMethod(&Platform::instance(), "packagesChanged", Qt::AutoConnection, Q_ARG(QString, actionString));
 }
 
 // called on JNI LOAD, register native methods to corresponding classes
@@ -49,7 +54,7 @@ jint JNICALL JNI_OnLoad(JavaVM* vm, void*)
     }
 
     // register native methods
-    JNINativeMethod packagesMethods[] {{ "onPackagesChanged", "()V", reinterpret_cast<void *>(onPackagesChanged) }};
+    JNINativeMethod packagesMethods[] {{ "onPackagesChanged", "(Ljava/lang/String;)V", reinterpret_cast<void *>(onPackagesChanged) }};
     env->RegisterNatives(receiverClass, packagesMethods, sizeof(packagesMethods) / sizeof(packagesMethods[0]));
     env->DeleteLocalRef(receiverClass);
 

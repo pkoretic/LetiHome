@@ -27,10 +27,29 @@ public class PackagesChangedReceiver extends BroadcastReceiver
     @Override
     public void onReceive(final Context context, Intent intent) {
         String action = intent.getAction();
+        String actionToSend;
+
         Log.d(TAG, "Received action: " + action);
-        onPackagesChanged();
+
+        switch (action) {
+            case "android.intent.action.PACKAGE_ADDED":
+                actionToSend = "PACKAGE_ADDED"; // installed
+                break;
+            case "android.intent.action.PACKAGE_REMOVED":
+                actionToSend = "PACKAGE_REMOVED"; // deleted
+                break;
+            case "android.intent.action.PACKAGE_CHANGED":
+                actionToSend = "PACKAGE_CHANGED"; // enabled/disabled
+                break;
+            default:
+                actionToSend = "UNKNOWN_ACTION"; // cannot happen
+                break;
+        }
+
+        Log.d(TAG, "action to send: " + actionToSend);
+        onPackagesChanged(actionToSend);
     }
 
     // notify our Qt app using JNI that packages have changed
-    private static native void onPackagesChanged();
+    private static native void onPackagesChanged(String action);
 }

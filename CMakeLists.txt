@@ -30,6 +30,9 @@ qt_add_qml_module(LetiHome
         src/components/AppsGrid.qml
         src/components/ColorLogo.js
         src/components/qmldir
+        src/providers/PlatformProvider.qml
+        src/providers/SettingsProvider.qml
+        src/providers/qmldir
     RESOURCES
         assets/network-offline.svg
         assets/network-online.svg
