@@ -5,8 +5,6 @@ import QtQuick.Layouts
 import QtQuick.Window
 import QtQuick.Controls.Material
 
-import "Main.js" as Controller
-
 ApplicationWindow
 {
     id: app
@@ -32,14 +30,55 @@ ApplicationWindow
     property date currentDate: new Date()
 
     // load apps when component is ready
-    Component.onCompleted: Controller.init()
+    Component.onCompleted: loadApplications()
+
+    function loadApplications()
+    {
+        appGrid.model = _platform.applicationList()
+    }
+
+    function openApplication(packageName)
+    {
+        if(packageName === "hr.envizia.letihome")
+            aboutPopup.open()
+        else
+            _platform.openApplication(packageName)
+    }
+
+    function openAppInfo(packageName)
+    {
+        _platform.openAppInfo(packageName)
+    }
+
+    function openSettings()
+    {
+        _platform.openSettings()
+    }
+
+    function openLetiHomePage()
+    {
+        _platform.openLetiHomePage()
+    }
+
+    function updateDate()
+    {
+        app.currentDate = new Date()
+    }
+
+    // create color for a text input or index
+    property var string_colors: [ "#115883", "#536173", "#33b679", "#aeb857", "#df5948", "#855e86", "#ae6b23", "#547bca", "#c75c5c"]
+
+    function colorByIndex(index)
+    {
+        return string_colors[index % string_colors.length]
+    }
 
     // when packages are changed (installed/removed) update list
     Connections
     {
         id: connections
         target: _platform
-        function onPackagesChanged() { Controller.loadApplications() }
+        function onPackagesChanged() { loadApplications() }
     }
 
     // background
@@ -61,7 +100,7 @@ ApplicationWindow
         interval: 5000
         repeat: true
         triggeredOnStart: true
-        onTriggered: Controller.updateDate()
+        onTriggered: updateDate()
     }
 
     // Layout used for padding, spacing and layout
@@ -128,7 +167,11 @@ ApplicationWindow
             cellWidth: (width / 5) |0
             cellHeight: cellWidth * 0.5625 // 9/16
 
-            Keys.onPressed: event => Controller.onKeyPress(event)
+            Keys.onReturnPressed: openApplication(appGrid.model[appGrid.currentIndex].packageName)
+            Keys.onEnterPressed: openApplication(appGrid.model[appGrid.currentIndex].packageName)
+            Keys.onBackPressed: openAppInfo(appGrid.model[appGrid.currentIndex].packageName)
+            Keys.onEscapePressed: openAppInfo(appGrid.model[appGrid.currentIndex].packageName)
+            Keys.onMenuPressed: openAppInfo(appGrid.model[appGrid.currentIndex].packageName)
 
             delegate: Rectangle
             {
@@ -139,7 +182,7 @@ ApplicationWindow
                 height: width * 0.5625 // 9/16
 
                 // on TV devices logo covers the background fully
-                color: app.isTelevision ? "#333333" : Controller.logoByIndex(index)
+                color: app.isTelevision ? "#333333" : colorByIndex(index)
 
                 z: delegate.isCurrentItem ? 1 : 0
                 scale: delegate.isCurrentItem ? 1.3 : 1
@@ -202,7 +245,7 @@ ApplicationWindow
                     onClicked:
                     {
                         appGrid.currentIndex = delegate.index
-                        Controller.openApplication(delegate.modelData.packageName)
+                        openApplication(delegate.modelData.packageName)
                     }
                 }
             }
@@ -223,16 +266,18 @@ ApplicationWindow
         Column
         {
             anchors.centerIn: parent
-            spacing: 10
+            spacing: 20
 
             Label
             {
                 textFormat: Text.StyledText
                 font.pixelSize: 20
                 text: `<p>Thanks for using <strong>LetiHome</strong> application!</p><br/>
-                <strong>LetiHome</strong> is a lightweight app launcher application<br/>
+                <strong>LetiHome</strong> is a lightweight <u>open-source</u> app launcher application<br/>
                 that aims to works on as many TV devices as possible, <br/>especially low power ones.<br/><br/>
-                As there is <u>zero</u> data collection, please provide your feedback <br/>and suggestions on project source page.<br/>
+                As there is <u>zero</u> data collection, please provide your review!<br/><br/>
+                <strong>OK</strong> opens current application.<br/>
+                <strong>Menu</strong> or <strong>Back</strong> opens application info <br/>where app can be disabled/hidden.<br/>
                 `
             }
 
@@ -247,7 +292,7 @@ ApplicationWindow
                     highlighted: activeFocus
                     Keys.onReturnPressed: clicked()
                     Keys.onEnterPressed: clicked()
-                    onClicked: Controller.openSettings()
+                    onClicked: openSettings()
 
                     KeyNavigation.right: reviewButton
                 }
@@ -260,7 +305,7 @@ ApplicationWindow
                     highlighted: activeFocus
                     Keys.onReturnPressed: clicked()
                     Keys.onEnterPressed: clicked()
-                    onClicked: Controller.openLetiHomePage()
+                    onClicked: openLetiHomePage()
 
                     KeyNavigation.right: closeButton
                 }
