@@ -22,7 +22,7 @@ qt_add_qml_module(LetiHome
     URI LetiHomeModule
     VERSION 1.0
     QML_FILES
-        src/App.qml
+        src/Main.qml
         src/Home.qml
         src/About.qml
         src/Options.qml
