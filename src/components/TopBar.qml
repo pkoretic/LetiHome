@@ -46,6 +46,7 @@ Item
     Timer
     {
         id: updateTimer
+        running: Application.state == Qt.ApplicationActive
         interval: 5000
         repeat: true
         triggeredOnStart: true
