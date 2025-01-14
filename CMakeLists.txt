@@ -12,7 +12,9 @@ qt_standard_project_setup(REQUIRES 6.5)
 qt_add_executable(LetiHome
     src/main.cpp
     src/providers/platform.cpp
+    src/providers/platform.h
     src/providers/iconprovider.cpp
+    src/providers/iconprovider.h
     android/AndroidManifest.xml
     android/src/hr/envizia/letihome/LetiHome.java
     android/src/hr/envizia/letihome/PackagesChangedReceiver.java
