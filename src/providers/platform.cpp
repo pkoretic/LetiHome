@@ -32,7 +32,7 @@ void onPackagesChanged(JNIEnv *env , jobject /* self */, jstring action)
     QString actionString = QString::fromUtf8(nativeString);
     env->ReleaseStringUTFChars(action, nativeString);
 
-    QMetaObject::invokeMethod(&Platform::instance(), "packagesChanged", Qt::AutoConnection, Q_ARG(QString, actionString));
+    QMetaObject::invokeMethod(&Platform::instance(), "packagesChanged", Qt::QueuedConnection, Q_ARG(QString, actionString));
 }
 
 // called on JNI LOAD, register native methods to corresponding classes
