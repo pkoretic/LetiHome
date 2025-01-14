@@ -27,7 +27,7 @@ void Platform::init()
 
 void onPackagesChanged(JNIEnv /* *env */, jobject /* self */)
 {
-    QMetaObject::invokeMethod(&Platform::instance(), "packagesChanged", Qt::AutoConnection);
+    QMetaObject::invokeMethod(&Platform::instance(), "packagesChanged", Qt::QueuedConnection);
 }
 
 // called on JNI LOAD, register native methods to corresponding classes
