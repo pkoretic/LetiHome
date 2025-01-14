@@ -1,3 +1,19 @@
+## 2025-01-14, Version 2.2.3
+
+### Notable changes
+
+#### The following significant changes have been made since the previous LetiHome 2.2.2 release.
+
+Keys and usage optimizations
+
+### commits
+
+ - [4beaf68](https://github.com/qaap/LetiHome/commit/4beaf68) simplify logic: KISS
+ - [dfa3991](https://github.com/qaap/LetiHome/commit/dfa3991) use Qt::QueuedConnection
+ - [e1b5ea6](https://github.com/qaap/LetiHome/commit/e1b5ea6) 2025-01-12, Version 2.2.2
+ - [643a39c](https://github.com/qaap/LetiHome/commit/643a39c) minor improvement
+ - [16d31a9](https://github.com/qaap/LetiHome/commit/16d31a9) update icons according to Google Play guidelines
+
 ## 2025-01-12, Version 2.2.2
 
 ### Notable changes
