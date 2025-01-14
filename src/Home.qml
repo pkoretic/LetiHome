@@ -14,18 +14,13 @@ Rectangle
     property var settingsProvider
 
     // load apps when component is ready
-    Component.onCompleted: init()
+    Component.onCompleted: loadApplications()
 
     // when packages are changed (installed/removed) update list
     Connections
     {
         target: platformProvider
         function onAppsChanged() { loadApplications() }
-    }
-
-    function init()
-    {
-        loadApplications()
     }
 
     // controllers
@@ -73,33 +68,12 @@ Rectangle
         appsGrid.openContextualMenu()
     }
 
-    function onKeyPress(event)
-    {
-        console.debug("keyPressed", event.key)
-
-        event.accepted = true
-        const packageName = appsGrid.model[appsGrid.currentIndex].packageName
-
-        switch(event.key)
-        {
-            case Qt.Key_Return:
-            case Qt.Key_Enter:
-                openApplication(packageName)
-            break
-
-            case Qt.Key_Back:
-            case Qt.Key_Escape:
-                openContextualMenu()
-            break
-
-            case Qt.Key_Menu:
-                openSettings()
-            break
-
-            default:
-                event.accepted = false
-        }
-    }
+    // Key Handler
+    Keys.onReturnPressed: openApplication(appGrid.model[appGrid.currentIndex].packageName)
+    Keys.onEnterPressed: openApplication(appGrid.model[appGrid.currentIndex].packageName)
+    Keys.onBackPressed: openAppInfo(appGrid.model[appGrid.currentIndex].packageName)
+    Keys.onEscapePressed: openAppInfo(appGrid.model[appGrid.currentIndex].packageName)
+    Keys.onMenuPressed: openAppInfo(appGrid.model[appGrid.currentIndex].packageName)
 
     gradient: Gradient
     {

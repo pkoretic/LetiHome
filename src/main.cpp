@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
     platform.init();
 
     // load main app module
-    engine.loadFromModule("LetiHomeModule", "App");
+    engine.loadFromModule("LetiHomeModule", "Main");
 
     return app.exec();
 }
