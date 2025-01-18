@@ -29,7 +29,7 @@ GridView
     signal appHidden(string packageName)
     signal orderChanged(var appsOrder)
 
-    function openContextualMenu() { contextMenu.popup(gridView.currentItem) }
+    function openContextualMenu() { contextMenu.popup(gridView.currentItem, menuOpen) }
     function getOrder() {
         var order = [] // packageName list
         for (var i = 0; i < gridView.model.count; i++)
@@ -100,6 +100,7 @@ GridView
         id: contextMenu
         MenuItem
         {
+            id: menuOpen
             text: "Open"
             onTriggered: gridView.openClicked(gridView.model.get(gridView.currentIndex).packageName)
         }

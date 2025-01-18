@@ -55,7 +55,7 @@ Rectangle
     {
         // open internal pages
         if(packageName === "hr.envizia.letihome")
-            letiHomeContextMenu.popup(appsGrid.currentItem)
+            letiHomeContextMenu.popup(appsGrid.currentItem, aboutMenu)
         else
             platformProvider.openApplication(packageName)
     }
@@ -139,6 +139,7 @@ Rectangle
         id: letiHomeContextMenu
         MenuItem
         {
+            id: aboutMenu
             text: qsTr("About")
             onTriggered: openAbout()
         }
