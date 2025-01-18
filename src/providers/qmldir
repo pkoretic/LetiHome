@@ -1,2 +1,3 @@
 PlatformProvider 1.0 PlatformProvider.qml
 SettingsProvider 1.0 SettingsProvider.qml
+AppsProvider 1.0 AppsProvider.qml

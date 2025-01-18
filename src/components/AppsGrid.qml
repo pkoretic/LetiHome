@@ -10,70 +10,88 @@ GridView
 {
     id: gridView
 
-    signal openClicked(string packageName)
-    signal infoClicked(string packageName)
-    signal appHidden(string packageName)
-
-    function openContextualMenu()
-    {
-       contextMenu.popup(gridView.currentItem)
-    }
-
-    property bool isTelevision
-    property bool showAppLabels
-
     boundsBehavior: GridView.StopAtBounds
 
     cellWidth: (width / 5) |0
     cellHeight: cellWidth * 0.5625 // 9/16
 
-    Keys.onRightPressed: event => {
-        if (state === "reoder") {
-            const currentIndex = gridView.currentIndex
-            gridView.model = moveAppForward(gridView.model, currentIndex)
-            gridView.currentIndex = currentIndex < gridView.model.length - 1 ? currentIndex + 1 : currentIndex
-        }
-        else
-            event.accepted = false
-    }
-
-    Keys.onLeftPressed: event => {
-        if (state === "reoder") {
-            const currentIndex = gridView.currentIndex
-            gridView.model = moveAppBackward(gridView.model, currentIndex)
-            gridView.currentIndex = currentIndex > 0 ? currentIndex - 1 : currentIndex
-        }
-        else
-            event.accepted = false
-    }
-    Keys.onEscapePressed: event => {
-        if (state === "reoder")
-            state = "default"
-        else
-            event.accepted = false
-    }
-
     state: "default"
     states: [
-        State { name: "default" },
-        State { name: "reoder" }
+        State { name: "default"; PropertyChanges { gridView.Keys.onPressed: event => defaultKeyHandler(event) }},
+        State { name: "reorder"; PropertyChanges { gridView.Keys.onPressed: event => reorderKeyHandler(event) }}
     ]
 
-    function moveAppForward(array, index) {
-        if (index < array.length - 1) {
-            // Swap with the next item
-            [array[index], array[index + 1]] = [array[index + 1], array[index]]
-        }
-        return array
+    property bool isTelevision
+    property bool showAppLabels
+
+    signal openClicked(string packageName)
+    signal infoClicked(string packageName)
+    signal appHidden(string packageName)
+    signal orderChanged(var appsOrder)
+
+    function openContextualMenu() { contextMenu.popup(gridView.currentItem) }
+    function getOrder() {
+        var order = [] // packageName list
+        for (var i = 0; i < gridView.model.count; i++)
+            order.push(gridView.model.get(i).packageName)
+
+        return order
     }
 
-    function moveAppBackward(array, index)
+    function defaultKeyHandler(event)
     {
-        if (index > 0) {
-            // Swap with the previous item
-            [array[index], array[index - 1]] = [array[index - 1], array[index]]
+        switch (event.key)
+        {
+            case Qt.Key_Return:
+            case Qt.Key_Enter:
+                event.accepted = true
+                openClicked(gridView.model.get(gridView.currentIndex).packageName)
+            break
+
+            case Qt.Key_Back:
+            case Qt.Key_Menu:
+            case Qt.Key_Escape:
+                event.accepted = true
+                openContextualMenu()
+            break
         }
-        return array
+    }
+
+    function reorderKeyHandler(event)
+    {
+        const currentIndex = gridView.currentIndex
+        switch (event.key)
+        {
+            case Qt.Key_Back:
+            case Qt.Key_Return:
+            case Qt.Key_Enter:
+            case Qt.Key_Escape:
+                event.accepted = true
+                state = "default"
+            break
+
+            case Qt.Key_Right:
+                event.accepted = true
+                if (currentIndex < gridView.model.count-1)
+                    gridView.model.move(currentIndex, currentIndex+1, 1)
+                orderChanged(getOrder())
+            break
+
+            case Qt.Key_Left:
+                event.accepted = true
+                if (currentIndex > 0)
+                    gridView.model.move(currentIndex, currentIndex-1, 1)
+                orderChanged(getOrder())
+            break
+
+            case Qt.Key_Up:
+                event.accepted = true
+            break
+
+            case Qt.Key_Down:
+                event.accepted = true
+            break
+        }
     }
 
     // Contextual menu
@@ -83,29 +101,29 @@ GridView
         MenuItem
         {
             text: "Open"
-            onTriggered: gridView.openClicked(gridView.model[gridView.currentIndex].packageName)
-        }
-        MenuItem
-        {
-            text: "Reorder"
-            onTriggered: gridView.state = "reoder"
+            onTriggered: gridView.openClicked(gridView.model.get(gridView.currentIndex).packageName)
         }
         MenuItem
         {
             text: "Info"
-            onTriggered: gridView.infoClicked(gridView.model[gridView.currentIndex].packageName)
+            onTriggered: gridView.infoClicked(gridView.model.get(gridView.currentIndex).packageName)
+        }
+        MenuItem
+        {
+            text: "Reorder"
+            onTriggered: gridView.state = "reorder"
         }
         MenuItem
         {
             text: "Hide"
             onTriggered:
             {
-                const model = gridView.model
-                const currentIndex = gridView.currentIndex
-                model.splice(gridView.currentIndex, 1)
-                gridView.model = model
-                gridView.currentIndex = currentIndex - 1
-                // gridView.hideClicked(gridView.model[gridView.currentIndex].packageName)
+                const indexToHide = gridView.currentIndex
+                const packageToHide = gridView.model.get(indexToHide).packageName
+
+                gridView.model.remove(indexToHide)
+                gridView.appHidden(packageToHide)
+                gridView.forceActiveFocus()
             }
         }
     }
@@ -119,26 +137,26 @@ GridView
         width: GridView.view.cellWidth - 20
         height: width * 0.5625 // 9/16
 
-        color: gridView.isTelevision ? "#333333" :  ColorLogo.createByName(modelData.applicationName)
+        color: gridView.isTelevision ? "#333333" :  ColorLogo.createByName(model.applicationName)
 
         z: delegate.isCurrentItem ? 1 : 0
         scale: delegate.isCurrentItem && gridView.state === "default" ? 1.3 : 1
         Behavior on scale { NumberAnimation { duration: 150; easing.type: Easing.InOutQuad } }
 
         required property int index
-        required property var modelData
+        required property var model
 
         Image
         {
             id: image
 
             anchors.fill: parent
-            anchors.margins: gridView.isTelevision || isTVIcon ? 0 : 20
-            source: "image://icon/" + modelData.packageName
-            asynchronous: true
+            anchors.margins: isTVBanner ? 0 : 10
+            source: "image://icon/" + model.packageName
+            cache: true
             fillMode: Image.PreserveAspectFit
 
-            property bool isTVIcon: sourceSize.height != sourceSize.width
+            property bool isTVBanner: sourceSize.width > sourceSize.height
         }
 
         // app name background so it's readable on any background image
@@ -157,7 +175,7 @@ GridView
             id: appName
             x: 4
             width: parent.width - x * 2
-            text: modelData.applicationName
+            text: model.applicationName
             color: "#ffffff"
             elide: Text.ElideRight
             anchors.bottom: parent.bottom
@@ -171,8 +189,8 @@ GridView
             anchors.fill: parent
             visible: delegate.isCurrentItem
             color: "transparent"
-            border.width: gridView.state === "reoder" ? 3 : 2
-            border.color: gridView.state === "reoder" ? "red" : "#222222"
+            border.width: gridView.state === "reorder" ? 3 : 2
+            border.color: gridView.state === "reorder" ? "red" : "#222222"
         }
 
         // open application on mouse click/finger tap
@@ -182,7 +200,7 @@ GridView
             onClicked:
             {
                 gridView.currentIndex = index
-                gridView.openClicked(modelData.packageName)
+                gridView.openClicked(model.packageName)
             }
         }
     }

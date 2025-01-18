@@ -1,3 +1,4 @@
+pragma ComponentBehavior: Bound
 import QtCore
 import QtQuick
 import QtQuick.Layouts
@@ -24,8 +25,19 @@ ApplicationWindow
     Material.theme: Material.Dark
     Material.accent: Material.Blue
 
-    PlatformProvider { id: platformProvider }
+    // providers / domain-models
+    AppsProvider     { id: appsProvider }
     SettingsProvider { id: settingsProvider }
+    PlatformProvider { id: platformProvider }
+
+    Component.onCompleted:
+    {
+        settingsProvider.init()
+        platformProvider.init()
+        appsProvider.init(platformProvider)
+
+        homeScreen.visible = true
+    }
 
     // Leti Home default Home Screen
     Home
@@ -33,8 +45,12 @@ ApplicationWindow
         id: homeScreen
         anchors.fill: parent
 
+        visible: false
+        enabled: visible
+
         platformProvider: platformProvider
         settingsProvider: settingsProvider
+        appsProvider: appsProvider
     }
 
     // LetiHome About screen, created on demand

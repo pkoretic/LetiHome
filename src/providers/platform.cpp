@@ -25,14 +25,24 @@ void Platform::init()
  these are JNI functions called from java
 */
 
-void onPackagesChanged(JNIEnv *env , jobject /* self */, jstring action)
+void onPackagesChanged(JNIEnv *env , jobject /* self */, jstring jaction, jstring jpackagename, jstring jappname)
 {
-    // Convert the jstring (Java string) to a QString
-    const char *nativeString = env->GetStringUTFChars(action, nullptr);
-    QString actionString = QString::fromUtf8(nativeString);
-    env->ReleaseStringUTFChars(action, nativeString);
+    const char *action = env->GetStringUTFChars(jaction, nullptr);
+    QString qaction = QString::fromUtf8(action);
+    env->ReleaseStringUTFChars(jaction, action);
 
-    QMetaObject::invokeMethod(&Platform::instance(), "packagesChanged", Qt::QueuedConnection, Q_ARG(QString, actionString));
+    const char *packagename = env->GetStringUTFChars(jpackagename, nullptr);
+    QString qpackagename = QString::fromUtf8(packagename);
+    env->ReleaseStringUTFChars(jpackagename, packagename);
+
+    const char *appname = env->GetStringUTFChars(jappname, nullptr);
+    QString qappname = QString::fromUtf8(appname);
+    env->ReleaseStringUTFChars(jappname, appname);
+
+    QMetaObject::invokeMethod(&Platform::instance(), "packagesChanged", Qt::QueuedConnection,
+                              Q_ARG(QString, qaction),
+                              Q_ARG(QString, qpackagename),
+                              Q_ARG(QString, qappname));
 }
 
 // called on JNI LOAD, register native methods to corresponding classes
@@ -49,12 +59,12 @@ jint JNICALL JNI_OnLoad(JavaVM* vm, void*)
     if (!receiverClass)
     {
         // this should never happen
-        qWarning() << "receiver class found!";
+        qWarning() << "receiver class not found!";
         return JNI_ERR;
     }
 
     // register native methods
-    JNINativeMethod packagesMethods[] {{ "onPackagesChanged", "(Ljava/lang/String;)V", reinterpret_cast<void *>(onPackagesChanged) }};
+    JNINativeMethod packagesMethods[] {{ "onPackagesChanged", "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V", reinterpret_cast<void *>(onPackagesChanged) }};
     env->RegisterNatives(receiverClass, packagesMethods, sizeof(packagesMethods) / sizeof(packagesMethods[0]));
     env->DeleteLocalRef(receiverClass);
 
@@ -98,7 +108,7 @@ QVariantList Platform::applicationList()
     for (int i = 0; i < 20; i++)
     {
         QVariantMap data;
-        data["packageName"] = "hr.envizia.letihome";
+        data["packageName"] = (i == 0 ? "hr.envizia.letihome" : "hr.test.home" + QString::number(i));
         data["applicationName"] = "App " + QString::number(i);
         appList.append(data);
     }

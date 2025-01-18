@@ -12,6 +12,9 @@ Rectangle
 
     property var platformProvider
     property var settingsProvider
+    property var appsProvider
+
+    ListModel { id: appsModel }
 
     // load apps when component is ready
     Component.onCompleted: loadApplications()
@@ -19,14 +22,33 @@ Rectangle
     // when packages are changed (installed/removed) update list
     Connections
     {
-        target: platformProvider
-        function onAppsChanged() { loadApplications() }
+        // todo: move to appsProvider
+        target: appsProvider
+        function onAppAdded(packageName, applicationName) {
+            appsModel.append({ packageName: packageName, applicationName: applicationName })
+        }
+
+        function onAppRemoved(packageName) {
+            for (var i = 0; i < appsModel.count; i++)
+            {
+                if (appsModel.get(i).packageName === packageName)
+                {
+                    appsModel.remove(i)
+                    break
+                }
+            }
+        }
+
+        function onAppChanged(packageName) {
+            // TODO
+        }
     }
 
-    // controllers
     function loadApplications()
     {
-        appsGrid.model = platformProvider.applicationList()
+        const apps = appsProvider.getVisibleApps()
+        for (var i = 0; i < apps.length; i++)
+            appsModel.set(i, apps[i])
     }
 
     function openApplication(packageName)
@@ -68,13 +90,6 @@ Rectangle
         appsGrid.openContextualMenu()
     }
 
-    // Key Handler
-    Keys.onReturnPressed: openApplication(appGrid.model[appGrid.currentIndex].packageName)
-    Keys.onEnterPressed: openApplication(appGrid.model[appGrid.currentIndex].packageName)
-    Keys.onBackPressed: openAppInfo(appGrid.model[appGrid.currentIndex].packageName)
-    Keys.onEscapePressed: openAppInfo(appGrid.model[appGrid.currentIndex].packageName)
-    Keys.onMenuPressed: openAppInfo(appGrid.model[appGrid.currentIndex].packageName)
-
     gradient: Gradient
     {
          GradientStop { position: 0.0; color: "#111317" }
@@ -106,15 +121,16 @@ Rectangle
             Layout.fillWidth: true
             Layout.fillHeight: true
             Layout.alignment: Qt.AlignHCenter
+            model: appsModel
 
             focus: true
 
             isTelevision: platformProvider.isTelevision
             showAppLabels: settingsProvider.showAppNames
-            Keys.onPressed: event => homeView.onKeyPress(event)
             onOpenClicked: packageName => openApplication(packageName)
             onInfoClicked: packageName => openAppInfo(packageName)
-
+            onAppHidden: packageName => appsProvider.hideApp(packageName)
+            onOrderChanged: appsOrder => appsProvider.setOrder(appsOrder)
         }
     }
 

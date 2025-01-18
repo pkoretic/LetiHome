@@ -4,6 +4,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
+import android.content.pm.ApplicationInfo;
 import android.util.Log;
 
 public class PackagesChangedReceiver extends BroadcastReceiver
@@ -27,9 +29,22 @@ public class PackagesChangedReceiver extends BroadcastReceiver
     @Override
     public void onReceive(final Context context, Intent intent) {
         String action = intent.getAction();
-        String actionToSend;
+        String packageName = intent.getData() != null ? intent.getData().getSchemeSpecificPart() : null;
+        String actionToSend, appName = "";
 
-        Log.d(TAG, "Received action: " + action);
+        PackageManager packageManager = context.getPackageManager();
+         try
+         {
+             ApplicationInfo appInfo = packageManager.getApplicationInfo(packageName, 0);
+             appName = packageManager.getApplicationLabel(appInfo).toString();
+         }
+         catch (PackageManager.NameNotFoundException e)
+         {
+             Log.d(TAG, "Package not found: " + packageName);
+         }
+
+
+        Log.d(TAG, "Received action: " + action + " for package: " + packageName + " " + appName);
 
         switch (action) {
             case "android.intent.action.PACKAGE_ADDED":
@@ -47,9 +62,9 @@ public class PackagesChangedReceiver extends BroadcastReceiver
         }
 
         Log.d(TAG, "action to send: " + actionToSend);
-        onPackagesChanged(actionToSend);
+        onPackagesChanged(actionToSend, packageName, appName);
     }
 
     // notify our Qt app using JNI that packages have changed
-    private static native void onPackagesChanged(String action);
+    private static native void onPackagesChanged(String action, String packageName, String appName);
 }

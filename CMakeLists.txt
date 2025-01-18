@@ -35,6 +35,7 @@ qt_add_qml_module(LetiHome
         src/components/qmldir
         src/providers/PlatformProvider.qml
         src/providers/SettingsProvider.qml
+        src/providers/AppsProvider.qml
         src/providers/qmldir
     RESOURCES
         assets/network-offline.svg
