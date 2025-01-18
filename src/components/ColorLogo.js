@@ -15,8 +15,7 @@ const string_colors = [
 
 function createByName(string)
 {
-    var index = Math.max(string.charCodeAt(string[0]) + string.charCodeAt(string.length - 1)) % string_colors.length
-
+    const index = Math.max(string.charCodeAt(string[0]) + string.charCodeAt(string.length - 1)) % string_colors.length
     return string_colors[index]
 }
 

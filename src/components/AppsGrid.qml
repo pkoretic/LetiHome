@@ -138,7 +138,7 @@ GridView
         width: GridView.view.cellWidth - 20
         height: width * 0.5625 // 9/16
 
-        color: gridView.isTelevision ? "#333333" :  ColorLogo.createByName(model.applicationName)
+        color: image.isTVBanner ? "#ffffff" : ColorLogo.createByName(model.applicationName)
 
         z: delegate.isCurrentItem ? 1 : 0
         scale: delegate.isCurrentItem && gridView.state === "default" ? 1.3 : 1
