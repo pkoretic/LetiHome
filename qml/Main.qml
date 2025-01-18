@@ -177,12 +177,13 @@ ApplicationWindow
             {
                 id: delegate
                 property bool isCurrentItem: GridView.isCurrentItem
+                property bool isTVBanner: image.sourceSize.width > image.sourceSize.height
 
                 width: GridView.view.cellWidth - 20
                 height: width * 0.5625 // 9/16
 
-                // on TV devices logo covers the background fully
-                color: app.isTelevision ? "#333333" : colorByIndex(index)
+                // TVBanner covers the background fully
+                color: isTVBanner ? "#ffffff" : colorByIndex(index)
 
                 z: delegate.isCurrentItem ? 1 : 0
                 scale: delegate.isCurrentItem ? 1.3 : 1
@@ -196,12 +197,10 @@ ApplicationWindow
                     id: image
 
                     anchors.fill: parent
-                    anchors.margins: app.isTelevision || isTVIcon ? 0 : 20
+                    anchors.margins: delegate.isTVBanner ? 0 : 15
                     source: "image://icon/" + delegate.modelData.packageName
-                    asynchronous: true
+                    cache: true
                     fillMode: Image.PreserveAspectFit
-
-                    property bool isTVIcon: sourceSize.height != sourceSize.width
                 }
 
                 // app name background so it's readable on any background image
