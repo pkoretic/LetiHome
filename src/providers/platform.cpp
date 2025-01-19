@@ -54,7 +54,7 @@ jint JNICALL JNI_OnLoad(JavaVM* vm, void*)
         return JNI_ERR;
 
     // get main receiver class
-    QJniObject receiver = QJniObject("hr/envizia/letihome/PackagesChangedReceiver");
+    QJniObject receiver = QJniObject("hr/envizia/letihomeplus/PackagesChangedReceiver");
     jclass receiverClass = env->GetObjectClass(receiver.object<jobject>());
     if (!receiverClass)
     {
@@ -108,7 +108,7 @@ QVariantList Platform::applicationList()
     for (int i = 0; i < 20; i++)
     {
         QVariantMap data;
-        data["packageName"] = (i == 0 ? "hr.envizia.letihome" : "hr.test.home" + QString::number(i));
+        data["packageName"] = (i == 0 ? "hr.envizia.letihomeplus" : "hr.test.home" + QString::number(i));
         data["applicationName"] = "App " + QString::number(i);
         appList.append(data);
     }

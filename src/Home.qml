@@ -54,7 +54,7 @@ Rectangle
     function openApplication(packageName)
     {
         // open internal pages
-        if(packageName === "hr.envizia.letihome")
+        if(packageName === "hr.envizia.letihomeplus")
             letiHomeContextMenu.popup(appsGrid.currentItem, settingsMenu)
         else
             platformProvider.openApplication(packageName)

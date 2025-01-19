@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
     auto &platform = Platform::instance();
 
     app.setApplicationDisplayName("LetiHome");
-    app.setApplicationName("letihome");
+    app.setApplicationName("letihomeplus");
     app.setOrganizationDomain("hr.envizia");
 
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreationFailed,
@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
     platform.init();
 
     // load main app module
-    engine.loadFromModule("LetiHomeModule", "Main");
+    engine.loadFromModule("LetiHomePlusModule", "Main");
 
     return app.exec();
 }

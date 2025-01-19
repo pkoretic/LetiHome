@@ -1,4 +1,4 @@
-package hr.envizia.letihome;
+package hr.envizia.letihomeplus;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

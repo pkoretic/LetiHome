@@ -19,8 +19,8 @@ Popup
         {
             textFormat: Text.StyledText
             font.pixelSize: 20
-            text: `<p>Thanks for using <strong>LetiHome</strong> application!</p><br/>
-            <strong>LetiHome</strong> is a lightweight app launcher application<br/>
+            text: `<p>Thanks for supporting <strong>LetiHomePlus</strong> application!</p><br/>
+            <strong>LetiHomePlus</strong> is a lightweight app launcher application<br/>
             that aims to works on as many TV devices as possible, <br/>especially low power ones.<br/><br/>
             As there is <u>zero</u> data collection, please provide your feedback <br/>and suggestions on project source page.<br/>
             `

@@ -1,4 +1,4 @@
-package hr.envizia.letihome;
+package hr.envizia.letihomeplus;
 
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -20,7 +20,7 @@ import java.util.Map;
 
 import org.qtproject.qt.android.bindings.QtActivity;
 
-public class LetiHome extends QtActivity
+public class LetiHomePlus extends QtActivity
 {
     private PackageManager packageManager;
 
@@ -84,7 +84,7 @@ public class LetiHome extends QtActivity
         catch(Exception e)
         {
             // load generic application icon if we were unable to load requested
-            Log.w("LetiHome", "exception getApplicationIcon for " + packageName, e);
+            Log.w("LetiHomePlus", "exception getApplicationIcon for " + packageName, e);
             icon = getDefaultApplicationIcon();
         }
 
@@ -146,7 +146,7 @@ public class LetiHome extends QtActivity
     public void openLetiHomePage()
     {
         Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(Uri.parse("https://play.google.com/store/apps/details?id=hr.envizia.letihome"));
+        intent.setData(Uri.parse("https://play.google.com/store/apps/details?id=hr.envizia.letihomeplus"));
         intent.setPackage("com.android.vending");
         startActivity(intent);
     }
