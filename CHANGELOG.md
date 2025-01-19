@@ -1,3 +1,18 @@
+## 2025-01-19, Version 2.2.4
+
+### Notable changes
+
+#### The following significant changes have been made since the previous LetiHome 2.2.3 release.
+
+default gradient update
+fix non TV banner icon display
+
+### commits
+
+ - [0eb9bf7](https://github.com/qaap/LetiHome/commit/0eb9bf7) update default gradient
+ - [922e38f](https://github.com/qaap/LetiHome/commit/922e38f) fix non TV banner icon display
+ - [d0f9b4b](https://github.com/qaap/LetiHome/commit/d0f9b4b) CMakeLists: minor update
+
 ## 2025-01-14, Version 2.2.3
 
 ### Notable changes
