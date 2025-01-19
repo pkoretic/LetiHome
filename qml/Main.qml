@@ -87,9 +87,9 @@ ApplicationWindow
         anchors.fill: parent
         gradient: Gradient
         {
-             GradientStop { position: 0.0; color: "#111317" }
-             GradientStop { position: 0.5; color: "#12151d" }
-             GradientStop { position: 1.0; color: "#161f2d" }
+            GradientStop { position: 0.0; color: "#0D1B2A" }
+            GradientStop { position: 0.5; color: "#1B263B" }
+            GradientStop { position: 1.0; color: "#0D1B2A" }
         }
     }
 
