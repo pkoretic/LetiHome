@@ -5,7 +5,7 @@ import QtCore
 Settings
 {
     id: settings
-    property bool showAppNames: true
+    property bool showAppNames: false
 
     function init()
     {
