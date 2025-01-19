@@ -28,16 +28,16 @@ qt_add_qml_module(LetiHomePlus
         src/Home.qml
         src/About.qml
         src/Options.qml
-        src/qmldir
         src/components/TopBar.qml
         src/components/AppsGrid.qml
         src/components/ColorLogo.js
-        src/components/qmldir
         src/providers/PlatformProvider.qml
         src/providers/SettingsProvider.qml
         src/providers/AppsProvider.qml
-        src/providers/qmldir
     RESOURCES
+        src/qmldir
+        src/components/qmldir
+        src/providers/qmldir
         assets/network-offline.svg
         assets/network-online.svg
 )
