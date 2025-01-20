@@ -1,7 +1,6 @@
 #!/bin/sh
 
 command -v git >/dev/null 2>&1 || { echo >&2 "'git' is required but not installed. Aborting."; exit 1; }
-command -v python >/dev/null 2>&1 || { echo >&2 "'python' is required but not installed. Aborting."; exit 1; }
 
 version=$1
 
