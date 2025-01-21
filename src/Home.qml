@@ -17,38 +17,28 @@ Rectangle
     ListModel { id: appsModel }
 
     // load apps when component is ready
-    Component.onCompleted: loadApplications()
-
-    // when packages are changed (installed/removed) update list
-    Connections
-    {
-        // todo: move to appsProvider
-        target: appsProvider
-        function onAppAdded(packageName, applicationName) {
-            appsModel.append({ packageName: packageName, applicationName: applicationName })
-        }
-
-        function onAppRemoved(packageName) {
-            for (var i = 0; i < appsModel.count; i++)
-            {
-                if (appsModel.get(i).packageName === packageName)
-                {
-                    appsModel.remove(i)
-                    break
-                }
-            }
-        }
-
-        function onAppChanged(packageName) {
-            // TODO
-        }
-    }
-
-    function loadApplications()
-    {
+    Component.onCompleted: {
         const apps = appsProvider.getVisibleApps()
         for (var i = 0; i < apps.length; i++)
             appsModel.set(i, apps[i])
+
+        // when packages are changed (installed/removed) update list
+        appsProvider.onAppAdded.connect((packageName, applicationName) => addApp(packageName, applicationName))
+        appsProvider.onAppRemoved.connect(packageName => removeApp(packageName))
+        appsProvider.onAppDisabled.connect(packageName => removeApp(packageName))
+        appsProvider.onAppHidden.connect(packageName => removeApp(packageName))
+    }
+
+    function addApp(packageName, applicationName)
+    {
+        appsModel.append({ packageName: packageName, applicationName: applicationName })
+    }
+
+    function removeApp(packageName)
+    {
+        for (var i = 0; i < appsModel.count; i++)
+            if (appsModel.get(i).packageName === packageName)
+                return appsModel.remove(i)
     }
 
     function openApplication(packageName)

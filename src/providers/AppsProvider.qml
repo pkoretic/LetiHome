@@ -8,7 +8,8 @@ Item
 
     signal appAdded(string packageName, string applicationName)
     signal appRemoved(string packageName)
-    signal appChanged(string packageName)
+    signal appDisabled(string packageName)
+    signal appHidden(string packageName)
 
     Settings
     {
@@ -32,7 +33,9 @@ Item
         switch(action)
         {
             case "PACKAGE_CHANGED":
-                appChanged(packageName)
+                // app can get enabled or disabled which means it's available or not in platform packages
+                if (!(platformProvider.getApps().some(app => app.packageName === packageName)))
+                    appDisabled(packageName)
             break
 
             case "PACKAGE_ADDED":
@@ -67,6 +70,7 @@ Item
         const app = getApp(packageName)
         app.hidden = true
         settings.appsChanged()
+        appHidden(packageName)
     }
 
     function removeApp(packageName)

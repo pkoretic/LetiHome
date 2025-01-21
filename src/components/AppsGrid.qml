@@ -116,14 +116,14 @@ GridView
         }
         MenuItem
         {
+            enabled: gridView.model.get(gridView.currentIndex).packageName !== "hr.envizia.letihomeplus"
             text: "Hide"
             onTriggered:
             {
-                const indexToHide = gridView.currentIndex
-                const packageToHide = gridView.model.get(indexToHide).packageName
+                const packageToHide = gridView.model.get(gridView.currentIndex).packageName
+                gridView.appHidden(packageToHide);
 
-                gridView.model.remove(indexToHide)
-                gridView.appHidden(packageToHide)
+                // due to Menu being native popup, we need to force focus back to GridView
                 gridView.forceActiveFocus()
             }
         }
