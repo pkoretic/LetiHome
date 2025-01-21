@@ -75,12 +75,18 @@ Item
 
     function removeApp(packageName)
     {
+        if (!getApp(packageName))
+            return
+
         settings.apps = settings.apps.filter(app => app.packageName !== packageName)
         appRemoved(packageName)
     }
 
     function addApp(packageName, applicationName)
     {
+        if (!getApp(packageName))
+            return
+
         settings.apps.push({packageName, applicationName})
         appAdded(packageName, applicationName)
     }

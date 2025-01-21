@@ -31,6 +31,12 @@ public class PackagesChangedReceiver extends BroadcastReceiver
         String action = intent.getAction();
         String packageName = intent.getData() != null ? intent.getData().getSchemeSpecificPart() : null;
         String actionToSend, appName = "";
+        boolean isUpdating = intent.getBooleanExtra(Intent.EXTRA_REPLACING, false);
+
+        if (isUpdating) {
+            Log.d(TAG, "Updating package: " + packageName);
+            return;
+        }
 
         PackageManager packageManager = context.getPackageManager();
          try
