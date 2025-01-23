@@ -1,4 +1,5 @@
 pragma ComponentBehavior: Bound
+
 import QtCore
 import QtQuick
 import QtQuick.Layouts
@@ -29,12 +30,20 @@ ApplicationWindow
     AppsProvider     { id: appsProvider }
     SettingsProvider { id: settingsProvider }
     PlatformProvider { id: platformProvider }
+    NavigationProvider { id: navigationProvider }
 
     Component.onCompleted:
     {
         settingsProvider.init()
         platformProvider.init()
         appsProvider.init(platformProvider)
+
+        navigationProvider.init({
+            "/options": optionsPopup,
+            "/about": aboutPopup ,
+            "/systemsettings": platformProvider.openSystemSettings,
+            "/appStore": platformProvider.openAppStore
+        })
 
         homeScreen.visible = true
     }
@@ -51,6 +60,7 @@ ApplicationWindow
         platformProvider: platformProvider
         settingsProvider: settingsProvider
         appsProvider: appsProvider
+        navigationProvider: navigationProvider
     }
 
     // LetiHome About screen, created on demand
@@ -60,6 +70,8 @@ ApplicationWindow
         anchors.centerIn: parent
         width: app.width * 0.9
         height: app.height * 0.9
+
+        navigationProvider: navigationProvider
     }
 
     // LetiHome Options screen, created on demand
@@ -69,8 +81,9 @@ ApplicationWindow
         anchors.centerIn: parent
         width: app.width * 0.9
         height: app.height * 0.9
-        modal: true
 
+        appsProvider: appsProvider
         settingsProvider: settingsProvider
+        navigationProvider: navigationProvider
     }
 }

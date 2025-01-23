@@ -5,27 +5,27 @@
 #endif
 #include <QDebug>
 
-#include "iconprovider.h"
+#include "bannerprovider.h"
 
-IconProvider::IconProvider()
+BannerProvider::BannerProvider()
     : QQuickImageProvider(QQuickImageProvider::Image)
 {
 }
-QImage IconProvider::requestImage(const QString &id, QSize *size, const QSize &requestedSize)
+QImage BannerProvider::requestImage(const QString &id, QSize *size, const QSize &requestedSize)
 {
     Q_UNUSED(size);
     Q_UNUSED(requestedSize);
 
-    return getApplicationIcon(id);
+    return getApplicationBanner(id);
 }
 
-QImage IconProvider::getApplicationIcon(const QString &packageName)
+QImage BannerProvider::getApplicationBanner(const QString &packageName)
 {
     QImage image;
 
 #ifdef Q_OS_ANDROID
     QJniObject activity = QNativeInterface::QAndroidApplication::context();
-    QJniObject appIcon = activity.callObjectMethod("getApplicationIcon",
+    QJniObject appIcon = activity.callObjectMethod("getApplicationBanner",
       "(Ljava/lang/String;)[B",
       QJniObject::fromString(packageName).object<jstring>());
 

@@ -9,7 +9,7 @@ Item
     signal appAdded(string packageName, string applicationName)
     signal appRemoved(string packageName)
     signal appDisabled(string packageName)
-    signal appHidden(string packageName)
+    signal appShown(string packageName)
 
     Settings
     {
@@ -19,8 +19,9 @@ Item
 
     function init(platformProvider)
     {
+        // initialize with all enabled apps by default
         if (!settings.apps?.length)
-            settings.apps = platformProvider.getApps()
+            settings.apps = getAllApps()
 
         platformProvider.appsChanged.connect(processAppChange)
 
@@ -32,12 +33,6 @@ Item
         console.info("apps changed:", action, packageName, applicationName)
         switch(action)
         {
-            case "PACKAGE_CHANGED":
-                // app can get enabled or disabled which means it's available or not in platform packages
-                if (!(platformProvider.getApps().some(app => app.packageName === packageName)))
-                    appDisabled(packageName)
-            break
-
             case "PACKAGE_ADDED":
                 addApp(packageName, applicationName)
             break
@@ -45,49 +40,71 @@ Item
             case "PACKAGE_REMOVED":
                 removeApp(packageName)
             break
+            case "PACKAGE_CHANGED":
+                // app can get enabled or disabled which means it's available or not in platform packages
+                if (!(getAllApps().some(app => app.packageName === packageName)))
+                    appDisabled(packageName)
+            break
         }
     }
 
     function getAllApps()
     {
-        return settings.apps
-    }
-
-    function getVisibleApps()
-    {
-        return settings.apps.filter(app => app && !app.hidden)
+        return platformProvider.getApps()
     }
 
     function getApp(packageName)
     {
-        for (const app of settings.apps)
-            if (app.packageName === packageName)
-                return app
+        return getAllApps().find(app => app.packageName === packageName)
     }
 
-    function hideApp(packageName)
+    function getStoredApps()
     {
-        const app = getApp(packageName)
-        app.hidden = true
-        settings.appsChanged()
-        appHidden(packageName)
+        return settings.apps
+    }
+
+    // returns apps that are not saved
+    function getAvailableApps()
+    {
+        return getAllApps().filter(app => !getStoredApps().some(savedApp => savedApp.packageName === app.packageName))
+    }
+
+    function isAppStored(packageName)
+    {
+        return getStoredApps().some(app => app.packageName === packageName)
+    }
+
+    function getStoredApp(packageName)
+    {
+        return getStoredApps().filter(app => app.packageName === packageName)
     }
 
     function removeApp(packageName)
     {
-        if (!getApp(packageName))
+        if (!isAppStored(packageName))
             return
 
         settings.apps = settings.apps.filter(app => app.packageName !== packageName)
         appRemoved(packageName)
     }
 
+    function isAppAvailable(packageName)
+    {
+        return getAllApps().some(app => app.packageName === packageName)
+    }
+
+    // app = packageName, applicationName
     function addApp(packageName, applicationName)
     {
-        if (!getApp(packageName))
+        if (!isAppAvailable(packageName))
             return
 
-        settings.apps.push({packageName, applicationName})
+        if (applicationName)
+            settings.apps.push({packageName, applicationName})
+        else
+            settings.apps.push(getApp(packageName))
+
+        settings.appsChanged()
         appAdded(packageName, applicationName)
     }
 
@@ -98,10 +115,10 @@ Item
         for (const packageName of appsOrder)
            reorderedApps.push(getApp(packageName))
 
-        saveApps(reorderedApps)
+        storeApps(reorderedApps)
     }
 
-    function saveApps(apps)
+    function storeApps(apps)
     {
        settings.apps = apps
     }

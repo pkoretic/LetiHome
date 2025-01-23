@@ -9,6 +9,6 @@ Settings
 
     function init()
     {
-        console.info("settingsProvider initialized")
+        console.info("settingsProvider initialized", showAppNames)
     }
 }

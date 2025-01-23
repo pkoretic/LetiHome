@@ -6,6 +6,7 @@
 
 #include "providers/platform.h"
 #include "providers/iconprovider.h"
+#include "providers/bannerprovider.h"
 
 int main(int argc, char *argv[])
 {
@@ -26,7 +27,8 @@ int main(int argc, char *argv[])
                      Qt::QueuedConnection);
 
     // expose C++ classes to QML
-    engine.addImageProvider(QLatin1String("icon"), new ImageProvider());
+    engine.addImageProvider("icon", new IconProvider());
+    engine.addImageProvider("banner", new BannerProvider());
     engine.rootContext()->setContextProperty("_Platform", &platform);
 
     // initialize platform variables and listeners

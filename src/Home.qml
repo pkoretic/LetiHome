@@ -10,28 +10,35 @@ Rectangle
 {
     id: homeView
 
-    property var platformProvider
-    property var settingsProvider
-    property var appsProvider
+    required property var platformProvider
+    required property var settingsProvider
+    required property var appsProvider
+    required property var navigationProvider
 
     ListModel { id: appsModel }
 
     // load apps when component is ready
-    Component.onCompleted: {
-        const apps = appsProvider.getVisibleApps()
-        for (var i = 0; i < apps.length; i++)
-            appsModel.set(i, apps[i])
+    Component.onCompleted:
+    {
+        loadApps()
 
-        // when packages are changed (installed/removed) update list
-        appsProvider.onAppAdded.connect((packageName, applicationName) => addApp(packageName, applicationName))
+        // when packages are changed update list
+        appsProvider.onAppAdded.connect((packageName) => addApp(packageName))
         appsProvider.onAppRemoved.connect(packageName => removeApp(packageName))
         appsProvider.onAppDisabled.connect(packageName => removeApp(packageName))
-        appsProvider.onAppHidden.connect(packageName => removeApp(packageName))
     }
 
-    function addApp(packageName, applicationName)
+    function loadApps()
+    {   // load stored apps | updated only if changed
+        const apps = appsProvider.getStoredApps()
+        for (var i = 0; i < apps.length; i++)
+            appsModel.set(i, apps[i])
+    }
+
+    function addApp(packageName)
     {
-        appsModel.append({ packageName: packageName, applicationName: applicationName })
+        const app = appsProvider.getApp(packageName)
+        appsModel.append(app)
     }
 
     function removeApp(packageName)
@@ -50,34 +57,9 @@ Rectangle
             platformProvider.openApplication(packageName)
     }
 
-    function openAbout()
-    {
-        aboutPopup.open()
-    }
-
-    function openOptions()
-    {
-        optionsPopup.open()
-    }
-
     function openAppInfo(packageName)
     {
         platformProvider.openAppInfo(packageName)
-    }
-
-    function openSettings()
-    {
-        platformProvider.openSettings()
-    }
-
-    function openLetiHomePage()
-    {
-        platformProvider.openLetiHomePage()
-    }
-
-    function openContextualMenu()
-    {
-        appsGrid.openContextualMenu()
     }
 
     gradient: Gradient
@@ -119,7 +101,7 @@ Rectangle
             showAppLabels: settingsProvider.showAppNames
             onOpenClicked: packageName => openApplication(packageName)
             onInfoClicked: packageName => openAppInfo(packageName)
-            onAppHidden: packageName => appsProvider.hideApp(packageName)
+            onRemoveClicked: packageName => appsProvider.removeApp(packageName)
             onOrderChanged: appsOrder => appsProvider.setOrder(appsOrder)
         }
     }
@@ -131,12 +113,12 @@ Rectangle
         {
             id: settingsMenu
             text: qsTr("Settings")
-            onTriggered: openOptions()
+            onTriggered: navigationProvider.go("/options")
         }
         MenuItem
         {
             text: qsTr("About")
-            onTriggered: openAbout()
+            onTriggered: navigationProvider.go("/about")
         }
     }
 }

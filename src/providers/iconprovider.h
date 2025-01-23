@@ -3,10 +3,10 @@
 
 #include <QQuickImageProvider>
 
-class ImageProvider : public QQuickImageProvider
+class IconProvider : public QQuickImageProvider
 {
 public:
-    explicit ImageProvider();
+    explicit IconProvider();
     QImage requestImage(const QString &id, QSize *size, const QSize &requestedSize);
     QImage getApplicationIcon(const QString &packageName);
 };

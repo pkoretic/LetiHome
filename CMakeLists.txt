@@ -15,6 +15,8 @@ qt_add_executable(LetiHomePlus
     src/providers/platform.h
     src/providers/iconprovider.cpp
     src/providers/iconprovider.h
+    src/providers/bannerprovider.cpp
+    src/providers/bannerprovider.h
     android/AndroidManifest.xml
     android/src/hr/envizia/letihomeplus/LetiHomePlus.java
     android/src/hr/envizia/letihomeplus/PackagesChangedReceiver.java
@@ -31,9 +33,11 @@ qt_add_qml_module(LetiHomePlus
         src/components/TopBar.qml
         src/components/AppsGrid.qml
         src/components/ColorLogo.js
+        src/components/IconBanner.qml
         src/providers/PlatformProvider.qml
         src/providers/SettingsProvider.qml
         src/providers/AppsProvider.qml
+        src/providers/NavigationProvider.qml
     RESOURCES
         src/qmldir
         src/components/qmldir

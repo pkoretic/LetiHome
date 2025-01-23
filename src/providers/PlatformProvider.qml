@@ -1,4 +1,5 @@
 pragma ComponentBehavior: Bound
+
 import QtCore
 import QtQuick
 
@@ -31,12 +32,12 @@ Item
         _Platform.openAppInfo(packageName)
     }
 
-    function openSettings()
+    function openSystemSettings()
     {
         _Platform.openSettings()
     }
 
-    function openLetiHomePage()
+    function openAppStore()
     {
         _Platform.openLetiHomePage()
     }

@@ -1,9 +1,12 @@
+pragma ComponentBehavior: Bound
 import QtQuick
 import QtQuick.Controls.Material
 
 Popup
 {
     id: optionsPopup
+
+    required property var navigationProvider
 
     modal: true
     focus: true
@@ -38,7 +41,7 @@ Popup
                 highlighted: activeFocus
                 Keys.onReturnPressed: clicked()
                 Keys.onEnterPressed: clicked()
-                onClicked: _Platform.openLetiHomePage()
+                onClicked: navigationProvider.go("/appStore")
 
                 KeyNavigation.right: closeButton
             }

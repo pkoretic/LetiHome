@@ -3,8 +3,6 @@ pragma ComponentBehavior: Bound
 import QtQuick
 import QtQuick.Controls.Material
 
-import "ColorLogo.js" as ColorLogo
-
 // Grid view of applications
 GridView
 {
@@ -26,7 +24,7 @@ GridView
 
     signal openClicked(string packageName)
     signal infoClicked(string packageName)
-    signal appHidden(string packageName)
+    signal removeClicked(string packageName)
     signal orderChanged(var appsOrder)
 
     function openContextualMenu() { contextMenu.popup(gridView.currentItem, menuOpen) }
@@ -45,7 +43,7 @@ GridView
             case Qt.Key_Return:
             case Qt.Key_Enter:
                 event.accepted = true
-                openClicked(gridView.model.get(gridView.currentIndex).packageName)
+                openClicked(gridView.currentItem.packageName)
             break
 
             case Qt.Key_Back:
@@ -102,12 +100,12 @@ GridView
         {
             id: menuOpen
             text: "Open"
-            onTriggered: gridView.openClicked(gridView.model.get(gridView.currentIndex).packageName)
+            onTriggered: gridView.openClicked(gridView.currentItem.packageName)
         }
         MenuItem
         {
             text: "Info"
-            onTriggered: gridView.infoClicked(gridView.model.get(gridView.currentIndex).packageName)
+            onTriggered: gridView.infoClicked(gridView.currentItem.packageName)
         }
         MenuItem
         {
@@ -116,12 +114,12 @@ GridView
         }
         MenuItem
         {
-            enabled: gridView.model.get(gridView.currentIndex).packageName !== "hr.envizia.letihomeplus"
-            text: "Hide"
+            property string packageName: gridView.currentItem?.packageName || ""
+            enabled: packageName !== "hr.envizia.letihomeplus"
+            text: "Remove"
             onTriggered:
             {
-                const packageToHide = gridView.model.get(gridView.currentIndex).packageName
-                gridView.appHidden(packageToHide);
+                gridView.removeClicked(packageName)
 
                 // due to Menu being native popup, we need to force focus back to GridView
                 gridView.forceActiveFocus()
@@ -129,36 +127,24 @@ GridView
         }
     }
 
-    delegate: Rectangle
+    delegate: IconBanner
     {
         id: delegate
 
+        required property int index
+        required property var model
         property bool isCurrentItem: GridView.isCurrentItem
+        property string packageName: model.packageName
+        property string applicationName: model.applicationName
 
         width: GridView.view.cellWidth - 20
         height: width * 0.5625 // 9/16
-
-        color: image.isTVBanner ? "#ffffff" : ColorLogo.createByName(model.applicationName)
 
         z: delegate.isCurrentItem ? 1 : 0
         scale: delegate.isCurrentItem && gridView.state === "default" ? 1.3 : 1
         Behavior on scale { NumberAnimation { duration: 150; easing.type: Easing.InOutQuad } }
 
-        required property int index
-        required property var model
-
-        Image
-        {
-            id: image
-
-            anchors.fill: parent
-            anchors.margins: isTVBanner ? 0 : 10
-            source: "image://icon/" + model.packageName
-            cache: true
-            fillMode: Image.PreserveAspectFit
-
-            property bool isTVBanner: sourceSize.width > sourceSize.height
-        }
+        appPackage: delegate.packageName
 
         // app name background so it's readable on any background image
         Rectangle
@@ -176,7 +162,7 @@ GridView
             id: appName
             x: 4
             width: parent.width - x * 2
-            text: model.applicationName
+            text: delegate.applicationName
             color: "#ffffff"
             elide: Text.ElideRight
             anchors.bottom: parent.bottom
@@ -192,17 +178,6 @@ GridView
             color: "transparent"
             border.width: gridView.state === "reorder" ? 3 : 2
             border.color: gridView.state === "reorder" ? "red" : "#222222"
-        }
-
-        // open application on mouse click/finger tap
-        MouseArea
-        {
-            anchors.fill: parent
-            onClicked:
-            {
-                gridView.currentIndex = index
-                gridView.openClicked(model.packageName)
-            }
         }
     }
 }

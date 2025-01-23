@@ -1,2 +1,3 @@
 TopBar TopBar.qml
 AppsGrid AppsGrid.qml
+IconBanner IconBanner.qml

@@ -75,17 +75,38 @@ public class LetiHomePlus extends QtActivity
 
         try
         {
-            // try leanback/tv version first
-            icon = packageManager.getApplicationBanner(packageName);
-
-            if (icon == null)
-                icon = packageManager.getApplicationIcon(packageName);
+            icon = packageManager.getApplicationIcon(packageName);
         }
         catch(Exception e)
         {
             // load generic application icon if we were unable to load requested
             Log.w("LetiHomePlus", "exception getApplicationIcon for " + packageName, e);
             icon = getDefaultApplicationIcon();
+        }
+
+        // convert to byte array
+        Bitmap bitmap = Bitmap.createBitmap(icon.getIntrinsicWidth(), icon.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        final Canvas canvas = new Canvas(bitmap);
+        icon.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        icon.draw(canvas);
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100 /* ignored for PNG */, stream);
+
+        return stream.toByteArray();
+    }
+
+    // get application TV banner as byte array
+    public byte[] getApplicationBanner(String packageName)
+    {
+        Drawable icon = null;
+
+        try
+        {
+            icon = packageManager.getApplicationBanner(packageName);
+        }
+        catch(Exception e)
+        {
+            Log.w("LetiHomePlus", "exception getApplicationIcon for " + packageName, e);
         }
 
         // convert to byte array
