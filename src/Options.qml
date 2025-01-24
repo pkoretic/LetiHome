@@ -21,12 +21,12 @@ Popup
     {
         anchors.centerIn: parent
         width: parent.width / 2
-        spacing: 40
+        spacing: 10
 
         Column
         {
             width: parent.width
-            spacing: 30
+            spacing: 10
 
             GroupBox
             {
