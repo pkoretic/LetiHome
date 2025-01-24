@@ -7,6 +7,8 @@ Settings
     id: settings
     property bool showAppNames: false
     property bool alignToBottom: false
+    property bool showClock: true
+    property bool showDate: true
 
     function init()
     {

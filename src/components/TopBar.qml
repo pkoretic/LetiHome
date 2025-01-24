@@ -8,15 +8,18 @@ Item
     property bool is24HourFormat: true
     property bool isOnline: true
     property alias running: updateTimer.running
+    property bool showClock
+    property alias showDate: date.visible
 
     // clock in locale format depending if 24 hour format is set in the system
     Text
     {
-        id: datetime
+        id: time
         text: Qt.formatTime(root.currentDate, root.is24HourFormat ? "hh:mm" : "hh:mm ap")
         font.pixelSize: 22
         color: "#ffffff"
         style: Text.Outline
+        visible: showClock
     }
 
     Row
@@ -27,7 +30,7 @@ Item
         Image
         {
             source: "../../assets/network-%1.svg".arg(root.isOnline ? "online" : "offline")
-            height: datetime.height - 10
+            height: time.height - 10
             width: height
             anchors.verticalCenter: parent.verticalCenter
         }
@@ -35,6 +38,7 @@ Item
         // date in system locale format
         Text
         {
+            id: date
             text: root.currentDate.toDateString()
             font.pixelSize: 22
             color: "#ffffff"
@@ -46,7 +50,7 @@ Item
     Timer
     {
         id: updateTimer
-        running: Application.state == Qt.ApplicationActive
+        running: root.showClock && Application.state == Qt.ApplicationActive
         interval: 5000
         repeat: true
         triggeredOnStart: true

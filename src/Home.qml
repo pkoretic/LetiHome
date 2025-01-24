@@ -85,6 +85,8 @@ Rectangle
             Layout.alignment: Qt.AlignTop
             isOnline: platformProvider.isOnline
             is24HourFormat: platformProvider.is24HourFormat()
+            showClock: settingsProvider.showClock
+            showDate: settingsProvider.showDate
         }
 
         // Main Content display

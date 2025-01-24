@@ -115,6 +115,28 @@ Popup
                     }
                     Switch
                     {
+                        id: showClockSwitch
+                        text: qsTr("Show clock")
+                        Keys.onEnterPressed: checked = !checked
+                        Keys.onReturnPressed: checked = !checked
+                        checked: settingsProvider.showClock
+                        onCheckedChanged: settingsProvider.showClock = checked
+
+                        KeyNavigation.up: showAppLabelsSwitch
+                    }
+                    Switch
+                    {
+                        id: showDateSwitch
+                        text: qsTr("Show date")
+                        Keys.onEnterPressed: checked = !checked
+                        Keys.onReturnPressed: checked = !checked
+                        checked: settingsProvider.showDate
+                        onCheckedChanged: settingsProvider.showDate = checked
+
+                        KeyNavigation.up: showClockSwitch
+                    }
+                    Switch
+                    {
                         id: alignToBottomSwitch
                         text: qsTr("Align apps grid to bottom")
                         Keys.onEnterPressed: checked = !checked
@@ -122,7 +144,7 @@ Popup
                         checked: settingsProvider.alignToBottom
                         onCheckedChanged: settingsProvider.alignToBottom = checked
 
-                        KeyNavigation.up: showAppLabelsSwitch
+                        KeyNavigation.up: showDateSwitch
                     }
                 }
             }
