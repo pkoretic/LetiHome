@@ -75,6 +75,7 @@ Popup
                         required property var model
                         property string applicationName: model.applicationName
                         loadTVBanner: false
+                        async: true
 
                         width: (allAppsList.width / 6) |0
                         height: width

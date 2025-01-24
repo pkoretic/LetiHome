@@ -7,6 +7,7 @@ Item
     id: iconBanner
     required property string appPackage
     property bool loadTVBanner: true
+    property bool async: false
 
     Rectangle
     {
@@ -24,6 +25,7 @@ Item
         anchors.fill: parent
         fillMode: Image.PreserveAspectFit
         cache: true
+        asynchronous: async
     }
 
     Image
@@ -34,6 +36,7 @@ Item
         anchors.fill: parent
         anchors.margins: loadTVBanner ? 15 : 0
         fillMode: Image.PreserveAspectFit
+        asynchronous: async
         cache: true
     }
 }
