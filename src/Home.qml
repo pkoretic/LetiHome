@@ -82,6 +82,7 @@ Rectangle
             z: 1
             Layout.fillWidth: true
             Layout.preferredHeight: childrenRect.height
+            Layout.alignment: Qt.AlignTop
             isOnline: platformProvider.isOnline
             is24HourFormat: platformProvider.is24HourFormat()
         }
