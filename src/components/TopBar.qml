@@ -1,6 +1,6 @@
 import QtQuick
 
-Item
+FocusScope
 {
     id: root
 
@@ -10,6 +10,8 @@ Item
     property alias running: updateTimer.running
     property bool showClock
     property alias showDate: date.visible
+
+    signal settingsClicked
 
     // clock in locale format depending if 24 hour format is set in the system
     Text
@@ -33,6 +35,19 @@ Item
             height: time.height - 10
             width: height
             anchors.verticalCenter: parent.verticalCenter
+        }
+
+        Image
+        {
+            focus: true
+            source: "../../assets/settings%1.svg".arg(activeFocus ? "-active" : "")
+            scale: activeFocus ? 1.5 : 1
+            height: time.height - 10
+            width: height
+            anchors.verticalCenter: parent.verticalCenter
+
+            Keys.onReturnPressed: root.settingsClicked()
+            Keys.onEnterPressed: root.settingsClicked()
         }
 
         // date in system locale format

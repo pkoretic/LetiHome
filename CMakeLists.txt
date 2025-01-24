@@ -44,6 +44,8 @@ qt_add_qml_module(LetiHomePlus
         src/providers/qmldir
         assets/network-offline.svg
         assets/network-online.svg
+        assets/settings.svg
+        assets/settings-active.svg
 )
 
 set_target_properties(LetiHomePlus PROPERTIES

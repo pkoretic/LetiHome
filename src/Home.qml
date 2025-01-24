@@ -93,6 +93,8 @@ Rectangle
             is24HourFormat: platformProvider.is24HourFormat()
             showClock: settingsProvider.showClock
             showDate: settingsProvider.showDate
+            KeyNavigation.down: appsGrid
+            onSettingsClicked: navigationProvider.go("/options")
         }
 
         // Main Content display

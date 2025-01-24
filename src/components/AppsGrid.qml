@@ -121,12 +121,10 @@ GridView
         }
         MenuItem
         {
-            property string packageName: gridView.currentItem?.packageName || ""
-            enabled: packageName !== "hr.envizia.letihomeplus"
             text: "Remove"
             onTriggered:
             {
-                gridView.removeClicked(packageName)
+                gridView.removeClicked(gridView.currentItem.packageName)
 
                 // due to Menu being native popup, we need to force focus back to GridView
                 gridView.forceActiveFocus()
@@ -140,9 +138,8 @@ GridView
 
         required property int index
         required property var model
-        property bool isCurrentItem: GridView.isCurrentItem
+        property bool isCurrentItem: activeFocus && GridView.isCurrentItem
         property string packageName: model.packageName
-        property string applicationName: model.applicationName
 
         width: GridView.view.cellWidth - 20
         height: width * 0.5625 // 9/16
@@ -169,7 +166,7 @@ GridView
             id: appName
             x: 4
             width: parent.width - x * 2
-            text: delegate.applicationName
+            text: model.applicationName
             color: "#ffffff"
             elide: Text.ElideRight
             anchors.bottom: parent.bottom
