@@ -46,6 +46,8 @@ Popup
                     orientation: ListView.Horizontal
                     snapMode: ListView.SnapToItem
 
+                    highlightMoveDuration: 150
+
                     function loadModel()
                     {
                         const apps = appsProvider.getAvailableApps();
