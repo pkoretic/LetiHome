@@ -27,7 +27,13 @@ GridView
     signal removeClicked(string packageName)
     signal orderChanged(var appsOrder)
 
-    function openContextualMenu() { contextMenu.popup(gridView.currentItem, menuOpen) }
+    function openContextualMenu()
+    {
+        const x = gridView.currentItem.x + gridView.currentItem.width / 2
+        const y = gridView.currentItem.y + gridView.currentItem.height / 2
+        contextMenu.popup(x, y, menuOpen)
+    }
+
     function getOrder()
     {
         let order = [] // packageName list

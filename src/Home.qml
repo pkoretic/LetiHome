@@ -50,11 +50,17 @@ Rectangle
 
     function openApplication(packageName)
     {
-        // open internal pages
+        // open internal context options
         if(packageName === "hr.envizia.letihomeplus")
-            letiHomeContextMenu.popup(appsGrid.currentItem, settingsMenu)
+        {
+            const x = appsGrid.currentItem.x + appsGrid.currentItem.width / 2
+            const y = appsGrid.currentItem.y + appsGrid.currentItem.height / 2
+            letiHomeContextMenu.popup(x, y, settingsMenu)
+        }
         else
+        {
             platformProvider.openApplication(packageName)
+        }
     }
 
     function openAppInfo(packageName)
@@ -106,22 +112,23 @@ Rectangle
             onInfoClicked: packageName => openAppInfo(packageName)
             onRemoveClicked: packageName => appsProvider.removeApp(packageName)
             onOrderChanged: appsOrder => appsProvider.setOrder(appsOrder)
+
+            Menu
+            {
+                id: letiHomeContextMenu
+                MenuItem
+                {
+                    id: settingsMenu
+                    text: qsTr("Settings")
+                    onTriggered: navigationProvider.go("/options")
+                }
+                MenuItem
+                {
+                    text: qsTr("About")
+                    onTriggered: navigationProvider.go("/about")
+                }
+            }
         }
     }
 
-    Menu
-    {
-        id: letiHomeContextMenu
-        MenuItem
-        {
-            id: settingsMenu
-            text: qsTr("Settings")
-            onTriggered: navigationProvider.go("/options")
-        }
-        MenuItem
-        {
-            text: qsTr("About")
-            onTriggered: navigationProvider.go("/about")
-        }
-    }
 }
