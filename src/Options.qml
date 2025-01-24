@@ -99,16 +99,31 @@ Popup
             GroupBox
             {
                 title: qsTr("Options")
-                Switch
+                Column
                 {
-                    id: showAppLabelsSwitch
-                    text: qsTr("Show app labels on selection")
-                    Keys.onEnterPressed: checked = !checked
-                    Keys.onReturnPressed: checked = !checked
-                    checked: settingsProvider.showAppNames
-                    onCheckedChanged: settingsProvider.showAppNames = checked
+                    spacing: 20
+                    Switch
+                    {
+                        id: showAppLabelsSwitch
+                        text: qsTr("Show app labels on selection")
+                        Keys.onEnterPressed: checked = !checked
+                        Keys.onReturnPressed: checked = !checked
+                        checked: settingsProvider.showAppNames
+                        onCheckedChanged: settingsProvider.showAppNames = checked
 
-                    KeyNavigation.up: allAppsList
+                        KeyNavigation.up: allAppsList
+                    }
+                    Switch
+                    {
+                        id: alignToBottomSwitch
+                        text: qsTr("Align apps grid to bottom")
+                        Keys.onEnterPressed: checked = !checked
+                        Keys.onReturnPressed: checked = !checked
+                        checked: settingsProvider.alignToBottom
+                        onCheckedChanged: settingsProvider.alignToBottom = checked
+
+                        KeyNavigation.up: showAppLabelsSwitch
+                    }
                 }
             }
         }
@@ -126,7 +141,7 @@ Popup
                 Keys.onEnterPressed: clicked()
                 onClicked: navigationProvider.go("/systemsettings")
 
-                KeyNavigation.up: showAppLabelsSwitch
+                KeyNavigation.up: alignToBottomSwitch
                 KeyNavigation.right: closeButton
             }
 
@@ -141,7 +156,7 @@ Popup
                 Keys.onEnterPressed: clicked()
                 onClicked: optionsPopup.close()
 
-                KeyNavigation.up: showAppLabelsSwitch
+                KeyNavigation.up: alignToBottomSwitch
             }
         }
     }

@@ -6,9 +6,10 @@ Settings
 {
     id: settings
     property bool showAppNames: false
+    property bool alignToBottom: false
 
     function init()
     {
-        console.info("settingsProvider initialized", showAppNames)
+        console.info("settingsProvider initialized", showAppNames, alignToBottom)
     }
 }

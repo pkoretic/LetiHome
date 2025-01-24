@@ -91,8 +91,8 @@ Rectangle
         {
             id: appsGrid
             Layout.fillWidth: true
-            Layout.fillHeight: true
-            Layout.alignment: Qt.AlignHCenter
+            Layout.preferredHeight: childrenRect.height
+            Layout.alignment: Qt.AlignHCenter | (settingsProvider.alignToBottom ? Qt.AlignBottom : Qt.AlignTop)
             model: appsModel
 
             focus: true
