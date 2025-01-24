@@ -28,9 +28,10 @@ GridView
     signal orderChanged(var appsOrder)
 
     function openContextualMenu() { contextMenu.popup(gridView.currentItem, menuOpen) }
-    function getOrder() {
-        var order = [] // packageName list
-        for (var i = 0; i < gridView.model.count; i++)
+    function getOrder()
+    {
+        let order = [] // packageName list
+        for (let i = 0; i < gridView.model.count; i++)
             order.push(gridView.model.get(i).packageName)
 
         return order
