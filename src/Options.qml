@@ -151,7 +151,7 @@ Popup
 
                 GroupBox
                 {
-                    title: qsTr("Add app")
+                    title: qsTr("Manage apps visibility")
                     width: parent.width
                     height: 150
 
@@ -213,7 +213,7 @@ Popup
 
                     Label
                     {
-                        text: allAppsList.currentItem?.applicationName || qsTr("All apps added")
+                        text: allAppsList.currentItem?.applicationName || qsTr("All apps shown")
                         anchors.bottom: parent.bottom
                     }
                 }
