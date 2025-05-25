@@ -75,7 +75,6 @@ Popup
         id: optionsTab
         GroupBox
         {
-            title: qsTr("Options")
             Column
             {
                 spacing: 20
