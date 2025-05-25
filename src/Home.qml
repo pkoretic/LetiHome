@@ -50,12 +50,18 @@ Rectangle
 
     function openApplication(packageName)
     {
+        console.info("opening application:", packageName)
+
         // open internal context options
-        if(packageName === "hr.envizia.letihomeplus")
+        if(packageName.startsWith("hr.envizia.letihome"))
         {
-            const x = appsGrid.currentItem.x + appsGrid.currentItem.width / 2
-            const y = appsGrid.currentItem.y + appsGrid.currentItem.height / 2
-            letiHomeContextMenu.popup(x, y, settingsMenu)
+            const item = appsLoader.item.highlightItem
+
+            // for list, highlight is always at first item
+            const x = (settingsProvider.showAsList ? 0 : item.x) + item.width / 2
+            const y = item.y + item.height / 2
+
+            letiHomeContextMenu.popup(appsLoader.item, x, y, settingsMenu)
         }
         else
         {
@@ -113,44 +119,79 @@ Rectangle
             is24HourFormat: platformProvider.is24HourFormat()
             showClock: settingsProvider.showClock
             showDate: settingsProvider.showDate
-            KeyNavigation.down: appsGrid
+            KeyNavigation.down: appsLoader
             onSettingsClicked: navigationProvider.go("/options")
         }
 
-        // Main Content display
-        AppsGrid
+        Loader
         {
-            id: appsGrid
-            Layout.fillWidth: true
-            Layout.preferredHeight: childrenRect.height
-            Layout.alignment: Qt.AlignHCenter | (settingsProvider.alignToBottom ? Qt.AlignBottom : Qt.AlignTop)
-            model: appsModel
-
+            id: appsLoader
             focus: true
+            Layout.fillWidth: true
+            Layout.alignment: settingsProvider.alignToBottom ? Qt.AlignBottom : Qt.AlignTop
+            Layout.preferredHeight: item ? item.delegateHeight || item.childrenRect.height : 0
 
-            isTelevision: platformProvider.isTelevision
-            showAppLabels: settingsProvider.showAppNames
-            onOpenClicked: packageName => openApplication(packageName)
-            onInfoClicked: packageName => openAppInfo(packageName)
-            onRemoveClicked: packageName => appsProvider.removeApp(packageName)
-            onOrderChanged: appsOrder => appsProvider.setOrder(appsOrder)
+            // load apps list or grid based on settings
+            sourceComponent: settingsProvider.showAsList ? appsListComponent : appsGridComponent
+        }
 
-            Menu
+        Component
+        {
+            id: appsListComponent
+
+            AppsList
             {
-                id: letiHomeContextMenu
-                MenuItem
-                {
-                    id: settingsMenu
-                    text: qsTr("Settings")
-                    onTriggered: navigationProvider.go("/options")
-                }
-                MenuItem
-                {
-                    text: qsTr("About")
-                    onTriggered: navigationProvider.go("/about")
-                }
+                id: appsList
+
+                model: appsModel
+
+                focus: true
+
+                isTelevision: platformProvider.isTelevision
+                showAppLabels: settingsProvider.showAppNames
+                onOpenClicked: packageName => openApplication(packageName)
+                onInfoClicked: packageName => openAppInfo(packageName)
+                onRemoveClicked: packageName => appsProvider.removeApp(packageName)
+                onOrderChanged: appsOrder => appsProvider.setOrder(appsOrder)
+            }
+        }
+
+        Component
+        {
+            id: appsGridComponent
+
+            AppsGrid
+            {
+                id: appsGrid
+
+                model: appsModel
+                height: childrenRect.height
+
+                focus: true
+
+                isTelevision: platformProvider.isTelevision
+                showAppLabels: settingsProvider.showAppNames
+                onOpenClicked: packageName => openApplication(packageName)
+                onInfoClicked: packageName => openAppInfo(packageName)
+                onRemoveClicked: packageName => appsProvider.removeApp(packageName)
+                onOrderChanged: appsOrder => appsProvider.setOrder(appsOrder)
             }
         }
     }
 
+    Menu
+    {
+        id: letiHomeContextMenu
+        MenuItem
+        {
+            id: settingsMenu
+            text: qsTr("Settings")
+            onTriggered: navigationProvider.go("/options")
+        }
+        MenuItem
+        {
+            text: qsTr("About")
+            onTriggered: navigationProvider.go("/about")
+        }
+    }
 }

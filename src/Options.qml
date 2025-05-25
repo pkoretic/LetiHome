@@ -116,10 +116,11 @@ Popup
 
                     KeyNavigation.up: showClockSwitch
                 }
+
                 Switch
                 {
                     id: alignToBottomSwitch
-                    text: qsTr("Align apps grid to bottom")
+                    text: qsTr("Align apps to bottom")
                     Keys.onEnterPressed: checked = !checked
                     Keys.onReturnPressed: checked = !checked
                     Keys.onLeftPressed: checked = false
@@ -128,6 +129,20 @@ Popup
                     onCheckedChanged: settingsProvider.alignToBottom = checked
 
                     KeyNavigation.up: showDateSwitch
+                }
+
+                Switch
+                {
+                    id: showAsListSwitch
+                    text: qsTr("Show as list instead of a grid")
+                    Keys.onEnterPressed: checked = !checked
+                    Keys.onReturnPressed: checked = !checked
+                    Keys.onLeftPressed: checked = false
+                    Keys.onRightPressed: checked = true
+                    checked: settingsProvider.showAsList
+                    onCheckedChanged: settingsProvider.showAsList = checked
+
+                    KeyNavigation.up: alignToBottomSwitch
                 }
 
                 Switch
@@ -141,7 +156,7 @@ Popup
                     checked: settingsProvider.useLoremPicsumWallpaper
                     onCheckedChanged: settingsProvider.useLoremPicsumWallpaper = checked
 
-                    KeyNavigation.up: alignToBottomSwitch
+                    KeyNavigation.up: showAsListSwitch
                 }
             }
         }

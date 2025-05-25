@@ -32,6 +32,7 @@ qt_add_qml_module(LetiHomePlus
         src/Options.qml
         src/components/TopBar.qml
         src/components/AppsGrid.qml
+        src/components/AppsList.qml
         src/components/ColorLogo.js
         src/components/IconBanner.qml
         src/providers/PlatformProvider.qml
