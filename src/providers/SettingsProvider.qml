@@ -9,6 +9,7 @@ Settings
     property bool alignToBottom: false
     property bool showClock: true
     property bool showDate: true
+    property bool useLoremPicsumWallpaper: false
 
     function init()
     {

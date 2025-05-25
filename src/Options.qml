@@ -130,6 +130,20 @@ Popup
 
                     KeyNavigation.up: showDateSwitch
                 }
+
+                Switch
+                {
+                    id: loremPicsumBackgroundSwitch
+                    text: qsTr("Use Random (Lorem Picsum) Wallpaper")
+                    Keys.onEnterPressed: checked = !checked
+                    Keys.onReturnPressed: checked = !checked
+                    Keys.onLeftPressed: checked = false
+                    Keys.onRightPressed: checked = true
+                    checked: settingsProvider.useLoremPicsumWallpaper
+                    onCheckedChanged: settingsProvider.useLoremPicsumWallpaper = checked
+
+                    KeyNavigation.up: alignToBottomSwitch
+                }
             }
         }
     }

@@ -75,6 +75,26 @@ Rectangle
          GradientStop { position: 1.0; color: "#0D1B2A" }
     }
 
+    Image
+    {
+        id: wallpaper
+        anchors.fill: parent
+        fillMode: Image.PreserveAspectCrop
+        visible: settingsProvider.useLoremPicsumWallpaper
+
+        // We have to wait for the width and height to be set
+        Component.onCompleted:
+        {
+            source = Qt.binding(function() { settingsProvider.useLoremPicsumWallpaper ? "https://picsum.photos/%1/%2?%3".arg(width).arg(height).arg(Math.random()) : ""})
+        }
+
+        Rectangle
+        {
+            anchors.fill: parent
+            color: "#AA000000" // semi-transparent overlay
+        }
+    }
+
     // main layout used for padding, spacing and layout
     ColumnLayout
     {
