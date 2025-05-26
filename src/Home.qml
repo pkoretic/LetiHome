@@ -147,6 +147,8 @@ Rectangle
 
                 focus: true
 
+                appsShown: settingsProvider.appsShown
+
                 isTelevision: platformProvider.isTelevision
                 showAppLabels: settingsProvider.showAppNames
                 onOpenClicked: packageName => openApplication(packageName)
@@ -168,6 +170,7 @@ Rectangle
                 height: childrenRect.height
 
                 focus: true
+                appsShown: settingsProvider.appsShown
 
                 isTelevision: platformProvider.isTelevision
                 showAppLabels: settingsProvider.showAppNames

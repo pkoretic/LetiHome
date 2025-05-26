@@ -11,6 +11,7 @@ Settings
     property bool showDate: true
     property bool useLoremPicsumWallpaper: false
     property bool showAsList: true
+    property int appsShown: 5
 
     function init()
     {

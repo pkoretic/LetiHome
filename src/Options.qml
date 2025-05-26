@@ -157,6 +157,33 @@ Popup
                     onCheckedChanged: settingsProvider.useLoremPicsumWallpaper = checked
 
                     KeyNavigation.up: showAsListSwitch
+                    KeyNavigation.down: appsShownSpinBox
+                }
+
+                // Input field that allows to change the number of apps shown in the grid/list
+
+                Row
+                {
+                    spacing: 10
+                    SpinBox
+                    {
+                        id: appsShownSpinBox
+                        height: loremPicsumBackgroundSwitch.height
+                        from: 3
+                        to: 10
+                        value: settingsProvider.appsShown
+                        onValueChanged: settingsProvider.appsShown = value
+
+                        Keys.onLeftPressed: value = Math.max(from, value - 1)
+                        Keys.onRightPressed: value = Math.min(to, value + 1)
+                        Keys.onUpPressed: { loremPicsumBackgroundSwitch.focus = true; loremPicsumBackgroundSwitch.focusReason = Qt.ShortcutFocusReason }
+                        Keys.onDownPressed: {}
+                    }
+                    Label
+                    {
+                        text: qsTr("Number of apps shown (Press Left/Right to change)")
+                        anchors.verticalCenter: parent.verticalCenter
+                    }
                 }
             }
         }

@@ -10,7 +10,7 @@ GridView
 
     boundsBehavior: GridView.StopAtBounds
 
-    cellWidth: (width / 5) |0
+    cellWidth: (width / appsShown) |0
     cellHeight: cellWidth * 0.5625 // 9/16
 
     state: "default"
@@ -21,6 +21,7 @@ GridView
 
     property bool isTelevision
     property bool showAppLabels
+    property int appsShown: 5 // how many apps to show in grid
 
     signal openClicked(string packageName)
     signal infoClicked(string packageName)

@@ -15,7 +15,8 @@ ListView {
     highlightFollowsCurrentItem: true
     spacing: 10
 
-    property int delegateWidth: (width / 5) | 0
+    property int appsShown: 5
+    property int delegateWidth: (width / appsShown) | 0
     property int delegateHeight: delegateWidth * 0.5625 // 9/16
 
 
