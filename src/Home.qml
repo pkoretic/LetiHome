@@ -53,7 +53,7 @@ Rectangle
         console.info("opening application:", packageName)
 
         // open internal context options
-        if(packageName.startsWith("hr.envizia.letihome"))
+        if(packageName === "hr.envizia.letihomeplus")
         {
             const item = appsLoader.item.highlightItem
 
