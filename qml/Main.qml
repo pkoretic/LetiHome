@@ -1,5 +1,6 @@
 pragma ComponentBehavior: Bound
 
+import QtCore
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Window
@@ -30,7 +31,16 @@ ApplicationWindow
     property date currentDate: new Date()
 
     // load apps when component is ready
-    Component.onCompleted: loadApplications()
+    Component.onCompleted:
+    {
+        loadApplications()
+        if (settings.firstRun)
+        {
+            settings.firstRun = false
+            // open about popup on first run
+            aboutPopup.open()
+        }
+    }
 
     function loadApplications()
     {
@@ -76,6 +86,12 @@ ApplicationWindow
     function colorByIndex(index)
     {
         return string_colors[index % string_colors.length]
+    }
+
+    Settings
+    {
+        id: settings
+        property bool firstRun: true
     }
 
     // when packages are changed (installed/removed) update list
