@@ -1,3 +1,18 @@
+## 2025-05-27, Version 2.3.0
+
+### Notable changes
+
+#### The following significant changes have been made since the previous LetiHome 2.2.4 release.
+
+Add first run and ability to get LetiHome Plus version.
+
+### commits
+
+ - [d6c3e85](https://github.com/qaap/LetiHome/commit/d6c3e85) helper script that makes it possible to build android version from command line
+ - [f1cc6f0](https://github.com/qaap/LetiHome/commit/f1cc6f0) about: minor information update
+ - [bae6213](https://github.com/qaap/LetiHome/commit/bae6213) add first run closes
+ - [12a9167](https://github.com/qaap/LetiHome/commit/12a9167) add ability to get LetiHomePlus applicatio
+
 ## 2025-01-19, Version 2.2.4
 
 ### Notable changes
