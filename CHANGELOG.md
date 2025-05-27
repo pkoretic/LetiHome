@@ -1,3 +1,54 @@
+## 2025-05-27, Version 2.3.0
+
+### Notable changes
+
+#### The following significant changes have been made since the previous LetiHome 2.2.0 release.
+
+Plus version with more features that allow for customization.
+
+### commits
+
+ - [47e78d0](https://github.com/qaap/LetiHome/commit/47e78d0) add ability to configure a number of apps shown in a list / grid
+ - [6ebeb58](https://github.com/qaap/LetiHome/commit/6ebeb58) add listview next to gridview
+ - [06a2ae0](https://github.com/qaap/LetiHome/commit/06a2ae0) settings: fix wallpaper loading
+ - [432af5d](https://github.com/qaap/LetiHome/commit/432af5d) remove extra options title
+ - [e9dd9a5](https://github.com/qaap/LetiHome/commit/e9dd9a5) add random wallpaper generation
+ - [78572d7](https://github.com/qaap/LetiHome/commit/78572d7) options: minor translation update
+ - [90b6368](https://github.com/qaap/LetiHome/commit/90b6368) Options: add TabBar
+ - [be50832](https://github.com/qaap/LetiHome/commit/be50832) minor spacing / size adaptions
+ - [07af134](https://github.com/qaap/LetiHome/commit/07af134) home: add settings icon button
+ - [1b7d219](https://github.com/qaap/LetiHome/commit/1b7d219) center contex menus
+ - [52f3e90](https://github.com/qaap/LetiHome/commit/52f3e90) minor
+ - [6788535](https://github.com/qaap/LetiHome/commit/6788535) settings: add ability to show/hide clock and time
+ - [2a1d7a4](https://github.com/qaap/LetiHome/commit/2a1d7a4) TopBar: align to top
+ - [58d6369](https://github.com/qaap/LetiHome/commit/58d6369) settings: add ability to align apps to bottom
+ - [67a64cf](https://github.com/qaap/LetiHome/commit/67a64cf) speedup highlight move duration in Options
+ - [8903a50](https://github.com/qaap/LetiHome/commit/8903a50) load IconBanner async
+ - [8b8ff5a](https://github.com/qaap/LetiHome/commit/8b8ff5a) add helper script to build and run android apk/aab
+ - [25e0509](https://github.com/qaap/LetiHome/commit/25e0509) add NavigationProvider and IconBanner
+ - [d7d3076](https://github.com/qaap/LetiHome/commit/d7d3076) update add/remove intents when app is updating
+ - [49730b5](https://github.com/qaap/LetiHome/commit/49730b5) manage disabled apps
+ - [0326196](https://github.com/qaap/LetiHome/commit/0326196) remove extra command
+ - [873d44c](https://github.com/qaap/LetiHome/commit/873d44c) fix qmldir location
+ - [5c540bf](https://github.com/qaap/LetiHome/commit/5c540bf) rebrand to plus
+ - [7125bb6](https://github.com/qaap/LetiHome/commit/7125bb6) hide app labels by default
+ - [6d9c698](https://github.com/qaap/LetiHome/commit/6d9c698) make settings default context option
+ - [a500e9d](https://github.com/qaap/LetiHome/commit/a500e9d) update default gradient
+ - [3e34aa1](https://github.com/qaap/LetiHome/commit/3e34aa1) fix non TV banner icon display
+ - [0a7dc48](https://github.com/qaap/LetiHome/commit/0a7dc48) preselect menu options
+ - [0fe19a1](https://github.com/qaap/LetiHome/commit/0fe19a1) add app management
+ - [49136bc](https://github.com/qaap/LetiHome/commit/49136bc) fix clock timer
+ - [8f71d8b](https://github.com/qaap/LetiHome/commit/8f71d8b) CMakeLists: minor update
+ - [3b2cabc](https://github.com/qaap/LetiHome/commit/3b2cabc) minor change
+ - [e31e796](https://github.com/qaap/LetiHome/commit/e31e796) rename
+ - [7441854](https://github.com/qaap/LetiHome/commit/7441854) use Qt::QueuedConnection
+ - [9278e59](https://github.com/qaap/LetiHome/commit/9278e59) split out Home screen
+ - [0953916](https://github.com/qaap/LetiHome/commit/0953916) separate providers
+ - [aa220d9](https://github.com/qaap/LetiHome/commit/aa220d9) pass action information from intent
+ - [5fc449f](https://github.com/qaap/LetiHome/commit/5fc449f) change to ApplicationWindow
+ - [aa5230c](https://github.com/qaap/LetiHome/commit/aa5230c) reorganize views and components
+ - [342e194](https://github.com/qaap/LetiHome/commit/342e194) Update README.md
+
 ## 2025-01-10, Version 2.2.0
 
 ### Notable changes
