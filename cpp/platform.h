@@ -34,6 +34,8 @@ public slots:
         // open play store with leti home app
         void openLetiHomePage();
 
+        // open play store with leti home plus app
+        void openLetiHomePlusPage();
 public:
 
     void init();

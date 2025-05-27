@@ -142,7 +142,7 @@ public class LetiHome extends QtActivity
         startActivity(intent);
     }
 
-    // open playstore for letiplus
+    // open playstore for letihome
     public void openLetiHomePage()
     {
         Intent intent = new Intent(Intent.ACTION_VIEW);
@@ -151,4 +151,12 @@ public class LetiHome extends QtActivity
         startActivity(intent);
     }
 
+    // open playstore for letihomeplus
+    public void openLetiHomePlusPage()
+    {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse("https://play.google.com/store/apps/details?id=hr.envizia.letihomeplus"));
+        intent.setPackage("com.android.vending");
+        startActivity(intent);
+    }
 }

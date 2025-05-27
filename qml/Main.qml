@@ -60,6 +60,11 @@ ApplicationWindow
         _platform.openLetiHomePage()
     }
 
+    function openLetiHomePlusPage()
+    {
+        _platform.openLetiHomePlusPage()
+    }
+
     function updateDate()
     {
         app.currentDate = new Date()
@@ -271,12 +276,14 @@ ApplicationWindow
             {
                 textFormat: Text.StyledText
                 font.pixelSize: 20
-                text: `<p>Thanks for using <strong>LetiHome</strong> application!</p><br/>
+                text: `<p>Thank you for using <strong>LetiHome</strong> application!</p><br/>
                 <strong>LetiHome</strong> is a lightweight <u>open-source</u> app launcher application<br/>
                 that aims to works on as many TV devices as possible, <br/>especially low power ones.<br/><br/>
                 As there is <u>zero</u> data collection, please provide your review!<br/><br/>
                 <strong>OK</strong> opens current application.<br/>
                 <strong>Menu</strong> or <strong>Back</strong> opens application info <br/>where app can be disabled/hidden.<br/>
+                <br/>
+                <strong> LetiHome Plus</strong> is available for those who want to support development of this application.<br/>
                 `
             }
 
@@ -319,6 +326,19 @@ ApplicationWindow
                     Keys.onReturnPressed: clicked()
                     Keys.onEnterPressed: clicked()
                     onClicked: aboutPopup.close()
+                    KeyNavigation.right: getPlus
+                }
+
+                Button
+                {
+                    id: getPlus
+                    text: "Get LetiHome Plus"
+                    height: 60
+                    focus: true
+                    highlighted: activeFocus
+                    Keys.onReturnPressed: clicked()
+                    Keys.onEnterPressed: clicked()
+                    onClicked: openLetiHomePlusPage()
                 }
             }
         }

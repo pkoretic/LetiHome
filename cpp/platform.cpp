@@ -169,3 +169,14 @@ void Platform::openLetiHomePage()
 
 #endif
 }
+
+
+void Platform::openLetiHomePlusPage()
+{
+#ifdef Q_OS_ANDROID
+
+    QJniObject activity = QNativeInterface::QAndroidApplication::context();
+    activity.callMethod<void>("openLetiHomePlusPage");
+
+#endif
+}
