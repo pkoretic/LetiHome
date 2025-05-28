@@ -17,7 +17,7 @@
         </intent>
     </queries>
 
-    <supports-screens android:anyDensity="true" android:largeScreens="true" android:normalScreens="true" android:smallScreens="true"/>
+    <supports-screens android:anyDensity="true" android:largeScreens="true" android:xlargeScreens="true" android:normalScreens="true" android:smallScreens="true"/>
 
     <application android:name="org.qtproject.qt.android.bindings.QtApplication" android:hardwareAccelerated="true" android:label="-- %%INSERT_APP_NAME%% --" android:requestLegacyExternalStorage="true" android:allowBackup="true" android:fullBackupOnly="false" android:banner="@mipmap/ic_banner" android:icon="@mipmap/ic_launcher" android:roundIcon="@mipmap/ic_launcher_round">
 
