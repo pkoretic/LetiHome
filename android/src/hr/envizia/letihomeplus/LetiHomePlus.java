@@ -13,6 +13,11 @@ import android.util.Log;
 import android.os.Bundle;
 import android.net.Uri;
 
+import android.media.tv.TvInputManager;
+import android.media.tv.TvInputInfo;
+import android.content.Context;
+import androidx.tvprovider.media.tv.TvContractCompat;
+
 import java.io.ByteArrayOutputStream;
 import java.util.List;
 import java.util.HashMap;
@@ -172,4 +177,47 @@ public class LetiHomePlus extends QtActivity
         startActivity(intent);
     }
 
+
+    // method to return a list of TV inputs using TVInputManager <InputId, InputLabel>
+    public Map<String, String> getTvInputs()
+    {
+        Map<String, String> inputs = new HashMap<>();
+        TvInputManager tvInputManager = (TvInputManager) getSystemService(Context.TV_INPUT_SERVICE);
+
+        if (tvInputManager != null) {
+            List<TvInputInfo> inputList = tvInputManager.getTvInputList();
+
+            Log.d("LetiHomePlus", "Found " + inputList.size() + " TV inputs");
+
+            for (TvInputInfo input : inputList) {
+                // Only include hardware passthrough inputs (e.g. HDMI, AV, etc)
+                if (input.getType() == TvInputInfo.TYPE_HDMI ||
+                    input.getType() == TvInputInfo.TYPE_COMPONENT ||
+                    input.getType() == TvInputInfo.TYPE_COMPOSITE ||
+                    input.getType() == TvInputInfo.TYPE_SVIDEO ||
+                    input.getType() == TvInputInfo.TYPE_SCART ||
+                    input.getType() == TvInputInfo.TYPE_VGA ||
+                    input.getType() == TvInputInfo.TYPE_DISPLAY_PORT) {
+
+                    String id = input.getId();
+                    CharSequence label = input.loadLabel(this);
+                    Log.d("LetiHomePlus", "Found TV input: id=" + id + ", label=" + label);
+                    inputs.put(id, label != null ? label.toString() : id);
+                }
+            }
+        }
+        Log.d("LetiHomePlus", "Returning TV inputs: " + inputs.toString());
+        return inputs;
+    }
+
+    // method to set the chosen TV input using TvContractCompat.buildChannelUriForPassthroughInput
+    public void setInput(String inputId)
+    {
+        Log.d("LetiHomePlus", "Setting TV input: " + inputId);
+        if (inputId == null) return;
+        Uri uri = TvContractCompat.buildChannelUriForPassthroughInput(inputId);
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+    }
 }

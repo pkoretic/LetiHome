@@ -18,6 +18,8 @@ qt_add_executable(LetiHomePlus
     src/providers/bannerprovider.cpp
     src/providers/bannerprovider.h
     android/AndroidManifest.xml
+    android/build.gradle
+    android/gradle.properties
     android/src/hr/envizia/letihomeplus/LetiHomePlus.java
     android/src/hr/envizia/letihomeplus/PackagesChangedReceiver.java
 )

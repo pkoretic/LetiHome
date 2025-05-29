@@ -37,6 +37,12 @@ public slots:
         // open play store with leti home app
         void openLetiHomePage();
 
+        // get list of TV inputs
+        QVariantList tvInputs();
+
+        // set TV input by id
+        void setTvInput(const QString &inputId);
+
 public:
 
     void init();

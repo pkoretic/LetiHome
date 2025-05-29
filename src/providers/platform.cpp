@@ -204,3 +204,42 @@ void Platform::openLetiHomePage()
 
 #endif
 }
+
+QVariantList Platform::tvInputs()
+{
+    QVariantList inputList;
+
+#ifdef Q_OS_ANDROID
+    QJniObject activity = QNativeInterface::QAndroidApplication::context();
+    QJniObject inputsMap = activity.callObjectMethod("getTvInputs", "()Ljava/util/Map;");
+    auto entriesSet = inputsMap.callObjectMethod("entrySet", "()Ljava/util/Set;");
+    auto entriesSetIterator = entriesSet.callObjectMethod("iterator", "()Ljava/util/Iterator;");
+
+    while (entriesSetIterator.callMethod<jboolean>("hasNext"))
+    {
+        auto entry = entriesSetIterator.callObjectMethod("next", "()Ljava/lang/Object;");
+        auto inputId = entry.callObjectMethod("getKey", "()Ljava/lang/Object;").toString();
+        auto inputLabel = entry.callObjectMethod("getValue", "()Ljava/lang/Object;").toString();
+
+        QVariantMap data;
+        data["inputId"] = inputId;
+        data["inputLabel"] = inputLabel;
+        inputList.append(data);
+    }
+#endif
+
+    return inputList;
+}
+
+void Platform::setTvInput(const QString &inputId)
+{
+#ifdef Q_OS_ANDROID
+    QJniObject activity = QNativeInterface::QAndroidApplication::context();
+    activity.callMethod<void>(
+        "setInput",
+        "(Ljava/lang/String;)V",
+        QJniObject::fromString(inputId).object<jstring>());
+#else
+    Q_UNUSED(inputId);
+#endif
+}
