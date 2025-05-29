@@ -34,6 +34,7 @@ Keys `Enter/Return/OK` or mouse (Left click) can be used to open applications.<b
 Opening LetiHome (Pressing Enter/Return/OK) will open About page with System Settings option.
 
 ## Plus version
+<img src="https://raw.githubusercontent.com/pkoretic/LetiHome/badges/tvscreenshot-plus.png" width="30%" />
 Basic version is intentionally very limited with 700~ lines of combined C++, Java, QML code.
 This is to ensure that it works with as many as possible low power devices and is easy to maintain.
 
