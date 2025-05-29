@@ -33,6 +33,16 @@ Keys `Enter/Return/OK` or mouse (Left click) can be used to open applications.<b
 `Menu/Back` or mouse right click will open Application Info.<br/>
 Opening LetiHome (Pressing Enter/Return/OK) will open About page with System Settings option.
 
+## Plus version
+Basic version is intentionally very limited with 700~ lines of combined C++, Java, QML code.
+This is to ensure that it works with as many as possible low power devices and is easy to maintain.
+
+If you want more features Plus version is also available as open-source in the `plus` branch.
+It has few extra features to keep it lean, like possibily to use list instead of a grid, random background, reorder apps, hide apps and minor tweaks.
+To sponsor development it would be great to get it from Google Play instead.
+
+[![Get it on Google Play](https://developer.android.com/images/brand/en_generic_rgb_wo_60.png)](https://play.google.com/store/apps/details?id=hr.envizia.letihomeplus)
+
 ## Set LetiHome Launcher as default launcher on Android TV / Google TV
 
 Note: on Android boxes that run regular Android OS (usually as "tablet" device)
