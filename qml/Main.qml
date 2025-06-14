@@ -299,7 +299,7 @@ ApplicationWindow
                 <strong>OK</strong> opens current application.<br/>
                 <strong>Menu</strong> or <strong>Back</strong> opens application info <br/>where app can be disabled/hidden.<br/>
                 <br/>
-                <strong> LetiHome Plus</strong> is available for those who want to support development of this application.<br/>
+                <strong> LetiHome Plus</strong> is available for those who need more features and to support development of this application.<br/>
                 <br/>
                 This popup can be shown again by opening <strong>LetiHome</strong> application from the app list.
                 `
