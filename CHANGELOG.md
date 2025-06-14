@@ -1,3 +1,15 @@
+## 2025-06-14, Version 2.3.2
+
+### Notable changes
+
+#### The following significant changes have been made since the previous LetiHome 2.3.1 release.
+
+Fix hardware requirements that are not applicable
+
+### commits
+
+ - [749d068](https://github.com/qaap/LetiHome/commit/749d068) remove hardware requirements that are not applicable
+
 ## 2025-06-14, Version 2.3.1
 
 ### Notable changes
