@@ -1,3 +1,14 @@
+## 2025-06-14, Version 2.3.1
+
+### Notable changes
+
+#### The following significant changes have been made since the previous LetiHome 2.3.0 release.
+
+Support for bigger devices
+
+### commits
+
+
 ## 2025-05-27, Version 2.3.0
 
 ### Notable changes
