@@ -1,3 +1,14 @@
+## 2025-06-14, Version 2.3.2P
+
+### Notable changes
+
+#### The following significant changes have been made since the previous LetiHome 2.3.0 release.
+
+Minor update to fix issues with the previous release.
+
+### commits
+
+
 ## 2025-05-27, Version 2.3.0
 
 ### Notable changes
