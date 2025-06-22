@@ -66,7 +66,7 @@ cd build_android
 
 $HOME/Qt/6.5.3/android_x86/bin/qt-cmake \
     -DANDROID_SDK_ROOT=$HOME/Android/Sdk \
-    -DANDROID_NDK_ROOT=$HOME/Android/Sdk/ndk/25.1.8937393 \
+    -DANDROID_NDK_ROOT=$HOME/Android/Sdk/ndk/26.1.10909125 \
     -DCMAKE_BUILD_TYPE="$BUILD_TYPE" \
     -DQT_ANDROID_SIGN_APK="$SIGN_APK" \
     -DQT_ANDROID_SIGN_AAB="$SIGN_AAB" \
