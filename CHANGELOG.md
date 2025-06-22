@@ -1,3 +1,15 @@
+## 2025-06-22, Version 2.3.3
+
+### Notable changes
+
+#### The following significant changes have been made since the previous LetiHome 2.3.2 release.
+
+Update NDK version
+
+### commits
+
+ - [f210e7a](https://github.com/qaap/LetiHome/commit/f210e7a) scripts: update ndk version
+
 ## 2025-06-14, Version 2.3.2
 
 ### Notable changes
