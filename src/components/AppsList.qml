@@ -119,7 +119,7 @@ ListView {
             onTriggered: listView.state = "reorder"
         }
         MenuItem {
-            text: "Remove"
+            text: "Hide"
             onTriggered: {
                 listView.removeClicked(listView.currentItem.packageName);
 

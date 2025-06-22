@@ -122,7 +122,7 @@ GridView
         }
         MenuItem
         {
-            text: "Remove"
+            text: "Hide"
             onTriggered:
             {
                 gridView.removeClicked(gridView.currentItem.packageName)
