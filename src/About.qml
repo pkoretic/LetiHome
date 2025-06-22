@@ -26,6 +26,9 @@ Popup
             <strong>LetiHomePlus</strong> is a lightweight app launcher application<br/>
             that aims to works on as many TV devices as possible, <br/>especially low power ones.<br/><br/>
             As there is <u>zero</u> data collection, please provide your feedback <br/>and suggestions on project source page.<br/>
+            <br/>
+            <strong>OK</strong> opens current application.<br/>
+            <strong>Menu</strong> or <strong>Back</strong> opens additional application options.<br/>
             `
         }
 
