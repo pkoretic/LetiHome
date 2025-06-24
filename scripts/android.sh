@@ -82,11 +82,13 @@ if [ "$BUILD_AAB" == "ON" ]; then
     cmake --build . --target aab
 fi
 
-# Set APK_FILE based on build type
+# Set APK_FILE and AAB_FILE based on build type
 if [ "$BUILD_TYPE" == "Release" ]; then
     APK_FILE="android-build/build/outputs/apk/release/android-build-release-signed.apk"
+    AAB_FILE="android-build/build/outputs/bundle/release/android-build-release.aab"
 else
     APK_FILE="android-build/build/outputs/apk/debug/android-build-debug.apk"
+    AAB_FILE="android-build/build/outputs/bundle/debug/android-build-debug.aab"
 fi
 
 # Check for install, install_and_run, or reinstall_and_run argument
@@ -101,4 +103,8 @@ elif [ "$4" == "reinstall_and_run" ]; then
     adb install $APK_FILE
     adb shell am force-stop $PACKAGE_NAME
     adb shell am start -n $PACKAGE_NAME/$MAIN_ACTIVITY
+elif [ "$4" == "build" ]; then
+    version_cmakelists="$(\grep -oP 'QT_ANDROID_VERSION_NAME "\K[0-9.]+' ../CMakeLists.txt)"
+    cp $APK_FILE LetiHome-$version_cmakelists.apk
+    cp $AAB_FILE LetiHome-$version_cmakelists.aab
 fi
