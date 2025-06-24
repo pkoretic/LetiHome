@@ -1,3 +1,15 @@
+## 2025-06-24, Version 2.3.4
+
+### Notable changes
+
+#### The following significant changes have been made since the previous LetiHome 2.3.3 release.
+
+Rebrand to Lite
+
+### commits
+
+ - [41e338d](https://github.com/qaap/LetiHome/commit/41e338d) rebrand to Lite
+
 ## 2025-06-22, Version 2.3.3
 
 ### Notable changes
