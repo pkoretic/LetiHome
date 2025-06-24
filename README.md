@@ -1,10 +1,10 @@
-# LetiHome
+# LetiHome TV Launcher Lite
 
 [![License MIT](https://cdn.rawgit.com/pkoretic/letihome/badges/license.svg)](https://github.com/pkoretic/letihome/blob/master/LICENSE)
 [![Language (Qt)](https://cdn.rawgit.com/pkoretic/letihome/badges/qt.svg)](https://www.qt.io)
 
 Android launcher optimized for the big screen. Targets embedded and TV/STB
-devices. It is intended to be very lightweight and simple.
+devices. It is very lightweight and simple to run on as many devices as possible.
 
 Android TV OS / Google Play OS<br/>
 <p align="center">
@@ -35,7 +35,7 @@ Opening LetiHome (Pressing Enter/Return/OK) will open About page with System Set
 
 ## Plus version
 <img src="https://raw.githubusercontent.com/pkoretic/LetiHome/badges/tvscreenshot-plus.png" width="30%" />
-Basic version is intentionally very limited with 700~ lines of combined C++, Java, QML code.
+Lite version is intentionally very limited with 700~ lines of combined C++, Java, QML code.
 This is to ensure that it works with as many as possible low power devices and is easy to maintain.
 
 If you want more features Plus version is also available as open-source in the `plus` branch.
