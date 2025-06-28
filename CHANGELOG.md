@@ -1,3 +1,17 @@
+## 2025-06-28, Version 2.4.0
+
+### Notable changes
+
+#### The following significant changes have been made since the previous LetiHome 2.3.4 release.
+
+latest ndk, sdk, gradle which resolve many Qt related crashes
+
+### commits
+
+ - [d77ea7b](https://github.com/qaap/LetiHome/commit/d77ea7b) main: use word wrap for about text
+ - [c644402](https://github.com/qaap/LetiHome/commit/c644402) use latest supported ndk, sdk, gradle
+ - [02ad201](https://github.com/qaap/LetiHome/commit/02ad201) scripts: produce final apk / aab file based on version
+
 ## 2025-06-24, Version 2.3.4
 
 ### Notable changes
