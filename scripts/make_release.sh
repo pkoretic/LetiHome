@@ -85,7 +85,7 @@ cat > $tempfile <<- EOF
 EOF
 
     git log $current_version..HEAD --oneline --format=" - %h %s " | \
-        perl -pe 's/([a-z0-9]{7})/[$1](https:\/\/github.com\/qaap\/LetiHome\/commit\/$1)/' | \
+        perl -pe 's/([a-z0-9]{7})/[$1](https:\/\/github.com\/pkoretic\/LetiHome\/commit\/$1)/' | \
         perl -pe 's/#.*$//' | perl -pe 's/ *$//' \
         >> $tempfile
 
