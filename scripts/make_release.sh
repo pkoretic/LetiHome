@@ -104,7 +104,7 @@ EOF
 commit_release()
 {
     git reset HEAD .
-    git add $android_manifest $release_file $profile $changelog_file
+    git add $release_file $profile $changelog_file
     git commit -sm "$version_format"
     git tag -a "$version" -m "$version_format"
 }
