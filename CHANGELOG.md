@@ -1,3 +1,22 @@
+## 2025-07-05, Version 3.0.0
+
+### Notable changes
+
+#### The following significant changes have been made since the previous LetiHome 2.3.2P release.
+
+Upgrade ndk, sdk, gradle to latest suppported version
+Rewrite options app display
+
+### commits
+
+ - [e070f79](https://github.com/pkoretic/LetiHome/commit/e070f79) scripts: remove empty argument
+ - [c0909f7](https://github.com/pkoretic/LetiHome/commit/c0909f7) update notes to pkoretic branch
+ - [7990d38](https://github.com/pkoretic/LetiHome/commit/7990d38) use latest supported ndk, sdk, gradle
+ - [9906109](https://github.com/pkoretic/LetiHome/commit/9906109) scripts: update ndk version
+ - [eac4833](https://github.com/pkoretic/LetiHome/commit/eac4833) Options: fix hidden apps display
+ - [07f5bd1](https://github.com/pkoretic/LetiHome/commit/07f5bd1) About: add Keys information
+ - [824bb61](https://github.com/pkoretic/LetiHome/commit/824bb61) rename Remove to Hide for more clarity
+
 ## 2025-06-14, Version 2.3.2P
 
 ### Notable changes
