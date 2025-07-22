@@ -297,7 +297,7 @@ ApplicationWindow
                 wrapMode: Text.Wrap
                 text: `<p>Thank you for using <strong>LetiHome Lite</strong> application!</p><br/>
                 <strong>LetiHome Lite</strong> is a lightweight <u>open-source</u> app launcher application
-                that aims to works on as many TV devices as possible, especially low power ones.
+                that aims to work on as many TV devices as possible, especially low power ones.
                 As there is <u>zero</u> data collection, please provide your review!<br/>
                 <strong>OK</strong> opens current application.
                 <strong>Menu</strong> or <strong>Back</strong> opens application info where app can be disabled/hidden.<br/><br/>
