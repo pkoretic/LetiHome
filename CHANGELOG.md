@@ -1,3 +1,14 @@
+## 2025-07-22, Version 3.0.1
+
+### Notable changes
+
+#### The following significant changes have been made since the previous LetiHome 3.0.0 release.
+
+Fix crash on Back key press
+
+### commits
+
+
 ## 2025-07-05, Version 3.0.0
 
 ### Notable changes
