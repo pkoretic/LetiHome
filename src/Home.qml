@@ -120,6 +120,7 @@ Rectangle
             showClock: settingsProvider.showClock
             showDate: settingsProvider.showDate
             KeyNavigation.down: appsLoader
+            Keys.onBackPressed: appsLoader.focus = true
             onSettingsClicked: navigationProvider.go("/options")
         }
 
