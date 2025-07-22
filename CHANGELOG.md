@@ -1,3 +1,17 @@
+## 2025-07-22, Version 3.1.0
+
+### Notable changes
+
+#### The following significant changes have been made since the previous LetiHome 3.0.1 release.
+
+Add first run dialog
+Improve About page display
+
+### commits
+
+ - [02ca8d8](https://github.com/pkoretic/LetiHome/commit/02ca8d8) About: use text wrapping instead of using manual breaks
+ - [57e9162](https://github.com/pkoretic/LetiHome/commit/57e9162) add first run so it shows About page
+
 ## 2025-07-22, Version 3.0.1
 
 ### Notable changes
