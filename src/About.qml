@@ -15,25 +15,31 @@ Popup
 
     Column
     {
+        width: parent.width
         anchors.centerIn: parent
         spacing: 10
 
         Label
         {
+            width: parent.width * 0.9
+            anchors.horizontalCenter: parent.horizontalCenter
+            wrapMode: Text.WordWrap
             textFormat: Text.StyledText
             font.pixelSize: 20
             text: `<p>Thanks for supporting <strong>LetiHomePlus</strong> application!</p><br/>
-            <strong>LetiHomePlus</strong> is a lightweight app launcher application<br/>
-            that aims to works on as many TV devices as possible, <br/>especially low power ones.<br/><br/>
-            As there is <u>zero</u> data collection, please provide your feedback <br/>and suggestions on project source page.<br/>
+            <strong>LetiHomePlus</strong> is a lightweight app launcher application that aims to work on as many TV devices as possible, especially low power ones.<br/><br/>
+            As there is <u>zero</u> data collection, please provide your review on PlayStore, or feedback on project Github page.<br/>
             <br/>
             <strong>OK</strong> opens current application.<br/>
             <strong>Menu</strong> or <strong>Back</strong> opens additional application options.<br/>
+            <strong>Options</strong> are in the right corner of the top menu.<br/>
             `
         }
 
         Row
         {
+            width: parent.width * 0.9
+            anchors.horizontalCenter: parent.horizontalCenter
             spacing: 20
 
             Button
