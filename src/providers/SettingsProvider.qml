@@ -12,6 +12,7 @@ Settings
     property bool useLoremPicsumWallpaper: false
     property bool showAsList: true
     property int appsShown: 5
+    property bool isFirstRun: true
 
     function init()
     {

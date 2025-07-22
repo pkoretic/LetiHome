@@ -46,6 +46,11 @@ ApplicationWindow
         })
 
         homeScreen.visible = true
+
+        if (settingsProvider.isFirstRun) {
+            navigationProvider.go("/about")
+            settingsProvider.isFirstRun = false
+        }
     }
 
     // Leti Home default Home Screen
