@@ -116,6 +116,7 @@ Rectangle
             Layout.preferredHeight: childrenRect.height
             Layout.alignment: Qt.AlignTop
             isOnline: platformProvider.isOnline
+            isEthernet: platformProvider.isEthernet
             is24HourFormat: platformProvider.is24HourFormat()
             showClock: settingsProvider.showClock
             showDate: settingsProvider.showDate
