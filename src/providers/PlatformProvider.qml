@@ -8,6 +8,7 @@ Item
     signal appsChanged(string action, string packageName, string applicationName)
 
     property bool isOnline: _Platform.isOnline
+    property bool isEthernet: _Platform.isEthernet
     property bool isTelevision: _Platform.isTelevision
 
     function init()

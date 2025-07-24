@@ -10,6 +10,7 @@ class Platform : public QObject
     Q_OBJECT
     Q_PROPERTY(bool isOnline READ getOnline WRITE setOnline NOTIFY onlineChanged FINAL)
     Q_PROPERTY(bool isTelevision READ getIsTelevision WRITE setIsTelevision NOTIFY isTelevisionChanged FINAL)
+    Q_PROPERTY(bool isEthernet READ getIsEthernet WRITE setIsEthernet NOTIFY isEthernetChanged FINAL)
 
 public slots:
 
@@ -60,6 +61,9 @@ public:
     bool getIsTelevision() const { return m_isTelevision; };
     void setIsTelevision(bool isTelevision) { m_isTelevision = isTelevision; emit isTelevisionChanged(); };
 
+    bool getIsEthernet() const { return m_isEthernet; };
+    void setIsEthernet(bool isEthernet) { m_isEthernet = isEthernet; emit isEthernetChanged(); };
+
 signals:
     // signal when packages have changed (installed/uninstalled/enabled/disabled)
     // action can be PACKAGE_CHANGED, PACKAGE_ADDED, PACKAGE_DELETED
@@ -71,9 +75,13 @@ signals:
     // signal when device is television
     void isTelevisionChanged();
 
+    // signal when network is ethernet
+    void isEthernetChanged();
+
 private:
     int m_online;
     int m_isTelevision;
+    int m_isEthernet;
 
 };
 

@@ -10,8 +10,11 @@ void Platform::init()
     QNetworkInformation::loadDefaultBackend();
     auto networkInfo = QNetworkInformation::instance();
     this->setOnline(networkInfo->reachability() == QNetworkInformation::Reachability::Online);
-    QObject::connect(networkInfo, &QNetworkInformation::reachabilityChanged, [this](auto reachability) {
+    this->setIsEthernet(networkInfo->transportMedium() == QNetworkInformation::TransportMedium::Ethernet);
+
+    QObject::connect(networkInfo, &QNetworkInformation::reachabilityChanged, [this, networkInfo](auto reachability ) {
         this->setOnline(reachability == QNetworkInformation::Reachability::Online);
+        this->setIsEthernet(networkInfo->transportMedium() == QNetworkInformation::TransportMedium::Ethernet);
     });
 
     this->setIsTelevision(this->isTelevision());

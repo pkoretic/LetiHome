@@ -7,6 +7,7 @@ FocusScope
     property var currentDate: new Date()
     property bool is24HourFormat: true
     property bool isOnline: true
+    property bool isEthernet: true
     property alias running: updateTimer.running
     property bool showClock
     property alias showDate: date.visible
@@ -31,7 +32,7 @@ FocusScope
 
         Image
         {
-            source: "../../assets/network-%1.svg".arg(root.isOnline ? "online" : "offline")
+            source: "../../assets/%1.svg".arg(root.isEthernet ? (root.isOnline ? "ethernet-online" : "ethernet-offline") : (root.isOnline ? "network-online" : "network-offline"))
             height: time.height - 10
             width: height
             anchors.verticalCenter: parent.verticalCenter
