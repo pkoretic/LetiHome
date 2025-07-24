@@ -25,6 +25,7 @@ ApplicationWindow
     // Platform abstraction inserted from main.cpp
     property bool isTelevision: _platform.isTelevision
     property bool isOnline: _platform.isOnline
+    property bool isEthernet: _platform.isEthernet
     property bool is24HourFormat: _platform.is24HourFormat()
 
     // main date object
@@ -155,7 +156,7 @@ ApplicationWindow
 
                 Image
                 {
-                    source: "network-%1.svg".arg(app.isOnline ? "online" : "offline")
+                    source: "%1.svg".arg(app.isEthernet ? (app.isOnline ? "ethernet-online" : "ethernet-offline") : (app.isOnline ? "network-online" : "network-offline"))
                     height: datetime.height - 10
                     width: height
                     anchors.verticalCenter: parent.verticalCenter
