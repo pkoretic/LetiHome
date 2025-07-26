@@ -1,3 +1,18 @@
+## 2025-07-26, Version 2.5.0
+
+### Notable changes
+
+Add Ethernet network connectivity icon information
+
+<list notable features manually here>
+
+### commits
+
+ - [3718f1c](https://github.com/pkoretic/LetiHome/commit/3718f1c) Toolbar: add ethernet network connectivity icon information
+ - [c3e295f](https://github.com/pkoretic/LetiHome/commit/c3e295f) Main.qml: fix typo in About popup
+ - [798ae84](https://github.com/pkoretic/LetiHome/commit/798ae84) update notes to pkoretic branch
+ - [344a796](https://github.com/pkoretic/LetiHome/commit/344a796) scripts: remove empty argument
+
 ## 2025-06-28, Version 2.4.0
 
 ### Notable changes
