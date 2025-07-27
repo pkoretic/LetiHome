@@ -156,9 +156,11 @@ ApplicationWindow
 
                 Image
                 {
-                    source: "%1.svg".arg(app.isEthernet ? (app.isOnline ? "ethernet-online" : "ethernet-offline") : (app.isOnline ? "wifi-online" : "wifi-offline"))
-                    height: datetime.height - 10
-                    width: height
+                    source: "%1.svg".arg(app.isOnline ? app.isEthernet ? "ethernet-online" : "wifi-online" : "network-offline")
+                    height: 24
+                    width: 24
+                    sourceSize.width: paintedWidth
+                    sourceSize.height: paintedHeight
                     anchors.verticalCenter: parent.verticalCenter
                 }
 

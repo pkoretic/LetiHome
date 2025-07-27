@@ -26,10 +26,9 @@ qt_add_qml_module(LetiHome
     QML_FILES
         qml/Main.qml
     RESOURCES
-        qml/ethernet-offline.svg
         qml/ethernet-online.svg
-        qml/wifi-offline.svg
         qml/wifi-online.svg
+        qml/network-offline.svg
 )
 
 set_target_properties(LetiHome PROPERTIES
