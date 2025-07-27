@@ -1,3 +1,17 @@
+## 2025-07-27, Version 2.5.1
+
+### Notable changes
+
+#### The following significant changes have been made since the previous LetiHome 2.5.0 release.
+
+Update icons and clean up About page display
+
+### commits
+
+ - [5566468](https://github.com/pkoretic/LetiHome/commit/5566468) About: clean up page display
+ - [887b2c1](https://github.com/pkoretic/LetiHome/commit/887b2c1) ToolBar: use single network offline icon
+ - [18ef503](https://github.com/pkoretic/LetiHome/commit/18ef503) update wifi icons
+
 ## 2025-07-26, Version 2.5.0
 
 ### Notable changes
