@@ -1,3 +1,18 @@
+## 2025-07-28, Version 3.2.0
+
+### Notable changes
+
+#### The following significant changes have been made since the previous LetiHome 3.1.0 release.
+
+Update Toolbar icons quality
+Increase default app display to 7
+
+### commits
+
+ - [0b63109](https://github.com/pkoretic/LetiHome/commit/0b63109) Home: increase default app display to 7
+ - [8468475](https://github.com/pkoretic/LetiHome/commit/8468475) ToolBar: update icons for MIT versions
+ - [d25f7d4](https://github.com/pkoretic/LetiHome/commit/d25f7d4) Toolbar: add ethernet network connectivity icon information
+
 ## 2025-07-22, Version 3.1.0
 
 ### Notable changes
