@@ -28,13 +28,15 @@ FocusScope
     Row
     {
         anchors.right: parent.right
-        spacing: 20
+        spacing: 10
 
         Image
         {
-            source: "../../assets/%1.svg".arg(root.isEthernet ? (root.isOnline ? "ethernet-online" : "ethernet-offline") : (root.isOnline ? "network-online" : "network-offline"))
+            source: "../../assets/%1.svg".arg(root.isOnline ? (root.isEthernet ? "ethernet-online" : "wifi-online") : "network-offline")
             height: time.height - 10
             width: height
+            sourceSize.width: paintedWidth
+            sourceSize.height: paintedHeight
             anchors.verticalCenter: parent.verticalCenter
         }
 
@@ -45,6 +47,8 @@ FocusScope
             scale: activeFocus ? 1.5 : 1
             height: time.height - 10
             width: height
+            sourceSize.width: paintedWidth
+            sourceSize.height: paintedHeight
             anchors.verticalCenter: parent.verticalCenter
 
             Keys.onReturnPressed: root.settingsClicked()
