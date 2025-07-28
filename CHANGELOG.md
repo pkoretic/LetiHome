@@ -1,3 +1,15 @@
+## 2025-07-28, Version 2.5.2
+
+### Notable changes
+
+#### The following significant changes have been made since the previous LetiHome 2.5.1 release.
+
+Improve network connectivity icon handling
+
+### commits
+
+ - [116a0f4](https://github.com/pkoretic/LetiHome/commit/116a0f4) Platform: separate transport medium change listener
+
 ## 2025-07-27, Version 2.5.1
 
 ### Notable changes
