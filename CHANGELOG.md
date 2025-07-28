@@ -1,3 +1,15 @@
+## 2025-07-28, Version 3.2.1
+
+### Notable changes
+
+#### The following significant changes have been made since the previous LetiHome 3.2.0 release.
+
+Hotfix for missing wifi icon
+
+### commits
+
+ - [3151024](https://github.com/pkoretic/LetiHome/commit/3151024) fix missing wifi icon
+
 ## 2025-07-28, Version 3.2.0
 
 ### Notable changes
