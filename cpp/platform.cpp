@@ -1,5 +1,8 @@
 #include <QCoreApplication>
 #include <QNetworkInformation>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonArray>
 
 #include "platform.h"
 
@@ -71,29 +74,29 @@ QVariantList Platform::applicationList()
 #ifdef Q_OS_ANDROID
 
     QJniObject activity = QNativeInterface::QAndroidApplication::context();
+    QJniObject jsonApplications = activity.callObjectMethod("applicationList", "()Ljava/lang/String;");
+    QString jsonString = jsonApplications.toString();
 
-    QJniObject applications = activity.callObjectMethod("applicationList", "()Ljava/util/Map;");
-    auto entriesSet = applications.callObjectMethod("entrySet", "()Ljava/util/Set;");
-    auto entriesSetIterator = entriesSet.callObjectMethod("iterator", "()Ljava/util/Iterator;");
-
-    while (entriesSetIterator.callMethod<jboolean>("hasNext"))
-    {
-        auto entry = entriesSetIterator.callObjectMethod("next", "()Ljava/lang/Object;");
-        auto packageName = entry.callObjectMethod("getKey", "()Ljava/lang/Object;").toString();
-        auto applicationName = entry.callObjectMethod("getValue", "()Ljava/lang/Object;").toString();
-
-        QVariantMap data;
-        data["packageName"] = packageName;
-        data["applicationName"] = applicationName;
-        appList.append(data);
+    QJsonDocument jsonDoc = QJsonDocument::fromJson(jsonString.toUtf8());
+    if (jsonDoc.isObject()) {
+        QJsonObject jsonObj = jsonDoc.object();
+        for (auto it = jsonObj.begin(); it != jsonObj.end(); ++it) {
+            QString packageName = it.key();
+            QJsonObject appObject = it.value().toObject();
+            QVariantMap data;
+            data["packageName"] = packageName;
+            data["applicationName"] = appObject.value("applicationName").toString();
+            data["applicationIcon"] = appObject.value("applicationIcon").toString();
+            appList.append(data);
+        }
     }
 
-    // Sort the appList by "applicationName" (case-sensitive)
+    // sort alphabetically
+
     std::sort(appList.begin(), appList.end(), [](const QVariant &a, const QVariant &b) {
-        QString nameA = a.toMap().value("applicationName").toString();
-        QString nameB = b.toMap().value("applicationName").toString();
-        return nameA < nameB; // Case-sensitive comparison
+        return a.toMap().value("applicationName").toString() < b.toMap().value("applicationName").toString();
     });
+
 #endif
 
     return appList;

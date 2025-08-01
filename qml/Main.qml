@@ -222,7 +222,7 @@ ApplicationWindow
 
                     anchors.fill: parent
                     anchors.margins: delegate.isTVBanner ? 0 : 15
-                    source: "image://icon/" + delegate.modelData.packageName
+                    source: "data:image/webp;base64," + delegate.modelData.applicationIcon
                     cache: true
                     fillMode: Image.PreserveAspectFit
                 }

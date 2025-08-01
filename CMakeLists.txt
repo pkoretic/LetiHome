@@ -13,8 +13,6 @@ qt_add_executable(LetiHome
     cpp/main.cpp
     cpp/platform.cpp
     cpp/platform.h
-    cpp/iconprovider.cpp
-    cpp/iconprovider.h
     android/AndroidManifest.xml
     android/src/hr/envizia/letihome/LetiHome.java
     android/src/hr/envizia/letihome/PackagesChangedReceiver.java

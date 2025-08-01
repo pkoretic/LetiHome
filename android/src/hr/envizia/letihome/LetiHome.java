@@ -12,6 +12,7 @@ import android.text.format.DateFormat;
 import android.util.Log;
 import android.os.Bundle;
 import android.net.Uri;
+import android.util.Base64;
 
 import java.io.ByteArrayOutputStream;
 import java.util.List;
@@ -19,6 +20,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.qtproject.qt.android.bindings.QtActivity;
+import org.json.JSONObject;
+import org.json.JSONArray;
+import org.json.JSONException;
 
 public class LetiHome extends QtActivity
 {
@@ -35,74 +39,78 @@ public class LetiHome extends QtActivity
     }
 
     // get applications as Map<packageName, applicationName>
-    public Map<String, String> applicationList()
+    public String applicationList()
     {
-        Map<String, String> applications = new HashMap<String, String>();
-
-        // we could be running on Android TV or non TV OS so for backward compatibility we need to show both
-        Intent i = new Intent(Intent.ACTION_MAIN, null);
-
-        i.addCategory(Intent.CATEGORY_LEANBACK_LAUNCHER);
-
-        List<ResolveInfo> availableActivities = packageManager.queryIntentActivities(i, 0);
-        for(ResolveInfo ri:availableActivities)
-        {
-            String applicationName = ri.loadLabel(packageManager).toString();
-            String packageName = ri.activityInfo.packageName;
-
-            applications.put(packageName, applicationName);
+        JSONObject applications = new JSONObject();
+        try {
+            Intent i = new Intent(Intent.ACTION_MAIN, null);
+            i.addCategory(Intent.CATEGORY_LEANBACK_LAUNCHER);
+            List<ResolveInfo> availableActivities = packageManager.queryIntentActivities(i, 0);
+            for (ResolveInfo ri : availableActivities) {
+                String applicationName = ri.loadLabel(packageManager).toString();
+                String packageName = ri.activityInfo.packageName;
+                String base64Icon = getApplicationIcon(packageName);
+                JSONObject appObject = new JSONObject();
+                appObject.put("applicationName", applicationName);
+                appObject.put("applicationIcon", base64Icon);
+                applications.put(packageName, appObject);
+            }
+            i = new Intent(Intent.ACTION_MAIN, null);
+            i.addCategory(Intent.CATEGORY_LAUNCHER);
+            availableActivities = packageManager.queryIntentActivities(i, 0);
+            for (ResolveInfo ri : availableActivities) {
+                String applicationName = ri.loadLabel(packageManager).toString();
+                String packageName = ri.activityInfo.packageName;
+                String base64Icon = getApplicationIcon(packageName);
+                JSONObject appObject = new JSONObject();
+                appObject.put("applicationName", applicationName);
+                appObject.put("applicationIcon", base64Icon);
+                applications.put(packageName, appObject);
+            }
+        } catch (JSONException e) {
+            Log.e("LetiHome", "Error creating JSON", e);
         }
-
-        i = new Intent(Intent.ACTION_MAIN, null);
-        i.addCategory(Intent.CATEGORY_LAUNCHER); // regular non TV OS apps
-
-        availableActivities = packageManager.queryIntentActivities(i, 0);
-        for(ResolveInfo ri:availableActivities)
-        {
-            String applicationName = ri.loadLabel(packageManager).toString();
-            String packageName = ri.activityInfo.packageName;
-
-            applications.put(packageName, applicationName);
-        }
-
-        return applications;
+        return applications.toString();
     }
 
-    // get application icon as byte array
-    public byte[] getApplicationIcon(String packageName)
-    {
+    // Optimized getApplicationIcon to streamline icon retrieval and base64 encoding, using the helper and reducing redundant code
+    public String getApplicationIcon(String packageName) {
         Drawable icon = null;
-
-        try
-        {
-            // try leanback/tv version first
+        try {
+            // Try to get the banner (TV/Leanback), then the regular icon
             icon = packageManager.getApplicationBanner(packageName);
-
-            if (icon == null)
+            if (icon == null) {
                 icon = packageManager.getApplicationIcon(packageName);
+            }
+        } catch (Exception e) {
+            Log.w("LetiHome", "Exception in getApplicationIcon for " + packageName, e);
         }
-        catch(Exception e)
-        {
-            // load generic application icon if we were unable to load requested
-            Log.w("LetiHome", "exception getApplicationIcon for " + packageName, e);
-            icon = getDefaultApplicationIcon();
+        if (icon == null) {
+            icon = getResources().getDrawable(android.R.mipmap.sym_def_app_icon); // generic application icon if none available from app itself
         }
-
-        // convert to byte array
-        Bitmap bitmap = Bitmap.createBitmap(icon.getIntrinsicWidth(), icon.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-        final Canvas canvas = new Canvas(bitmap);
-        icon.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
-        icon.draw(canvas);
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100 /* ignored for PNG */, stream);
-
-        return stream.toByteArray();
+        if (icon == null) {
+            Log.e("LetiHome", "Failed to retrieve icon for package: " + packageName);
+            return "";
+        }
+        try {
+            String base64Icon = encodeImageToBase64(icon);
+            return base64Icon;
+        } catch (Exception e) {
+            Log.e("LetiHome", "Failed to convert icon to Base64 for package: " + packageName, e);
+            return "";
+        }
     }
 
-    // get generic application icon
-    public Drawable getDefaultApplicationIcon()
-    {
-        return getResources().getDrawable(android.R.mipmap.sym_def_app_icon);
+    // encode Drawable to Base64 Image string that can be used in QML Image source
+    private String encodeImageToBase64(Drawable drawable) {
+        if (drawable == null) return "";
+        Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100 /*Ignored for PNG */, stream);
+        return Base64.encodeToString(stream.toByteArray(), Base64.NO_WRAP);
     }
 
     // open application by packageName | LeanBack = TV optimized app
