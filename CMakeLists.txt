@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.16)
 include(FetchContent)
 
-project(LetiHome VERSION 0.1 LANGUAGES CXX)
+project(LetiHome LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
