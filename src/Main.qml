@@ -91,4 +91,27 @@ ApplicationWindow
         settingsProvider: settingsProvider
         navigationProvider: navigationProvider
     }
+
+    ListView
+    {
+        id: list
+        width: parent.width
+        height: 300
+        model: _Platform.getNextPrograms()
+        orientation: ListView.Horizontal
+        delegate:
+        Image
+        {
+            width: 200
+            height: 100
+            required property var modelData
+            source: "data:image/webp;base64," + modelData["posterImage"]
+
+            Text {
+                anchors.bottom: parent.bottom
+                text: modelData["title"]
+            }
+        }
+    }
+
 }

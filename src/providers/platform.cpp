@@ -1,5 +1,11 @@
 #include <QCoreApplication>
 #include <QNetworkInformation>
+#include <QJsonDocument>
+#include <QJsonArray>
+#include <QJsonObject>
+#include <QByteArray>
+#include <QImage>
+#include <QBuffer>
 
 #include "platform.h"
 
@@ -248,4 +254,35 @@ void Platform::setTvInput(const QString &inputId)
 #else
     Q_UNUSED(inputId);
 #endif
+}
+
+QVariantList Platform::getNextPrograms()
+{
+    QVariantList programList;
+#ifdef Q_OS_ANDROID
+    QJniObject activity = QNativeInterface::QAndroidApplication::context();
+    QJniObject jsonString = activity.callObjectMethod("getNextPrograms", "()Ljava/lang/String;");
+    if (!jsonString.isValid())
+        return programList;
+
+    QJsonDocument jsonDoc = QJsonDocument::fromJson(jsonString.toString().toUtf8());
+    if (!jsonDoc.isArray())
+        return programList;
+
+    QJsonArray jsonArray = jsonDoc.array();
+    for (const QJsonValue &value : jsonArray) {
+        if (value.isObject()) {
+            QJsonObject obj = value.toObject();
+            QVariantMap data;
+            data["title"] = obj.value("title").toString();
+            data["packageName"] = obj.value("packageName").toString();
+            data["position"] = obj.value("position").toInt();
+            data["duration"] = obj.value("duration").toInt();
+            data["intentUri"] = obj.value("intentUri").toString();
+            data["posterImage"] = obj.value("posterImage").toString();
+            programList.append(data);
+        }
+    }
+#endif
+    return programList;
 }
