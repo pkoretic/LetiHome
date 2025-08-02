@@ -1,3 +1,15 @@
+## 2025-08-02, Version 2.5.3
+### Notable changes
+#### The following significant changes have been made since the previous LetiHome 2.5.2 release.
+
+Improve icon rendering performance
+
+### commits
+ - [3dac63a](https://github.com/pkoretic/LetiHome/commit/3dac63a) add powershell scripts for making release and building app
+ - [4a6e9da](https://github.com/pkoretic/LetiHome/commit/4a6e9da) add powershell script for building android app
+ - [fca891a](https://github.com/pkoretic/LetiHome/commit/fca891a) CmakeLists: remove version as it is not used
+ - [14fac39](https://github.com/pkoretic/LetiHome/commit/14fac39) replace icon provider with direct base64 image display
+
 ## 2025-07-28, Version 2.5.2
 
 ### Notable changes
