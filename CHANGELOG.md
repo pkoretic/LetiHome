@@ -1,3 +1,12 @@
+## 2025-10-23, Version 3.2.2
+### Notable changes
+#### The following significant changes have been made since the previous LetiHome 3.2.1 release.
+<list notable features manually here>
+### commits
+ - [56c94f7](https://github.com/pkoretic/LetiHome/commit/56c94f7) update icons [accordi](https://github.com/pkoretic/LetiHome/commit/accordi)ng to Google Play [guideli](https://github.com/pkoretic/LetiHome/commit/guideli)nes
+ - [13aeea6](https://github.com/pkoretic/LetiHome/commit/13aeea6) add [powersh](https://github.com/pkoretic/LetiHome/commit/powersh)ell script for [buildin](https://github.com/pkoretic/LetiHome/commit/buildin)g [android](https://github.com/pkoretic/LetiHome/commit/android) app
+ - [6ff44a4](https://github.com/pkoretic/LetiHome/commit/6ff44a4) add [powersh](https://github.com/pkoretic/LetiHome/commit/powersh)ell [scripts](https://github.com/pkoretic/LetiHome/commit/scripts) for making [release](https://github.com/pkoretic/LetiHome/commit/release) and [buildin](https://github.com/pkoretic/LetiHome/commit/buildin)g app
+
 ## 2025-07-28, Version 3.2.1
 
 ### Notable changes
