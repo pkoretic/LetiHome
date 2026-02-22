@@ -35,8 +35,12 @@ FocusScope
             source: "../../assets/%1.svg".arg(root.isOnline ? (root.isEthernet ? "ethernet-online" : "wifi-online") : "network-offline")
             height: time.height - 10
             width: height
-            sourceSize.width: paintedWidth
-            sourceSize.height: paintedHeight
+            onStatusChanged: {
+                if (status === Image.Ready) {
+                    sourceSize.width = paintedWidth
+                    sourceSize.height = paintedHeight
+                }
+            }
             anchors.verticalCenter: parent.verticalCenter
         }
 
@@ -47,8 +51,12 @@ FocusScope
             scale: activeFocus ? 1.5 : 1
             height: time.height - 10
             width: height
-            sourceSize.width: paintedWidth
-            sourceSize.height: paintedHeight
+            onStatusChanged: {
+                if (status === Image.Ready) {
+                    sourceSize.width = paintedWidth
+                    sourceSize.height = paintedHeight
+                }
+            }
             anchors.verticalCenter: parent.verticalCenter
 
             Keys.onReturnPressed: root.settingsClicked()
