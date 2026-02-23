@@ -97,90 +97,85 @@ Rectangle
         Rectangle
         {
             anchors.fill: parent
-            color: "#AA000000" // semi-transparent overlay
+            color: Qt.color("#AA000000") // semi-transparent overlay
         }
     }
 
-    // main layout used for padding, spacing and layout
-    ColumnLayout
+    // Top Date and Time display with WiFi status
+    TopBar
     {
-        anchors.fill: parent
-        anchors.margins: 40
-        spacing: 20
+        z: 1
+        id: topBar
+        y: 20
+        x: 20
+        width: parent.width - 40
 
-        // Top Date and Time display with WiFi status
-        TopBar
-        {
-            z: 1
-            Layout.fillWidth: true
-            Layout.preferredHeight: childrenRect.height
-            Layout.alignment: Qt.AlignTop
-            isOnline: platformProvider.isOnline
-            isEthernet: platformProvider.isEthernet
-            is24HourFormat: platformProvider.is24HourFormat()
-            showClock: settingsProvider.showClock
-            showDate: settingsProvider.showDate
-            KeyNavigation.down: appsLoader
-            Keys.onBackPressed: appsLoader.focus = true
-            onSettingsClicked: navigationProvider.go("/options")
-        }
+        isOnline: platformProvider.isOnline
+        isEthernet: platformProvider.isEthernet
+        is24HourFormat: platformProvider.is24HourFormat()
+        showClock: settingsProvider.showClock
+        showDate: settingsProvider.showDate
+        KeyNavigation.down: appsLoader
+        Keys.onBackPressed: appsLoader.focus = true
+        onSettingsClicked: navigationProvider.go("/options")
+    }
 
-        Loader
+    Loader
+    {
+        id: appsLoader
+        focus: true
+        x: 20
+        y: homeView.settingsProvider.alignToBottom ? (parent.height - height - 20) : (topBar.height + 40)
+        width: parent.width - 40
+        height: item.delegateHeight || item.childrenRect.height
+
+        // load apps list or grid based on settings
+        sourceComponent: settingsProvider.showAsList ? appsListComponent : appsGridComponent
+    }
+
+    Component
+    {
+        id: appsListComponent
+
+        AppsList
         {
-            id: appsLoader
+            id: appsList
+
+            model: appsModel
+
             focus: true
-            Layout.fillWidth: true
-            Layout.alignment: settingsProvider.alignToBottom ? Qt.AlignBottom : Qt.AlignTop
-            Layout.preferredHeight: item ? item.delegateHeight || item.childrenRect.height : 0
 
-            // load apps list or grid based on settings
-            sourceComponent: settingsProvider.showAsList ? appsListComponent : appsGridComponent
+            appsShown: settingsProvider.appsShown
+
+            isTelevision: platformProvider.isTelevision
+            showAppLabels: settingsProvider.showAppNames
+            onOpenClicked: packageName => openApplication(packageName)
+            onInfoClicked: packageName => openAppInfo(packageName)
+            onRemoveClicked: packageName => appsProvider.removeApp(packageName)
+            onOrderChanged: appsOrder => appsProvider.setOrder(appsOrder)
         }
+    }
 
-        Component
+    Component
+    {
+        id: appsGridComponent
+
+        AppsGrid
         {
-            id: appsListComponent
+            id: appsGrid
 
-            AppsList
-            {
-                id: appsList
+            model: appsModel
+            height: childrenRect.height
 
-                model: appsModel
+            focus: true
+            appsShown: settingsProvider.appsShown
 
-                focus: true
-
-                appsShown: settingsProvider.appsShown
-
-                isTelevision: platformProvider.isTelevision
-                showAppLabels: settingsProvider.showAppNames
-                onOpenClicked: packageName => openApplication(packageName)
-                onInfoClicked: packageName => openAppInfo(packageName)
-                onRemoveClicked: packageName => appsProvider.removeApp(packageName)
-                onOrderChanged: appsOrder => appsProvider.setOrder(appsOrder)
-            }
-        }
-
-        Component
-        {
-            id: appsGridComponent
-
-            AppsGrid
-            {
-                id: appsGrid
-
-                model: appsModel
-                height: childrenRect.height
-
-                focus: true
-                appsShown: settingsProvider.appsShown
-
-                isTelevision: platformProvider.isTelevision
-                showAppLabels: settingsProvider.showAppNames
-                onOpenClicked: packageName => openApplication(packageName)
-                onInfoClicked: packageName => openAppInfo(packageName)
-                onRemoveClicked: packageName => appsProvider.removeApp(packageName)
-                onOrderChanged: appsOrder => appsProvider.setOrder(appsOrder)
-            }
+            isTelevision: platformProvider.isTelevision
+            showAppLabels: settingsProvider.showAppNames
+            onOpenClicked: packageName => openApplication(packageName)
+            onInfoClicked: packageName => openAppInfo(packageName)
+            onRemoveClicked: packageName => appsProvider.removeApp(packageName)
+            onOrderChanged: appsOrder => appsProvider.setOrder(appsOrder)
         }
     }
 

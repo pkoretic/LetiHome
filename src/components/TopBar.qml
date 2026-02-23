@@ -12,6 +12,8 @@ FocusScope
     property bool showClock
     property alias showDate: date.visible
 
+    implicitHeight: childrenRect.height
+
     signal settingsClicked
 
     // clock in locale format depending if 24 hour format is set in the system
