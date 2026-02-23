@@ -158,7 +158,7 @@ GridView
             width: parent.width
             height: appName.height
             anchors.bottom: parent.bottom
-            color: "#a6000000"
+            color: Qt.color("#a6000000")
         }
 
         // app name
@@ -168,7 +168,7 @@ GridView
             x: 4
             width: parent.width - x * 2
             text: model.applicationName
-            color: "#ffffff"
+            color: Qt.color("#ffffff")
             elide: Text.ElideRight
             anchors.bottom: parent.bottom
             visible: gridView.showAppLabels && delegate.isCurrentItem || !gridView.isTelevision
@@ -180,9 +180,9 @@ GridView
         {
             anchors.fill: parent
             visible: delegate.isCurrentItem
-            color: "transparent"
+            color: Qt.color("transparent")
             border.width: gridView.state === "reorder" ? 3 : 2
-            border.color: gridView.state === "reorder" ? "red" : "#222222"
+            border.color: gridView.state === "reorder" ? Qt.color("red") : Qt.color("#222222")
         }
     }
 }

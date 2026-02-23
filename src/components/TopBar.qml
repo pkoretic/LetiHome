@@ -22,7 +22,7 @@ FocusScope
         id: time
         text: Qt.formatTime(root.currentDate, root.is24HourFormat ? "hh:mm" : "hh:mm ap")
         font.pixelSize: 22
-        color: "#ffffff"
+        color: Qt.color("#ffffff")
         style: Text.Outline
         visible: showClock
     }
@@ -71,7 +71,7 @@ FocusScope
             id: date
             text: root.currentDate.toDateString()
             font.pixelSize: 22
-            color: "#ffffff"
+            color: Qt.color("#ffffff")
             style: Text.Outline
         }
     }

@@ -160,7 +160,7 @@ ListView {
             width: parent.width
             height: appName.height
             anchors.bottom: parent.bottom
-            color: "#a6000000"
+            color: Qt.color("#a6000000")
         }
 
         // app name
@@ -169,7 +169,7 @@ ListView {
             x: 4
             width: parent.width - x * 2
             text: model.applicationName
-            color: "#ffffff"
+            color: Qt.color("#ffffff")
             elide: Text.ElideRight
             anchors.bottom: parent.bottom
             visible: listView.showAppLabels && delegate.isCurrentItem || !listView.isTelevision
@@ -180,9 +180,9 @@ ListView {
         Rectangle {
             anchors.fill: parent
             visible: delegate.isCurrentItem
-            color: "transparent"
+            color: Qt.color("transparent")
             border.width: listView.state === "reorder" ? 3 : 2
-            border.color: listView.state === "reorder" ? "red" : "#222222"
+            border.color: listView.state === "reorder" ? Qt.color("red") : Qt.color("#222222")
         }
     }
 }
