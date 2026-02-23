@@ -12,15 +12,11 @@ import android.text.format.DateFormat;
 import android.util.Log;
 import android.os.Bundle;
 import android.net.Uri;
-import android.database.Cursor;
-import android.util.Base64;
 
 import android.media.tv.TvInputManager;
 import android.media.tv.TvInputInfo;
 import android.content.Context;
 import androidx.tvprovider.media.tv.TvContractCompat;
-import androidx.tvprovider.media.tv.TvContractCompat.PreviewPrograms;
-import androidx.tvprovider.media.tv.TvContractCompat.WatchNextPrograms;
 
 import java.io.ByteArrayOutputStream;
 import java.util.List;
@@ -28,8 +24,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.qtproject.qt.android.bindings.QtActivity;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 public class LetiHomePlus extends QtActivity
 {
@@ -225,100 +219,5 @@ public class LetiHomePlus extends QtActivity
         Intent intent = new Intent(Intent.ACTION_VIEW, uri);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
-    }
-
-    private String encodeImageToBase64(Drawable drawable) {
-        if (drawable == null) return "";
-        Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(bitmap);
-        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
-        drawable.draw(canvas);
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-        return Base64.encodeToString(stream.toByteArray(), Base64.NO_WRAP);
-    }
-
-    // Fetch and return "Watch Next" preview programs as a list of maps for Qt
-    public String getNextPrograms() {
-        JSONArray result = new JSONArray();
-        Cursor watchNextCursor = null;
-        try {
-            watchNextCursor = getContentResolver().query(
-                TvContractCompat.WatchNextPrograms.CONTENT_URI,
-                null, null, null, null
-            );
-            if (watchNextCursor != null) {
-                int titleIndex = watchNextCursor.getColumnIndex(TvContractCompat.WatchNextPrograms.COLUMN_TITLE);
-                int packageIndex = watchNextCursor.getColumnIndex(TvContractCompat.WatchNextPrograms.COLUMN_PACKAGE_NAME);
-                int positionIndex = watchNextCursor.getColumnIndex(TvContractCompat.WatchNextPrograms.COLUMN_LAST_PLAYBACK_POSITION_MILLIS);
-                int durationIndex = watchNextCursor.getColumnIndex(TvContractCompat.WatchNextPrograms.COLUMN_DURATION_MILLIS);
-                int intentUriIndex = watchNextCursor.getColumnIndex(TvContractCompat.WatchNextPrograms.COLUMN_INTENT_URI);
-                int posterIndex = watchNextCursor.getColumnIndex(TvContractCompat.WatchNextPrograms.COLUMN_POSTER_ART_URI);
-                int thumbnailIndex = watchNextCursor.getColumnIndex(TvContractCompat.WatchNextPrograms.COLUMN_THUMBNAIL_URI);
-                while (watchNextCursor.moveToNext()) {
-                    JSONObject entry = new JSONObject();
-                    entry.put("title", titleIndex != -1 ? watchNextCursor.getString(titleIndex) : "");
-                    entry.put("packageName", packageIndex != -1 ? watchNextCursor.getString(packageIndex) : "");
-                    entry.put("position", positionIndex != -1 ? watchNextCursor.getLong(positionIndex) / 1000 : -1);
-                    entry.put("duration", durationIndex != -1 ? watchNextCursor.getLong(durationIndex) / 1000 : -1);
-                    entry.put("intentUri", intentUriIndex != -1 ? watchNextCursor.getString(intentUriIndex) : "");
-                    String posterUri = posterIndex != -1 ? watchNextCursor.getString(posterIndex) : "";
-                    Drawable posterDrawable = null;
-                    if (!posterUri.isEmpty()) {
-                        try {
-                            posterDrawable = Drawable.createFromStream(getContentResolver().openInputStream(Uri.parse(posterUri)), null);
-                        } catch (Exception e) {
-                            Log.w("LetiHomePlus", "Failed to load poster image", e);
-                        }
-                    }
-                    if (posterDrawable == null) {
-                        String thumbnailUri = thumbnailIndex != -1 ? watchNextCursor.getString(thumbnailIndex) : "";
-                        if (thumbnailUri != null && !thumbnailUri.isEmpty()) {
-                            try {
-                                posterDrawable = Drawable.createFromStream(getContentResolver().openInputStream(Uri.parse(thumbnailUri)), null);
-                            } catch (Exception e) {
-                                Log.w("LetiHomePlus", "Failed to load thumbnail image", e);
-                            }
-                        }
-                    }
-                    if (posterDrawable == null) {
-                        String packageName = packageIndex != -1 ? watchNextCursor.getString(packageIndex) : "";
-                        if (!packageName.isEmpty()) {
-                            try {
-                                posterDrawable = packageManager.getApplicationIcon(packageName);
-                            } catch (Exception e) {
-                                Log.w("LetiHomePlus", "Failed to load application icon", e);
-                            }
-                        }
-                    }
-                    if (posterDrawable == null) {
-                        posterDrawable = getDefaultApplicationIcon();
-                    }
-                    entry.put("posterImage", encodeImageToBase64(posterDrawable));
-                    result.put(entry);
-                }
-            }
-        } catch (Exception e) {
-            Log.e("LetiHomePlus", "Error querying Watch Next", e);
-        } finally {
-            if (watchNextCursor != null) watchNextCursor.close();
-        }
-        return result.toString();
-    }
-
-    // Launch an app with the content from Watch Next using intentUri
-    public void launchWatchNextContent(String intentUri) {
-        if (intentUri == null || intentUri.isEmpty()) {
-            Log.w("LetiHomePlus", "No intentUri provided to launchWatchNextContent");
-            return;
-        }
-        try {
-            Intent intent = Intent.parseUri(intentUri, 0);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
-            Log.d("LetiHomePlus", "Launched content with intentUri: " + intentUri);
-        } catch (Exception e) {
-            Log.e("LetiHomePlus", "Failed to launch content with intentUri: " + intentUri, e);
-        }
     }
 }

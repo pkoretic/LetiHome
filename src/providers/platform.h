@@ -44,9 +44,6 @@ public slots:
         // set TV input by id
         void setTvInput(const QString &inputId);
 
-        // get list of Watch Next programs
-        QVariantList getNextPrograms();
-
 public:
 
     void init();
