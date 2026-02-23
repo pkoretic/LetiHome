@@ -5,7 +5,6 @@ import QtQuick
 import QtQuick.Layouts
 import QtQuick.Window
 import QtQuick.Controls.Material
-import QtMultimedia
 
 import "components"
 import "providers"
