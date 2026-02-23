@@ -13,6 +13,8 @@ GridView
     cellWidth: (width / appsShown) |0
     cellHeight: cellWidth * 0.5625 // 9/16
 
+    implicitHeight: childrenRect.height
+
     state: "default"
     states: [
         State { name: "default"; PropertyChanges { gridView.Keys.onPressed: event => defaultKeyHandler(event) }},

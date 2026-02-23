@@ -124,9 +124,9 @@ Rectangle
     {
         id: appsLoader
         focus: true
-        x: 20
-        y: homeView.settingsProvider.alignToBottom ? (parent.height - height - 20) : (topBar.height + 40)
-        width: parent.width - 40
+        x: 40
+        y: settingsProvider.alignToBottom ? (parent.height - height - 20) : (topBar.height + 40)
+        width: parent.width - 80
         height: item.delegateHeight || item.childrenRect.height
 
         // load apps list or grid based on settings
@@ -165,7 +165,6 @@ Rectangle
             id: appsGrid
 
             model: appsModel
-            height: childrenRect.height
 
             focus: true
             appsShown: settingsProvider.appsShown
