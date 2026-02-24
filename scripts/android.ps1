@@ -82,15 +82,14 @@ if ($abi -eq "all") {
     $QT_ANDROID_ABIS = $abi
 }
 
-# Always run from root dir
 $scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Definition
-Set-Location (Join-Path $scriptDir "..")
+$projectRoot = (Resolve-Path (Join-Path $scriptDir "..")).Path
+$buildDir = Join-Path $projectRoot "build_android"
 
 # Create build directory
-if (-not (Test-Path "build_android")) {
-    New-Item -ItemType Directory -Path "build_android" | Out-Null
+if (-not (Test-Path $buildDir)) {
+    New-Item -ItemType Directory -Path $buildDir | Out-Null
 }
-Set-Location "build_android"
 
 $qtPath = "C:\Qt\6.5.3\android_x86\bin\qt-cmake.bat"
 $androidSdkRoot = "C:\Android"
@@ -115,7 +114,10 @@ try {
         "-DQT_ANDROID_BUILD_ALL_ABIS=$BUILD_ALL_ABIS" `
         "-DQT_ANDROID_ABIS=$QT_ANDROID_ABIS" `
         "-GNinja" `
-        ".."
+        "-S" `
+        $projectRoot `
+        "-B" `
+        $buildDir
 
     if ($LASTEXITCODE -ne 0) {
         Write-Error "qt-cmake failed with exit code $LASTEXITCODE"
@@ -129,7 +131,7 @@ try {
 # Build APK if requested
 if ($BUILD_APK -eq "ON") {
     Write-Host "Building APK..."
-    cmake --build . --target apk
+    cmake --build $buildDir --target apk
     if ($LASTEXITCODE -ne 0) {
         Write-Error "APK build failed with exit code $LASTEXITCODE"
         exit 1
@@ -139,7 +141,7 @@ if ($BUILD_APK -eq "ON") {
 # Build AAB if requested
 if ($BUILD_AAB -eq "ON") {
     Write-Host "Building AAB..."
-    cmake --build . --target aab
+    cmake --build $buildDir --target aab
     if ($LASTEXITCODE -ne 0) {
         Write-Error "AAB build failed with exit code $LASTEXITCODE"
         exit 1
@@ -148,11 +150,11 @@ if ($BUILD_AAB -eq "ON") {
 
 # Set APK_FILE and AAB_FILE based on build type
 if ($BUILD_TYPE -eq "Release") {
-    $APK_FILE = "android-build/build/outputs/apk/release/android-build-release-signed.apk"
-    $AAB_FILE = "android-build/build/outputs/bundle/release/android-build-release.aab"
+    $APK_FILE = Join-Path $buildDir "android-build/build/outputs/apk/release/android-build-release-signed.apk"
+    $AAB_FILE = Join-Path $buildDir "android-build/build/outputs/bundle/release/android-build-release.aab"
 } else {
-    $APK_FILE = "android-build/build/outputs/apk/debug/android-build-debug.apk"
-    $AAB_FILE = "android-build/build/outputs/bundle/debug/android-build-debug.aab"
+    $APK_FILE = Join-Path $buildDir "android-build/build/outputs/apk/debug/android-build-debug.apk"
+    $AAB_FILE = Join-Path $buildDir "android-build/build/outputs/bundle/debug/android-build-debug.aab"
 }
 
 # Handle post-build actions
@@ -177,16 +179,16 @@ switch ($action) {
     "build" {
         Write-Host "Copying build artifacts..."
         # Extract version from CMakeLists.txt
-        $cmakeContent = Get-Content "../CMakeLists.txt" -Raw
+        $cmakeContent = Get-Content (Join-Path $projectRoot "CMakeLists.txt") -Raw
         $versionMatch = [regex]::Match($cmakeContent, 'QT_ANDROID_VERSION_NAME "([0-9.]+)"')
         if ($versionMatch.Success) {
             $version = $versionMatch.Groups[1].Value
             if (Test-Path $APK_FILE) {
-                Copy-Item $APK_FILE "LetiHome-$version.apk"
+                Copy-Item $APK_FILE (Join-Path $buildDir "LetiHome-$version.apk")
                 Write-Host "Copied APK to LetiHome-$version.apk"
             }
             if (Test-Path $AAB_FILE) {
-                Copy-Item $AAB_FILE "LetiHome-$version.aab"
+                Copy-Item $AAB_FILE (Join-Path $buildDir "LetiHome-$version.aab")
                 Write-Host "Copied AAB to LetiHome-$version.aab"
             }
         } else {
