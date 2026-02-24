@@ -8,7 +8,7 @@ import "components"
 
 Rectangle
 {
-    id: homeView
+    id: r
 
     required property var platformProvider
     required property var settingsProvider
@@ -86,12 +86,12 @@ Rectangle
         id: wallpaper
         anchors.fill: parent
         fillMode: Image.PreserveAspectCrop
-        visible: settingsProvider.useLoremPicsumWallpaper
+        visible: r.settingsProvider.useLoremPicsumWallpaper
 
         // We have to wait for the width and height to be set
         Component.onCompleted:
         {
-            source = Qt.binding(function() { return settingsProvider.useLoremPicsumWallpaper ? "https://picsum.photos/%1/%2?%3".arg(width).arg(height).arg(Math.random()) : ""})
+            source = Qt.binding(function() { return r.settingsProvider.useLoremPicsumWallpaper ? "https://picsum.photos/%1/%2?%3".arg(width).arg(height).arg(Math.random()) : ""})
         }
 
         Rectangle
@@ -110,14 +110,14 @@ Rectangle
         x: 20
         width: parent.width - 40
 
-        isOnline: platformProvider.isOnline
-        isEthernet: platformProvider.isEthernet
-        is24HourFormat: platformProvider.is24HourFormat()
-        showClock: settingsProvider.showClock
-        showDate: settingsProvider.showDate
+        isOnline: r.platformProvider.isOnline
+        isEthernet: r.platformProvider.isEthernet
+        is24HourFormat: r.platformProvider.is24HourFormat()
+        showClock: r.settingsProvider.showClock
+        showDate: r.settingsProvider.showDate
         KeyNavigation.down: appsLoader
         Keys.onBackPressed: appsLoader.focus = true
-        onSettingsClicked: navigationProvider.go("/options")
+        onSettingsClicked: r.navigationProvider.go("/options")
     }
 
     Loader
@@ -125,7 +125,7 @@ Rectangle
         id: appsLoader
         focus: true
         x: 40
-        y: settingsProvider.alignToBottom ? (parent.height - height - 20) : (topBar.height + 40)
+        y: r.settingsProvider.alignToBottom ? (parent.height - height - 20) : (topBar.height + 40)
         width: parent.width - 80
         height: item.delegateHeight || item.childrenRect.height
 
@@ -145,14 +145,14 @@ Rectangle
 
             focus: true
 
-            appsShown: settingsProvider.appsShown
+            appsShown: r.settingsProvider.appsShown
 
-            isTelevision: platformProvider.isTelevision
-            showAppLabels: settingsProvider.showAppNames
-            onOpenClicked: packageName => openApplication(packageName)
-            onInfoClicked: packageName => openAppInfo(packageName)
-            onRemoveClicked: packageName => appsProvider.removeApp(packageName)
-            onOrderChanged: appsOrder => appsProvider.setOrder(appsOrder)
+            isTelevision: r.platformProvider.isTelevision
+            showAppLabels: r.settingsProvider.showAppNames
+            onOpenClicked: packageName => r.openApplication(packageName)
+            onInfoClicked: packageName => r.openAppInfo(packageName)
+            onRemoveClicked: packageName => r.appsProvider.removeApp(packageName)
+            onOrderChanged: appsOrder => r.appsProvider.setOrder(appsOrder)
         }
     }
 
@@ -167,14 +167,14 @@ Rectangle
             model: appsModel
 
             focus: true
-            appsShown: settingsProvider.appsShown
+            appsShown: r.settingsProvider.appsShown
 
-            isTelevision: platformProvider.isTelevision
-            showAppLabels: settingsProvider.showAppNames
-            onOpenClicked: packageName => openApplication(packageName)
-            onInfoClicked: packageName => openAppInfo(packageName)
-            onRemoveClicked: packageName => appsProvider.removeApp(packageName)
-            onOrderChanged: appsOrder => appsProvider.setOrder(appsOrder)
+            isTelevision: r.platformProvider.isTelevision
+            showAppLabels: r.settingsProvider.showAppNames
+            onOpenClicked: packageName => r.openApplication(packageName)
+            onInfoClicked: packageName => r.openAppInfo(packageName)
+            onRemoveClicked: packageName => r.appsProvider.removeApp(packageName)
+            onOrderChanged: appsOrder => r.appsProvider.setOrder(appsOrder)
         }
     }
 
@@ -185,12 +185,12 @@ Rectangle
         {
             id: settingsMenu
             text: qsTr("Settings")
-            onTriggered: navigationProvider.go("/options")
+            onTriggered: r.navigationProvider.go("/options")
         }
         MenuItem
         {
             text: qsTr("About")
-            onTriggered: navigationProvider.go("/about")
+            onTriggered: r.navigationProvider.go("/about")
         }
     }
 }
