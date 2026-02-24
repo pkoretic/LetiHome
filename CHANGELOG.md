@@ -1,3 +1,21 @@
+## 2026-02-24, Version 3.3.0
+### Notable changes
+#### The following significant changes have been made since the previous LetiHome 3.2.2 release.
+<list notable features manually here>
+### commits
+ - [e3f6072](https://github.com/pkoretic/LetiHome/commit/e3f6072) fix root [referen](https://github.com/pkoretic/LetiHome/commit/referen)ces
+ - [fe36ae6](https://github.com/pkoretic/LetiHome/commit/fe36ae6) [scripts](https://github.com/pkoretic/LetiHome/commit/scripts): fix [windows](https://github.com/pkoretic/LetiHome/commit/windows) [directo](https://github.com/pkoretic/LetiHome/commit/directo)ry change
+ - [1904f24](https://github.com/pkoretic/LetiHome/commit/1904f24) update [Android](https://github.com/pkoretic/LetiHome/commit/Android) icons
+ - [d11b58d](https://github.com/pkoretic/LetiHome/commit/d11b58d) fix [default](https://github.com/pkoretic/LetiHome/commit/default) [spacing](https://github.com/pkoretic/LetiHome/commit/spacing)
+ - [428760c](https://github.com/pkoretic/LetiHome/commit/428760c) use Qt.color for string colors
+ - [92975b5](https://github.com/pkoretic/LetiHome/commit/92975b5) remove unused [QtMulti](https://github.com/pkoretic/LetiHome/commit/QtMulti)media
+ - [1b6987d](https://github.com/pkoretic/LetiHome/commit/1b6987d) [replace](https://github.com/pkoretic/LetiHome/commit/replace) [ColumnL](https://github.com/pkoretic/LetiHome/commit/ColumnL)ayout [resolve](https://github.com/pkoretic/LetiHome/commit/resolve)
+ - [8309d5e](https://github.com/pkoretic/LetiHome/commit/8309d5e) Revert "get watch next [program](https://github.com/pkoretic/LetiHome/commit/program)s"
+ - [7bf7bc6](https://github.com/pkoretic/LetiHome/commit/7bf7bc6) fix the [binding](https://github.com/pkoretic/LetiHome/commit/binding) loop
+ - [523d3fb](https://github.com/pkoretic/LetiHome/commit/523d3fb) 2025-10-23, [Version](https://github.com/pkoretic/LetiHome/commit/Version) 3.2.2
+ - [77e0cc3](https://github.com/pkoretic/LetiHome/commit/77e0cc3) update icons [accordi](https://github.com/pkoretic/LetiHome/commit/accordi)ng to Google Play [guideli](https://github.com/pkoretic/LetiHome/commit/guideli)nes
+ - [b30a7c8](https://github.com/pkoretic/LetiHome/commit/b30a7c8) get watch next [program](https://github.com/pkoretic/LetiHome/commit/program)s
+
 ## 2025-10-23, Version 3.2.2
 ### Notable changes
 #### The following significant changes have been made since the previous LetiHome 3.2.1 release.
