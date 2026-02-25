@@ -1,0 +1,171 @@
+name: Android Build
+
+on:
+  push:
+    tags: ["[0-9]+.[0-9]+.[0-9]+*"]
+  workflow_dispatch:
+
+# Cancel in-progress runs for the same branch/PR to save CI minutes
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write          # needed for softprops/action-gh-release
+
+env:
+  QT_VERSION: "6.5.3"
+  NDK_VERSION: "27.2.12479018"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    env:
+      QT_ANDROID_KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
+      QT_ANDROID_KEYSTORE_STORE_PASS: ${{ secrets.KEYSTORE_STORE_PASS }}
+      QT_ANDROID_KEYSTORE_KEY_PASS: ${{ secrets.KEYSTORE_KEY_PASS }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: gradle
+
+      - name: Install host tools
+        run: sudo apt-get install -y --no-install-recommends ninja-build
+
+      - name: Install Qt (Android arm64-v8a)
+        uses: jurplel/install-qt-action@v4
+        with:
+          version: ${{ env.QT_VERSION }}
+          target: android
+          arch: android_arm64_v8a
+          cache: true
+
+      - name: Install Qt (Android armv7)
+        uses: jurplel/install-qt-action@v4
+        with:
+          version: ${{ env.QT_VERSION }}
+          target: android
+          arch: android_armv7
+          cache: true
+
+      - name: Install Qt (Android x86)
+        uses: jurplel/install-qt-action@v4
+        with:
+          version: ${{ env.QT_VERSION }}
+          target: android
+          arch: android_x86
+          cache: true
+
+      - name: Install Qt (Android x86_64)
+        uses: jurplel/install-qt-action@v4
+        with:
+          version: ${{ env.QT_VERSION }}
+          target: android
+          arch: android_x86_64
+          cache: true
+
+      - name: Cache NDK
+        id: ndk-cache
+        uses: actions/cache@v4
+        with:
+          path: /usr/local/lib/android/sdk/ndk/${{ env.NDK_VERSION }}
+          key: ndk-${{ runner.os }}-${{ env.NDK_VERSION }}
+
+      - name: Install NDK
+        if: steps.ndk-cache.outputs.cache-hit != 'true'
+        run: |
+          yes | "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" --licenses > /dev/null 2>&1 || true
+          "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" --install "ndk;${{ env.NDK_VERSION }}"
+
+      - name: Cache FetchContent (android_openssl)
+        uses: actions/cache@v4
+        with:
+          path: build_android/_deps
+          key: fetchcontent-openssl-${{ runner.os }}-${{ hashFiles('CMakeLists.txt') }}
+          restore-keys: fetchcontent-openssl-${{ runner.os }}-
+
+      - name: Resolve version and variant
+        id: meta
+        run: |
+          if [[ "$GITHUB_REF" == refs/tags/* ]]; then
+            VERSION="${GITHUB_REF#refs/tags/}"
+          else
+            VERSION="0.0.0"
+          fi
+          # Strip any pre-release suffix (e.g. 1.2.3-beta1 → 1.2.3)
+          SEMVER="${VERSION%%-*}"
+          MAJOR="${SEMVER%%.*}"
+          REMAINDER="${SEMVER#*.}"
+          MINOR="${REMAINDER%%.*}"
+          PATCH="${REMAINDER#*.}"
+          VERSION_CODE=$(( MAJOR * 10000 + MINOR * 100 + PATCH ))
+          if [ "$MAJOR" -ge 3 ]; then
+            VARIANT="LetiHomePlus"
+          else
+            VARIANT="LetiHomeLite"
+          fi
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "version_code=$VERSION_CODE" >> "$GITHUB_OUTPUT"
+          echo "variant=$VARIANT" >> "$GITHUB_OUTPUT"
+
+      - name: Decode keystore
+        env:
+          KEYSTORE_B64: ${{ secrets.KEYSTORE_BASE64 }}
+        run: |
+          if [ -z "$KEYSTORE_B64" ]; then
+            echo "::error::KEYSTORE_BASE64 secret is not set"
+            exit 1
+          fi
+          echo "$KEYSTORE_B64" | base64 -d > "${{ runner.temp }}/keystore.jks"
+          echo "QT_ANDROID_KEYSTORE_PATH=${{ runner.temp }}/keystore.jks" >> "$GITHUB_ENV"
+
+      - name: Configure (qt-cmake)
+        run: |
+          QT_BASE="${RUNNER_WORKSPACE}/Qt/${{ env.QT_VERSION }}"
+          qt-cmake \
+            -DANDROID_SDK_ROOT="$ANDROID_SDK_ROOT" \
+            -DANDROID_NDK_ROOT="$ANDROID_SDK_ROOT/ndk/${{ env.NDK_VERSION }}" \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DQT_ANDROID_SIGN_AAB=ON \
+            -DQT_ANDROID_BUILD_ALL_ABIS=ON \
+            -DQT_ANDROID_ABIS="armeabi-v7a;arm64-v8a;x86;x86_64" \
+            -DQT_PATH_ANDROID_ABI_armeabi-v7a="${QT_BASE}/android_armv7" \
+            -DQT_PATH_ANDROID_ABI_x86="${QT_BASE}/android_x86" \
+            -DQT_PATH_ANDROID_ABI_x86_64="${QT_BASE}/android_x86_64" \
+            -DQT_ANDROID_VERSION_NAME="${{ steps.meta.outputs.version }}" \
+            -DQT_ANDROID_VERSION_CODE=${{ steps.meta.outputs.version_code }} \
+            -GNinja \
+            -S . \
+            -B build_android
+
+      - name: Build AAB
+        run: cmake --build build_android --target aab --parallel
+
+      - name: Rename artifacts
+        run: |
+          NAME="${{ steps.meta.outputs.variant }}-${{ steps.meta.outputs.version }}"
+          cp build_android/android-build/build/outputs/bundle/release/android-build-release.aab "${NAME}.aab"
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.meta.outputs.variant }}-${{ steps.meta.outputs.version }}
+          path: ${{ steps.meta.outputs.variant }}-*.*
+          retention-days: 30
+
+      - name: Create GitHub Release
+        if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          name: ${{ steps.meta.outputs.variant }} ${{ steps.meta.outputs.version }}
+          files: ${{ steps.meta.outputs.variant }}-*.*
+          generate_release_notes: true
