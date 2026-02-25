@@ -121,6 +121,7 @@ jobs:
 
       - name: Configure (qt-cmake)
         run: |
+          QT_BASE="${RUNNER_WORKSPACE}/Qt/${{ env.QT_VERSION }}"
           qt-cmake \
             -DANDROID_SDK_ROOT="$ANDROID_SDK_ROOT" \
             -DANDROID_NDK_ROOT="$ANDROID_SDK_ROOT/ndk/${{ env.NDK_VERSION }}" \
@@ -128,6 +129,9 @@ jobs:
             -DQT_ANDROID_SIGN_AAB=ON \
             -DQT_ANDROID_BUILD_ALL_ABIS=ON \
             -DQT_ANDROID_ABIS="armeabi-v7a;arm64-v8a;x86;x86_64" \
+            -DQT_PATH_ANDROID_ABI_armeabi-v7a="${QT_BASE}/android_armv7" \
+            -DQT_PATH_ANDROID_ABI_x86="${QT_BASE}/android_x86" \
+            -DQT_PATH_ANDROID_ABI_x86_64="${QT_BASE}/android_x86_64" \
             -DQT_ANDROID_VERSION_NAME="${{ steps.meta.outputs.version }}" \
             -DQT_ANDROID_VERSION_CODE=${{ steps.meta.outputs.version_code }} \
             -GNinja \
