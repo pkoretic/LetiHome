@@ -1,0 +1,124 @@
+name: Android Build
+
+on:
+  push:
+    tags: ["[0-9]+.[0-9]+.[0-9]+*"]
+  workflow_dispatch:
+
+# Cancel in-progress runs for the same branch/PR to save CI minutes
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write          # needed for softprops/action-gh-release
+
+env:
+  QT_VERSION: "6.5.3"
+  QT_ARCH: "android_arm64_v8a"   # primary ABI for qt-cmake entry point; all target ABIs are built via QT_ANDROID_BUILD_ALL_ABIS
+  NDK_VERSION: "27.2.12479018"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    env:
+      QT_ANDROID_KEYSTORE_PATH: ${{ runner.temp }}/keystore.jks
+      QT_ANDROID_KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
+      QT_ANDROID_KEYSTORE_STORE_PASS: ${{ secrets.KEYSTORE_STORE_PASS }}
+      QT_ANDROID_KEYSTORE_KEY_PASS: ${{ secrets.KEYSTORE_KEY_PASS }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install host tools
+        run: sudo apt-get install -y --no-install-recommends ninja-build
+
+      - name: Install Qt (Android)
+        uses: jurplel/install-qt-action@v4
+        with:
+          version: ${{ env.QT_VERSION }}
+          target: android
+          arch: ${{ env.QT_ARCH }}
+          cache: true
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+        with:
+          accept-android-sdk-licenses: true
+
+      - name: Install NDK
+        run: sdkmanager "ndk;${{ env.NDK_VERSION }}"
+
+      - name: Cache FetchContent (android_openssl)
+        uses: actions/cache@v4
+        with:
+          path: build_android/_deps
+          key: fetchcontent-openssl-${{ runner.os }}-${{ hashFiles('CMakeLists.txt') }}
+          restore-keys: fetchcontent-openssl-${{ runner.os }}-
+
+      - name: Decode keystore
+        env:
+          KEYSTORE_B64: ${{ secrets.KEYSTORE_BASE64 }}
+        run: |
+          if [ -z "$KEYSTORE_B64" ]; then
+            echo "::error::KEYSTORE_BASE64 secret is not set"
+            exit 1
+          fi
+          echo "$KEYSTORE_B64" | base64 -d > "${{ runner.temp }}/keystore.jks"
+
+      - name: Configure (qt-cmake)
+        run: |
+          qt-cmake \
+            -DANDROID_SDK_ROOT="$ANDROID_SDK_ROOT" \
+            -DANDROID_NDK_ROOT="$ANDROID_SDK_ROOT/ndk/${{ env.NDK_VERSION }}" \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DQT_ANDROID_SIGN_AAB=ON \
+            -DQT_ANDROID_BUILD_ALL_ABIS=ON \
+            -DQT_ANDROID_ABIS="armeabi-v7a;arm64-v8a" \
+            -GNinja \
+            -S . \
+            -B build_android
+
+      - name: Build AAB
+        run: cmake --build build_android --target aab --parallel
+
+      - name: Resolve version and variant
+        id: meta
+        run: |
+          if [[ "$GITHUB_REF" == refs/tags/* ]]; then
+            VERSION="${GITHUB_REF#refs/tags/}"
+          else
+            # Manual dispatch — fall back to CMakeLists.txt version
+            VERSION=$(grep -oP 'QT_ANDROID_VERSION_NAME\s+"\K[0-9.]+' CMakeLists.txt)
+          fi
+          MAJOR="${VERSION%%.*}"
+          if [ "$MAJOR" -ge 3 ]; then
+            VARIANT="LetiHomePlus"
+          else
+            VARIANT="LetiHomeLite"
+          fi
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "variant=$VARIANT" >> "$GITHUB_OUTPUT"
+
+      - name: Rename artifacts
+        run: |
+          NAME="${{ steps.meta.outputs.variant }}-${{ steps.meta.outputs.version }}"
+          cp build_android/android-build/build/outputs/bundle/release/android-build-release.aab "${NAME}.aab"
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.meta.outputs.variant }}-${{ steps.meta.outputs.version }}
+          path: ${{ steps.meta.outputs.variant }}-*.*
+          retention-days: 30
+
+      - name: Create GitHub Release
+        if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          name: ${{ steps.meta.outputs.variant }} ${{ steps.meta.outputs.version }}
+          files: ${{ steps.meta.outputs.variant }}-*.*
+          generate_release_notes: true
