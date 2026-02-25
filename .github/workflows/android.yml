@@ -58,6 +58,28 @@ jobs:
           key: fetchcontent-openssl-${{ runner.os }}-${{ hashFiles('CMakeLists.txt') }}
           restore-keys: fetchcontent-openssl-${{ runner.os }}-
 
+      - name: Resolve version and variant
+        id: meta
+        run: |
+          if [[ "$GITHUB_REF" == refs/tags/* ]]; then
+            VERSION="${GITHUB_REF#refs/tags/}"
+          else
+            VERSION="0.0.0"
+          fi
+          MAJOR="${VERSION%%.*}"
+          REMAINDER="${VERSION#*.}"
+          MINOR="${REMAINDER%%.*}"
+          PATCH="${REMAINDER#*.}"
+          VERSION_CODE=$(( MAJOR * 10000 + MINOR * 100 + PATCH ))
+          if [ "$MAJOR" -ge 3 ]; then
+            VARIANT="LetiHomePlus"
+          else
+            VARIANT="LetiHomeLite"
+          fi
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "version_code=$VERSION_CODE" >> "$GITHUB_OUTPUT"
+          echo "variant=$VARIANT" >> "$GITHUB_OUTPUT"
+
       - name: Decode keystore
         env:
           KEYSTORE_B64: ${{ secrets.KEYSTORE_BASE64 }}
@@ -78,30 +100,14 @@ jobs:
             -DQT_ANDROID_SIGN_AAB=ON \
             -DQT_ANDROID_BUILD_ALL_ABIS=ON \
             -DQT_ANDROID_ABIS="armeabi-v7a;arm64-v8a" \
+            -DQT_ANDROID_VERSION_NAME="${{ steps.meta.outputs.version }}" \
+            -DQT_ANDROID_VERSION_CODE=${{ steps.meta.outputs.version_code }} \
             -GNinja \
             -S . \
             -B build_android
 
       - name: Build AAB
         run: cmake --build build_android --target aab --parallel
-
-      - name: Resolve version and variant
-        id: meta
-        run: |
-          if [[ "$GITHUB_REF" == refs/tags/* ]]; then
-            VERSION="${GITHUB_REF#refs/tags/}"
-          else
-            # Manual dispatch — fall back to CMakeLists.txt version
-            VERSION=$(grep -oP 'QT_ANDROID_VERSION_NAME\s+"\K[0-9.]+' CMakeLists.txt)
-          fi
-          MAJOR="${VERSION%%.*}"
-          if [ "$MAJOR" -ge 3 ]; then
-            VARIANT="LetiHomePlus"
-          else
-            VARIANT="LetiHomeLite"
-          fi
-          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
-          echo "variant=$VARIANT" >> "$GITHUB_OUTPUT"
 
       - name: Rename artifacts
         run: |
