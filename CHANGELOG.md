@@ -1,7 +1,10 @@
 ## 2026-02-24, Version 3.3.0
 ### Notable changes
 #### The following significant changes have been made since the previous LetiHome 3.2.2 release.
-<list notable features manually here>
+Fix grid display
+Fix anchoring to top / bottom
+Recreate new icons from scratch
+Remove unused Multimedia module
 ### commits
  - [e3f6072](https://github.com/pkoretic/LetiHome/commit/e3f6072) fix root [referen](https://github.com/pkoretic/LetiHome/commit/referen)ces
  - [fe36ae6](https://github.com/pkoretic/LetiHome/commit/fe36ae6) [scripts](https://github.com/pkoretic/LetiHome/commit/scripts): fix [windows](https://github.com/pkoretic/LetiHome/commit/windows) [directo](https://github.com/pkoretic/LetiHome/commit/directo)ry change
@@ -19,7 +22,7 @@
 ## 2025-10-23, Version 3.2.2
 ### Notable changes
 #### The following significant changes have been made since the previous LetiHome 3.2.1 release.
-<list notable features manually here>
+Icons update
 ### commits
  - [56c94f7](https://github.com/pkoretic/LetiHome/commit/56c94f7) update icons [accordi](https://github.com/pkoretic/LetiHome/commit/accordi)ng to Google Play [guideli](https://github.com/pkoretic/LetiHome/commit/guideli)nes
  - [13aeea6](https://github.com/pkoretic/LetiHome/commit/13aeea6) add [powersh](https://github.com/pkoretic/LetiHome/commit/powersh)ell script for [buildin](https://github.com/pkoretic/LetiHome/commit/buildin)g [android](https://github.com/pkoretic/LetiHome/commit/android) app
