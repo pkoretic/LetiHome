@@ -24,7 +24,6 @@ jobs:
     timeout-minutes: 30
 
     env:
-      QT_ANDROID_KEYSTORE_PATH: ${{ runner.temp }}/keystore.jks
       QT_ANDROID_KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
       QT_ANDROID_KEYSTORE_STORE_PASS: ${{ secrets.KEYSTORE_STORE_PASS }}
       QT_ANDROID_KEYSTORE_KEY_PASS: ${{ secrets.KEYSTORE_KEY_PASS }}
@@ -68,6 +67,7 @@ jobs:
             exit 1
           fi
           echo "$KEYSTORE_B64" | base64 -d > "${{ runner.temp }}/keystore.jks"
+          echo "QT_ANDROID_KEYSTORE_PATH=${{ runner.temp }}/keystore.jks" >> "$GITHUB_ENV"
 
       - name: Configure (qt-cmake)
         run: |
