@@ -72,13 +72,10 @@ jobs:
           arch: android_x86_64
           cache: true
 
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
-        with:
-          accept-android-sdk-licenses: true
-
       - name: Install NDK
-        run: sdkmanager "ndk;${{ env.NDK_VERSION }}"
+        run: |
+          yes | sdkmanager --licenses > /dev/null 2>&1 || true
+          sdkmanager --install "ndk;${{ env.NDK_VERSION }}"
 
       - name: Cache FetchContent (android_openssl)
         uses: actions/cache@v4
