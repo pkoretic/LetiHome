@@ -49,6 +49,7 @@ qt_add_qml_module(LetiHomePlus
         assets/ethernet-online.svg
         assets/wifi-online.svg
         assets/settings.svg
+        assets/tvinput.svg
 )
 
 # Version: override via -DQT_ANDROID_VERSION_NAME=X.Y.Z -DQT_ANDROID_VERSION_CODE=N

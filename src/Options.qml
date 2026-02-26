@@ -17,8 +17,15 @@ Popup
     required property var appsProvider
     required property var platformProvider
 
+    // Tab name to index mapping
+    readonly property var tabIndices: { "options": 0, "apps": 1, "system": 2 }
+    property string initialTab: "options"
+
     Component.onCompleted: tabBar.setCurrentIndex(-1) // start unloaded
-    onOpened: { tabBar.setCurrentIndex(0); optionsTabButton.forceActiveFocus() } // load
+    onOpened: {
+        tabBar.setCurrentIndex(tabIndices[initialTab] ?? 0)
+        initialTab = "options" // reset for next open
+    }
     onClosed: tabBar.setCurrentIndex(-1) // unload
 
     padding: 0
@@ -33,30 +40,27 @@ Popup
         onCurrentIndexChanged: switch (currentIndex)
         {
             case -1: contentLoader.sourceComponent = undefined; break
-            case 0: contentLoader.sourceComponent = optionsTab; break
-            case 1: contentLoader.sourceComponent = appsTab; break
-            case 2: contentLoader.sourceComponent = systemTab; break
+            case 0: contentLoader.sourceComponent = optionsTab; optionsTabButton.forceActiveFocus(); break
+            case 1: contentLoader.sourceComponent = appsTab; appsTabButton.forceActiveFocus(); break
+            case 2: contentLoader.sourceComponent = systemTab; systemTabButton.forceActiveFocus(); break
         }
 
         TabButton
         {
             id: optionsTabButton
             text: qsTr("Options")
-            onClicked: tabBar.currentIndex = 0
         }
 
         TabButton
         {
             id: appsTabButton
             text: qsTr("Apps")
-            onClicked: tabBar.currentIndex = 1
         }
 
         TabButton
         {
             id: systemTabButton
             text: qsTr("System")
-            onClicked: tabBar.currentIndex = 2
         }
     }
 
@@ -202,7 +206,9 @@ Popup
 
               Label
               {
-                text: qsTr("Hidden apps - press <strong>OK</strong> to unhide")
+                text: qsTr("Hidden apps")
+                font.bold: true
+                font.pixelSize: 18
               }
 
               ListView
@@ -266,8 +272,9 @@ Popup
 
               Label
               {
-                text: allAppsList.currentItem?.applicationName || qsTr("All apps shown")
-                font.bold: true
+                text: qsTr("Press <strong>OK</strong> to unhide <strong>%1</strong>").arg(allAppsList.currentItem?.applicationName)
+                font.pixelSize: 18
+                visible: allAppsList.activeFocus
               }
           }
     }
@@ -278,15 +285,75 @@ Popup
 
         Item
         {
-            Button
+            Column
             {
-                text: qsTr("Open System Settings")
-                height: 60
-                highlighted: activeFocus
-                Keys.onEnterPressed: clicked()
-                Keys.onReturnPressed: clicked()
-                onClicked: navigationProvider.go("/systemsettings")
-                KeyNavigation.up: systemTabButton
+                width: parent.width
+                spacing: 20
+
+                Label
+                {
+                    text: qsTr("TV Inputs")
+                    font.bold: true
+                    font.pixelSize: 18
+                }
+
+                ListView
+                {
+                    id: tvInputsListView
+                    width: parent.width
+                    height: 60
+                    spacing: 10
+                    clip: true
+                    orientation: ListView.Horizontal
+
+                    model: ListModel { id: tvInputsModel }
+
+                    Component.onCompleted:
+                    {
+                        const inputs = platformProvider.getTvInputs()
+                        for (let i = 0; i < inputs.length; i++)
+                            tvInputsModel.append(inputs[i])
+                    }
+
+                    KeyNavigation.up: systemTabButton
+
+                    delegate: Button
+                    {
+                        required property var model
+                        height: ListView.view.height
+                        text: model.inputLabel
+                        highlighted: activeFocus
+                        Keys.onEnterPressed: clicked()
+                        Keys.onReturnPressed: clicked()
+                        onClicked: platformProvider.setTvInput(model.inputId)
+                    }
+                }
+
+                Label
+                {
+                    text: qsTr("No TV inputs found")
+                    visible: tvInputsModel.count === 0
+                    font.italic: true
+                }
+
+                Label
+                {
+                    text: qsTr("System settings")
+                    font.bold: true
+                    font.pixelSize: 18
+                }
+
+                Button
+                {
+                    id: openSettingsButton
+                    text: qsTr("Open")
+                    height: 60
+                    highlighted: activeFocus
+                    Keys.onEnterPressed: clicked()
+                    Keys.onReturnPressed: clicked()
+                    onClicked: navigationProvider.go("/systemsettings")
+                    KeyNavigation.up: tvInputsListView
+                }
             }
         }
     }

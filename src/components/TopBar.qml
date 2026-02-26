@@ -17,6 +17,7 @@ FocusScope
 
     signal settingsClicked
     signal networkClicked
+    signal tvInputClicked
 
     // clock in locale format depending if 24 hour format is set in the system
     Text
@@ -36,9 +37,40 @@ FocusScope
 
         Image
         {
+            id: tvInputIcon
+            source: "../../assets/tvinput.svg"
+            scale: activeFocus ? 1.5 : 1
+            Behavior on scale { NumberAnimation { duration: 150; easing.type: Easing.InOutQuad } }
+            height: time.height - 10
+            width: height
+            visible: root.isTelevision
+            layer.enabled: activeFocus
+            onStatusChanged: {
+                if (status === Image.Ready) {
+                    sourceSize.width = paintedWidth
+                    sourceSize.height = paintedHeight
+                }
+            }
+            anchors.verticalCenter: parent.verticalCenter
+
+            Keys.onReturnPressed: root.tvInputClicked()
+            Keys.onEnterPressed: root.tvInputClicked()
+
+            layer.effect: MultiEffect
+            {
+                colorization: 1.0
+                colorizationColor: "#663388FF"
+            }
+
+            KeyNavigation.right: networkIcon
+        }
+
+        Image
+        {
             id: networkIcon
             source: "../../assets/%1.svg".arg(root.isOnline ? (root.isEthernet ? "ethernet-online" : "wifi-online") : "network-offline")
             scale: activeFocus ? 1.5 : 1
+            Behavior on scale { NumberAnimation { duration: 150; easing.type: Easing.InOutQuad } }
             height: time.height - 10
             width: height
             layer.enabled: activeFocus
@@ -68,6 +100,7 @@ FocusScope
             focus: true
             source: "../../assets/settings.svg"
             scale: activeFocus ? 1.5 : 1
+            Behavior on scale { NumberAnimation { duration: 150; easing.type: Easing.InOutQuad } }
             height: time.height - 10
             width: height
             layer.enabled: activeFocus

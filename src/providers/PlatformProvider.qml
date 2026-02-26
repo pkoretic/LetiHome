@@ -53,4 +53,14 @@ Item
         return _Platform.applicationList()
     }
 
+    function getTvInputs()
+    {
+        return _Platform.tvInputs()
+    }
+
+    function setTvInput(inputId)
+    {
+        _Platform.setTvInput(inputId)
+    }
+
 }
