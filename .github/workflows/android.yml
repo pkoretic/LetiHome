@@ -173,6 +173,23 @@ jobs:
           path: ${{ steps.meta.outputs.variant }}-*.*
           retention-days: 30
 
+      - name: Generate what's new
+        if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
+        run: |
+          mkdir -p whatsnew
+          PREV_TAG=$(git tag --sort=-creatordate | grep -v "^${{ steps.meta.outputs.version }}$" | head -n1)
+          if [ -n "$PREV_TAG" ]; then
+            COMMITS=$(git log "${PREV_TAG}..HEAD" --pretty=format:"• %s" --no-merges)
+          else
+            COMMITS=$(git log --pretty=format:"• %s" --no-merges)
+          fi
+          # Truncate to 500 characters (Play Store limit)
+          TRUNCATED=$(echo "$COMMITS" | head -c 497)
+          if [ ${#COMMITS} -gt 497 ]; then
+            TRUNCATED="${TRUNCATED}…"
+          fi
+          echo "$TRUNCATED" > whatsnew/whatsnew-en-US
+
       - name: Create GitHub Release
         if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v2
@@ -190,3 +207,4 @@ jobs:
           releaseFiles: ${{ steps.meta.outputs.variant }}-${{ steps.meta.outputs.version }}.aab
           track: internal
           status: completed
+          whatsNewDirectory: whatsnew
