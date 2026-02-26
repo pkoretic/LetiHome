@@ -108,12 +108,18 @@ jobs:
           MINOR="${REMAINDER%%.*}"
           PATCH="${REMAINDER#*.}"
           VERSION_CODE=$(( MAJOR * 10000 + MINOR * 100 + PATCH ))
-          if [ "$MAJOR" -ge 3 ]; then
-            VARIANT="LetiHomePlus"
-            PACKAGE_NAME="hr.envizia.letihomeplus"
+          # Detect variant from branch name
+          if [[ "$GITHUB_REF" == refs/tags/* ]]; then
+            BRANCH=$(git branch -r --contains "$GITHUB_SHA" | grep -v 'HEAD' | sed 's|origin/||' | xargs | awk '{print $1}')
           else
+            BRANCH="${GITHUB_REF_NAME}"
+          fi
+          if [[ "$BRANCH" == "lite" ]]; then
             VARIANT="LetiHomeLite"
             PACKAGE_NAME="hr.envizia.letihome"
+          else
+            VARIANT="LetiHomePlus"
+            PACKAGE_NAME="hr.envizia.letihomeplus"
           fi
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
           echo "version_code=$VERSION_CODE" >> "$GITHUB_OUTPUT"
@@ -165,6 +171,22 @@ jobs:
           path: ${{ steps.meta.outputs.variant }}-*.*
           retention-days: 30
 
+      - name: Generate what's new
+        if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
+        run: |
+          mkdir -p whatsnew
+          PREV_TAG=$(git tag --sort=-creatordate | grep -v "^${{ steps.meta.outputs.version }}$" | head -n1)
+          if [ -n "$PREV_TAG" ]; then
+            COMMITS=$(git log "${PREV_TAG}..HEAD" --pretty=format:"• %s" --no-merges)
+          else
+            COMMITS=$(git log --pretty=format:"• %s" --no-merges)
+          fi
+          TRUNCATED=$(echo "$COMMITS" | head -c 497)
+          if [ ${#COMMITS} -gt 497 ]; then
+            TRUNCATED="${TRUNCATED}…"
+          fi
+          echo "$TRUNCATED" > whatsnew/whatsnew-en-US
+
       - name: Create GitHub Release
         if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v2
@@ -182,3 +204,4 @@ jobs:
           releaseFiles: ${{ steps.meta.outputs.variant }}-${{ steps.meta.outputs.version }}.aab
           track: internal
           status: completed
+          whatsNewDirectory: whatsnew
