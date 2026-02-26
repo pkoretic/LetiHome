@@ -9,7 +9,7 @@ set -euo pipefail
 #   -r ACTION  Post-build: install, run, reinstall (default: none)
 #   -s         Skip cmake configure if CMakeCache exists
 #   -c         Clean build directory first
-#   -q PATH    Path to qt-cmake (default: ~/Qt/6.5.3/android_x86/bin/qt-cmake)
+#   -q PATH    Path to qt-cmake (default: auto-selected per ABI)
 #   -d PATH    Android SDK root (default: ~/Android/Sdk)
 #   -n PATH    Android NDK root (default: ~/Android/Sdk/ndk/27.2.12479018)
 #
@@ -27,7 +27,7 @@ ABI="x86"
 ACTION=""
 SKIP_CONFIGURE=false
 CLEAN=false
-QT_CMAKE="$HOME/Qt/6.5.3/android_x86/bin/qt-cmake"
+QT_CMAKE=""
 SDK_ROOT="$HOME/Android/Sdk"
 NDK_ROOT="$HOME/Android/Sdk/ndk/27.2.12479018"
 
@@ -59,6 +59,18 @@ if [ -n "$ACTION" ]; then
     esac
 fi
 
+# Auto-select qt-cmake based on ABI if not specified
+if [ -z "$QT_CMAKE" ]; then
+    QT_ROOT="$HOME/Qt/6.5.3"
+    case "$ABI" in
+        armeabi-v7a) QT_SUB="android_armv7" ;;
+        arm64-v8a)   QT_SUB="android_arm64_v8a" ;;
+        x86)         QT_SUB="android_x86" ;;
+        x86_64)      QT_SUB="android_x86_64" ;;
+    esac
+    QT_CMAKE="$QT_ROOT/$QT_SUB/bin/qt-cmake"
+fi
+
 # Validate tools
 if [ ! -f "$QT_CMAKE" ]; then
     echo "Error: qt-cmake not found at: $QT_CMAKE" >&2; exit 1
@@ -76,7 +88,8 @@ fi
 # Always run from project root
 cd "$(dirname "${BASH_SOURCE[0]}")/.."
 PROJECT_ROOT="$(pwd)"
-BUILD_DIR="$PROJECT_ROOT/build_android"
+# Use separate build tree per ABI to avoid rebuilding unintended platforms
+BUILD_DIR="$PROJECT_ROOT/build_android/$ABI"
 
 # Extract version from CMakeLists.txt
 VERSION=$(grep -oP 'QT_ANDROID_VERSION_NAME\s+"\K[0-9.]+' CMakeLists.txt || echo "unknown")
@@ -103,6 +116,16 @@ echo ""
 # Configure (qt-cmake)
 CMAKE_CACHE="$BUILD_DIR/CMakeCache.txt"
 
+# If the cache exists but the ABI doesn't match, force reconfigure
+if [ -f "$CMAKE_CACHE" ]; then
+    CACHED_ABI=$(grep -oP 'QT_ANDROID_ABIS:INTERNAL=\K.+' "$CMAKE_CACHE" || true)
+    if [ -n "$CACHED_ABI" ] && [ "$CACHED_ABI" != "$ABI" ]; then
+        echo "ABI changed (was $CACHED_ABI, now $ABI) – deleting cache and old android_abi_builds."
+        rm -f "$CMAKE_CACHE"
+        rm -rf "$BUILD_DIR/android_abi_builds"
+    fi
+fi
+
 if $SKIP_CONFIGURE && [ -f "$CMAKE_CACHE" ]; then
     echo "Skipping cmake configure (-s, CMakeCache exists)."
 else
@@ -113,6 +136,9 @@ else
         "-DCMAKE_BUILD_TYPE=Debug"
         "-DQT_ANDROID_BUILD_ALL_ABIS=OFF"
         "-DQT_ANDROID_ABIS=$ABI"
+        "-DANDROID_ABI=$ABI"
+        "-DCMAKE_CXX_COMPILER_LAUNCHER=ccache"
+        "-DCMAKE_C_COMPILER_LAUNCHER=ccache"
         "-GNinja"
     )
     # If FetchContent source was already downloaded, skip network access
