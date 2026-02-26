@@ -118,6 +118,7 @@ Rectangle
         KeyNavigation.down: appsLoader
         Keys.onBackPressed: appsLoader.focus = true
         onSettingsClicked: r.navigationProvider.go("/options")
+        onNetworkClicked: r.platformProvider.openNetworkSettings()
     }
 
     Loader

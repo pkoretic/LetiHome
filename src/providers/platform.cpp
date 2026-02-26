@@ -188,6 +188,18 @@ void Platform::openSettings()
 #endif
 }
 
+void Platform::openNetworkSettings(bool isEthernet)
+{
+#ifdef Q_OS_ANDROID
+
+    QJniObject activity = QNativeInterface::QAndroidApplication::context();
+    activity.callMethod<void>("openNetworkSettings", "(Z)V", static_cast<jboolean>(isEthernet));
+
+#else
+    Q_UNUSED(isEthernet);
+#endif
+}
+
 void Platform::openAppInfo(const QString &packageName)
 {
 #ifdef Q_OS_ANDROID

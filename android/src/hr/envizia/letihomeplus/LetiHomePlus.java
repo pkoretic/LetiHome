@@ -160,6 +160,23 @@ public class LetiHomePlus extends QtActivity
         startActivity(new Intent(android.provider.Settings.ACTION_SETTINGS));
     }
 
+    // open network settings based on connection type
+    // isEthernet: true = open ethernet/general settings, false = open wifi settings
+    public void openNetworkSettings(boolean isEthernet)
+    {
+        try {
+            if (isEthernet) {
+                // No dedicated ethernet settings intent on Android; use general settings
+                startActivity(new Intent(android.provider.Settings.ACTION_SETTINGS));
+            } else {
+                startActivity(new Intent(android.provider.Settings.ACTION_WIFI_SETTINGS));
+            }
+        } catch (Exception e) {
+            Log.w("LetiHomePlus", "Network settings not available, opening general settings", e);
+            openSettings();
+        }
+    }
+
     // open system application info dialog
     public void openAppInfo(String packageName)
     {

@@ -89,5 +89,6 @@ ApplicationWindow
         appsProvider: appsProvider
         settingsProvider: settingsProvider
         navigationProvider: navigationProvider
+        platformProvider: platformProvider
     }
 }

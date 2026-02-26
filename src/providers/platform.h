@@ -32,6 +32,9 @@ public slots:
         // open android system settings
         void openSettings();
 
+        // open android network/wifi settings
+        void openNetworkSettings(bool isEthernet);
+
         // open application information dialog with open, install, remove etc options
         void openAppInfo(const QString &packageName);
 

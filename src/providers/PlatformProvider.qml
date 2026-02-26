@@ -38,6 +38,11 @@ Item
         _Platform.openSettings()
     }
 
+    function openNetworkSettings()
+    {
+        _Platform.openNetworkSettings(isEthernet)
+    }
+
     function openAppStore()
     {
         _Platform.openLetiHomePage()

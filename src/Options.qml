@@ -15,6 +15,7 @@ Popup
     required property var settingsProvider
     required property var navigationProvider
     required property var appsProvider
+    required property var platformProvider
 
     Component.onCompleted: tabBar.setCurrentIndex(-1) // start unloaded
     onOpened: { tabBar.setCurrentIndex(0); optionsTabButton.forceActiveFocus() } // load

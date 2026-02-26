@@ -16,6 +16,7 @@ FocusScope
     implicitHeight: childrenRect.height
 
     signal settingsClicked
+    signal networkClicked
 
     // clock in locale format depending if 24 hour format is set in the system
     Text
@@ -35,9 +36,12 @@ FocusScope
 
         Image
         {
+            id: networkIcon
             source: "../../assets/%1.svg".arg(root.isOnline ? (root.isEthernet ? "ethernet-online" : "wifi-online") : "network-offline")
+            scale: activeFocus ? 1.5 : 1
             height: time.height - 10
             width: height
+            layer.enabled: activeFocus
             onStatusChanged: {
                 if (status === Image.Ready) {
                     sourceSize.width = paintedWidth
@@ -45,6 +49,17 @@ FocusScope
                 }
             }
             anchors.verticalCenter: parent.verticalCenter
+
+            Keys.onReturnPressed: root.networkClicked()
+            Keys.onEnterPressed: root.networkClicked()
+
+            layer.effect: MultiEffect
+            {
+                colorization: 1.0
+                colorizationColor: "#663388FF"
+            }
+
+            KeyNavigation.right: settingsIcon
         }
 
         Image
