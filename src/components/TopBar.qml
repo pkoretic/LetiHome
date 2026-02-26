@@ -1,4 +1,5 @@
 import QtQuick
+import QtQuick.Effects
 
 FocusScope
 {
@@ -48,11 +49,13 @@ FocusScope
 
         Image
         {
+            id: settingsIcon
             focus: true
-            source: "../../assets/settings%1.svg".arg(activeFocus ? "-active" : "")
+            source: "../../assets/settings.svg"
             scale: activeFocus ? 1.5 : 1
             height: time.height - 10
             width: height
+            layer.enabled: activeFocus
             onStatusChanged: {
                 if (status === Image.Ready) {
                     sourceSize.width = paintedWidth
@@ -63,6 +66,12 @@ FocusScope
 
             Keys.onReturnPressed: root.settingsClicked()
             Keys.onEnterPressed: root.settingsClicked()
+
+            layer.effect: MultiEffect
+            {
+                colorization: 1.0
+                colorizationColor: "#663388FF"
+            }
         }
 
         // date in system locale format
