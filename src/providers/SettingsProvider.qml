@@ -10,6 +10,7 @@ Settings
     property bool showClock: true
     property bool showDate: true
     property bool useLoremPicsumWallpaper: false
+    property string wallpaperUrl: ""
     property bool showAsList: true
     property int appsShown: 7
     property bool isFirstRun: true

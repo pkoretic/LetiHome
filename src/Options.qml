@@ -2,12 +2,13 @@ pragma ComponentBehavior: Bound
 
 import QtQuick
 import QtQuick.Controls.Material
+import QtQuick.Effects
 
 import "components"
 
 Popup
 {
-    id: optionsPopup
+    id: r
 
     modal: true
     focus: true
@@ -189,6 +190,41 @@ Popup
                         text: qsTr("Number of apps shown (Press Left/Right to change)")
                         anchors.verticalCenter: parent.verticalCenter
                     }
+                }
+            }
+
+            Image
+            {
+                id: imagePreview
+                anchors.right: parent.right
+                anchors.verticalCenter: parent.verticalCenter
+                height: parent.height / 2
+                width: height
+                fillMode: Image.PreserveAspectCrop
+                visible: settingsProvider.useLoremPicsumWallpaper
+                source: visible ? settingsProvider.wallpaperUrl : "" // unload when not visible
+
+                // rounded corners
+                layer.enabled: visible
+                layer.effect: MultiEffect {
+                    maskEnabled: true
+                    maskSource: ShaderEffectSource {
+                        sourceItem: Rectangle {
+                            width: imagePreview.width
+                            height: imagePreview.height
+                            radius: 10
+                        }
+                        hideSource: true  // hides from scene but still renders to texture
+                        live: false       // static mask, no need to update every frame
+                    }
+                }
+                Label
+                {
+                    text: qsTr("Wallpaper preview")
+                    font.italic: true
+                    style: Label.Outline
+                    anchors.bottom: parent.bottom
+                    anchors.horizontalCenter: parent.horizontalCenter
                 }
             }
         }

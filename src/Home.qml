@@ -91,7 +91,14 @@ Rectangle
         // We have to wait for the width and height to be set
         Component.onCompleted:
         {
-            source = Qt.binding(function() { return r.settingsProvider.useLoremPicsumWallpaper ? "https://picsum.photos/%1/%2?%3".arg(width).arg(height).arg(Math.random()) : ""})
+            source = Qt.binding(function() {
+                if (r.settingsProvider.useLoremPicsumWallpaper) {
+                    const imgSource = "https://picsum.photos/%1/%2?%3".arg(width).arg(height).arg(Math.random())
+                    r.settingsProvider.wallpaperUrl = imgSource
+
+                    return imgSource
+                }
+            })
         }
 
         Rectangle
