@@ -198,92 +198,95 @@ Popup
     {
         id: appsTab
 
-          Column
-          {
-              width: parent.width
-              height: parent.height
-              spacing: 20
+        GroupBox
+        {
+            Column
+            {
+                width: parent.width
+                height: parent.height
+                spacing: 20
 
-              Label
-              {
-                text: qsTr("Hidden apps")
-                font.bold: true
-                font.pixelSize: 18
-              }
+                Label
+                {
+                    text: qsTr("Hidden apps")
+                    font.bold: true
+                    font.pixelSize: 18
+                }
 
-              ListView
-              {
-                  id: allAppsList
-                  width: parent.width - 20
-                  height: 100
-                  spacing: 10
-                  z: 1
-                  anchors.horizontalCenter: parent.horizontalCenter
+                ListView
+                {
+                    id: allAppsList
+                    width: parent.width - 20
+                    height: 100
+                    spacing: 10
+                    z: 1
+                    anchors.horizontalCenter: parent.horizontalCenter
 
-                  model: ListModel { id: appModel }
+                    model: ListModel { id: appModel }
 
-                  orientation: ListView.Horizontal
-                  snapMode: ListView.SnapToItem
+                    orientation: ListView.Horizontal
+                    snapMode: ListView.SnapToItem
 
-                  highlightMoveDuration: 150
+                    highlightMoveDuration: 150
 
-                  function loadModel()
-                  {
-                      const apps = appsProvider.getAvailableApps();
-                      for (let i = 0; i < apps.length; i++)
-                          appModel.set(i, apps[i])
-                  }
+                    function loadModel()
+                    {
+                        const apps = appsProvider.getAvailableApps();
+                        for (let i = 0; i < apps.length; i++)
+                            appModel.set(i, apps[i])
+                    }
 
-                  function addApp(packageName)
-                  {
-                      // add it to domain data model
-                      appsProvider.addApp(packageName)
+                    function addApp(packageName)
+                    {
+                        // add it to domain data model
+                        appsProvider.addApp(packageName)
 
-                      // update view data model
-                      for (let i = 0; i < appModel.count; i++)
-                          if (appModel.get(i).packageName === packageName)
-                              return appModel.remove(i)
-                  }
+                        // update view data model
+                        for (let i = 0; i < appModel.count; i++)
+                            if (appModel.get(i).packageName === packageName)
+                                return appModel.remove(i)
+                    }
 
-                  Component.onCompleted: loadModel()
+                    Component.onCompleted: loadModel()
 
-                  Keys.onEnterPressed: addApp(appModel.get(currentIndex).packageName)
-                  Keys.onReturnPressed: addApp(appModel.get(currentIndex).packageName)
-                  KeyNavigation.up: appsTabButton
+                    Keys.onEnterPressed: addApp(appModel.get(currentIndex).packageName)
+                    Keys.onReturnPressed: addApp(appModel.get(currentIndex).packageName)
+                    KeyNavigation.up: appsTabButton
 
-                  delegate: IconBanner
-                  {
-                      property bool isCurrentItem: ListView.isCurrentItem && activeFocus
-                      required property var model
-                      property string applicationName: model.applicationName
-                      loadTVBanner: false
-                      async: true
+                    delegate: IconBanner
+                    {
+                        property bool isCurrentItem: ListView.isCurrentItem && activeFocus
+                        required property var model
+                        property string applicationName: model.applicationName
+                        loadTVBanner: false
+                        async: true
 
-                      height: ListView.view.height - 20
-                      width: height
+                        height: ListView.view.height - 20
+                        width: height
 
-                      appPackage: model.packageName
+                        appPackage: model.packageName
 
-                      scale: isCurrentItem ? 1.3 : 1
-                      z: isCurrentItem ? 1 : 0
-                      Behavior on scale { NumberAnimation { duration: 150; easing.type: Easing.InOutQuad } }
-                  }
-              }
+                        scale: isCurrentItem ? 1.3 : 1
+                        z: isCurrentItem ? 1 : 0
+                        Behavior on scale { NumberAnimation { duration: 150; easing.type: Easing.InOutQuad } }
+                    }
+                }
 
-              Label
-              {
-                text: qsTr("Press <strong>OK</strong> to unhide <strong>%1</strong>").arg(allAppsList.currentItem?.applicationName)
-                font.pixelSize: 18
-                visible: allAppsList.activeFocus
-              }
-          }
+                Label
+                {
+                    text: qsTr("Press <strong>OK</strong> to unhide <strong>%1</strong>").arg(allAppsList.currentItem?.applicationName)
+                    font.pixelSize: 18
+                    visible: allAppsList.activeFocus
+                }
+            }
+        }
     }
 
     Component
     {
         id: systemTab
 
-        Item
+        GroupBox
         {
             Column
             {
