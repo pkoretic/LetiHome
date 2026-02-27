@@ -52,29 +52,30 @@ qt_add_qml_module(LetiHomePlus
         assets/tvinput.svg
 )
 
-# Version: override via -DQT_ANDROID_VERSION_NAME=X.Y.Z -DQT_ANDROID_VERSION_CODE=N
-# Defaults are dev placeholders; CI injects real values from the git tag.
-if(NOT DEFINED QT_ANDROID_VERSION_NAME)
-    set(QT_ANDROID_VERSION_NAME "0.0.0")
-endif()
-if(NOT DEFINED QT_ANDROID_VERSION_CODE)
-    set(QT_ANDROID_VERSION_CODE 1)
-endif()
-
-set_target_properties(LetiHomePlus PROPERTIES
-    QT_ANDROID_PACKAGE_NAME "hr.envizia.letihomeplus"
-    QT_ANDROID_PACKAGE_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/android
-    QT_ANDROID_VERSION_CODE ${QT_ANDROID_VERSION_CODE}
-    QT_ANDROID_VERSION_NAME "${QT_ANDROID_VERSION_NAME}"
-    QT_ANDROID_MIN_SDK_VERSION 23
-    QT_ANDROID_COMPILE_SDK_VERSION "android-35"
-    QT_ANDROID_SDK_BUILD_TOOLS_REVISION "35.0.1"
-    QT_ANDROID_TARGET_SDK_VERSION 35
-    QT_ANDROID_BUILD_ALL_ABIS ${QT_ANDROID_BUILD_ALL_ABIS}
-    QT_ANDROID_ABIS "${QT_ANDROID_ABIS}"
-)
-
 if (ANDROID)
+
+    # Version: override via -DQT_ANDROID_VERSION_NAME=X.Y.Z -DQT_ANDROID_VERSION_CODE=N
+    # Defaults are dev placeholders; CI injects real values from the git tag.
+    if(NOT DEFINED QT_ANDROID_VERSION_NAME)
+        set(QT_ANDROID_VERSION_NAME "0.0.0")
+    endif()
+    if(NOT DEFINED QT_ANDROID_VERSION_CODE)
+        set(QT_ANDROID_VERSION_CODE 1)
+    endif()
+
+    set_target_properties(LetiHomePlus PROPERTIES
+        QT_ANDROID_PACKAGE_NAME "hr.envizia.letihomeplus"
+        QT_ANDROID_PACKAGE_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/android
+        QT_ANDROID_VERSION_CODE ${QT_ANDROID_VERSION_CODE}
+        QT_ANDROID_VERSION_NAME "${QT_ANDROID_VERSION_NAME}"
+        QT_ANDROID_MIN_SDK_VERSION 23
+        QT_ANDROID_COMPILE_SDK_VERSION "android-35"
+        QT_ANDROID_SDK_BUILD_TOOLS_REVISION "35.0.1"
+        QT_ANDROID_TARGET_SDK_VERSION 35
+        QT_ANDROID_BUILD_ALL_ABIS "${QT_ANDROID_BUILD_ALL_ABIS}"
+        QT_ANDROID_ABIS "${QT_ANDROID_ABIS}"
+    )
+
     FetchContent_Declare(
       android_openssl
       DOWNLOAD_EXTRACT_TIMESTAMP true
