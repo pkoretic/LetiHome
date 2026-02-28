@@ -3,6 +3,7 @@ include(FetchContent)
 
 project(LetiHome LANGUAGES CXX)
 
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(Qt6 REQUIRED COMPONENTS Quick Network)
@@ -29,20 +30,39 @@ qt_add_qml_module(LetiHome
         qml/network-offline.svg
 )
 
-set_target_properties(LetiHome PROPERTIES
-    QT_ANDROID_PACKAGE_NAME "hr.envizia.letihome"
-    QT_ANDROID_PACKAGE_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/android
-    QT_ANDROID_VERSION_CODE 31
-    QT_ANDROID_VERSION_NAME "2.5.3"
-    QT_ANDROID_MIN_SDK_VERSION 23
-    QT_ANDROID_COMPILE_SDK_VERSION "android-35"
-    QT_ANDROID_TARGET_SDK_VERSION 35
-    QT_ANDROID_SDK_BUILD_TOOLS_REVISION "35.0.1"
-    QT_ANDROID_BUILD_ALL_ABIS OFF
-    QT_ANDROID_ABIS "armeabi-v7a;arm64-v8a;x86;x86_64"
-)
 
 if (ANDROID)
+
+    # Version: override via -DQT_ANDROID_VERSION_NAME=X.Y.Z -DQT_ANDROID_VERSION_CODE=N
+    # Defaults are dev placeholders; CI injects real values from the git tag.
+    if(NOT DEFINED QT_ANDROID_VERSION_NAME)
+        set(QT_ANDROID_VERSION_NAME "0.0.0")
+    endif()
+    if(NOT DEFINED QT_ANDROID_VERSION_CODE)
+        set(QT_ANDROID_VERSION_CODE 1)
+    endif()
+
+    if(NOT DEFINED QT_ANDROID_BUILD_ALL_ABIS)
+        set(QT_ANDROID_BUILD_ALL_ABIS FALSE)
+    endif()
+    if(NOT DEFINED QT_ANDROID_ABIS)
+        set(QT_ANDROID_ABIS "arm64-v8a")
+    endif()
+
+
+    set_target_properties(LetiHome PROPERTIES
+        QT_ANDROID_PACKAGE_NAME "hr.envizia.letihome"
+        QT_ANDROID_PACKAGE_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/android
+        QT_ANDROID_VERSION_CODE 31
+        QT_ANDROID_VERSION_NAME "2.5.3"
+        QT_ANDROID_MIN_SDK_VERSION 23
+        QT_ANDROID_COMPILE_SDK_VERSION "android-35"
+        QT_ANDROID_TARGET_SDK_VERSION 35
+        QT_ANDROID_SDK_BUILD_TOOLS_REVISION "35.0.1"
+        QT_ANDROID_BUILD_ALL_ABIS "${QT_ANDROID_BUILD_ALL_ABIS}"
+        QT_ANDROID_ABIS "${QT_ANDROID_ABIS}"
+    )
+
     FetchContent_Declare(
       android_openssl
       DOWNLOAD_EXTRACT_TIMESTAMP true
