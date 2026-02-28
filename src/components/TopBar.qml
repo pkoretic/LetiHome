@@ -55,7 +55,6 @@ FocusScope
             }
             anchors.verticalCenter: parent.verticalCenter
 
-            Keys.onReturnPressed: root.tvInputClicked()
             Keys.onEnterPressed: root.tvInputClicked()
 
             layer.effect: MultiEffect
@@ -84,7 +83,6 @@ FocusScope
             }
             anchors.verticalCenter: parent.verticalCenter
 
-            Keys.onReturnPressed: root.networkClicked()
             Keys.onEnterPressed: root.networkClicked()
 
             layer.effect: MultiEffect
@@ -114,7 +112,6 @@ FocusScope
             }
             anchors.verticalCenter: parent.verticalCenter
 
-            Keys.onReturnPressed: root.settingsClicked()
             Keys.onEnterPressed: root.settingsClicked()
 
             layer.effect: MultiEffect
@@ -143,7 +140,6 @@ FocusScope
             }
             anchors.verticalCenter: parent.verticalCenter
 
-            Keys.onReturnPressed: root.helpClicked()
             Keys.onEnterPressed: root.helpClicked()
 
             layer.effect: MultiEffect

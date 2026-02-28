@@ -65,7 +65,6 @@ ListView {
 
     function defaultKeyHandler(event) {
         switch (event.key) {
-        case Qt.Key_Return:
         case Qt.Key_Enter:
             event.accepted = true;
             openClicked(listView.currentItem.packageName);
@@ -83,7 +82,6 @@ ListView {
         const currentIndex = listView.currentIndex;
         switch (event.key) {
             case Qt.Key_Back:
-            case Qt.Key_Return:
             case Qt.Key_Enter:
             case Qt.Key_Escape:
                 event.accepted = true;

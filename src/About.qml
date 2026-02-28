@@ -51,7 +51,6 @@ Popup
                 text: qsTr("Leave a review")
                 height: 60
                 highlighted: activeFocus
-                Keys.onReturnPressed: clicked()
                 Keys.onEnterPressed: clicked()
                 onClicked: navigationProvider.go("/appStore")
 
@@ -65,7 +64,6 @@ Popup
                 height: 60
                 focus: true
                 highlighted: activeFocus
-                Keys.onReturnPressed: clicked()
                 Keys.onEnterPressed: clicked()
                 onClicked: optionsPopup.close()
             }

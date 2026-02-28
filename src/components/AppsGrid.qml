@@ -58,7 +58,6 @@ GridView
     {
         switch (event.key)
         {
-            case Qt.Key_Return:
             case Qt.Key_Enter:
                 event.accepted = true
                 openClicked(gridView.currentItem.packageName)
@@ -79,7 +78,6 @@ GridView
         switch (event.key)
         {
             case Qt.Key_Back:
-            case Qt.Key_Return:
             case Qt.Key_Enter:
             case Qt.Key_Escape:
                 event.accepted = true

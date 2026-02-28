@@ -18,6 +18,8 @@ qt_add_executable(LetiHomePlus
     src/providers/iconprovider.h
     src/providers/bannerprovider.cpp
     src/providers/bannerprovider.h
+    src/providers/keymapper.cpp
+    src/providers/keymapper.h
     android/AndroidManifest.xml
     android/build.gradle
     android/gradle.properties

@@ -7,10 +7,14 @@
 #include "providers/platform.h"
 #include "providers/iconprovider.h"
 #include "providers/bannerprovider.h"
+#include "providers/keymapper.h"
 
 int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);
+
+    KeyMapper keyMapper;
+    app.installEventFilter(&keyMapper);
 
     QQuickView::setDefaultAlphaBuffer(true);
 

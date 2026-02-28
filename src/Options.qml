@@ -89,7 +89,6 @@ Popup
                     id: showAppLabelsSwitch
                     text: qsTr("Show app labels on selection")
                     Keys.onEnterPressed: checked = !checked
-                    Keys.onReturnPressed: checked = !checked
                     Keys.onLeftPressed: checked = false
                     Keys.onRightPressed: checked = true
                     checked: settingsProvider.showAppNames
@@ -101,7 +100,6 @@ Popup
                     id: showClockSwitch
                     text: qsTr("Show clock")
                     Keys.onEnterPressed: checked = !checked
-                    Keys.onReturnPressed: checked = !checked
                     Keys.onLeftPressed: checked = false
                     Keys.onRightPressed: checked = true
                     checked: settingsProvider.showClock
@@ -114,7 +112,6 @@ Popup
                     id: showDateSwitch
                     text: qsTr("Show date")
                     Keys.onEnterPressed: checked = !checked
-                    Keys.onReturnPressed: checked = !checked
                     Keys.onLeftPressed: checked = false
                     Keys.onRightPressed: checked = true
                     checked: settingsProvider.showDate
@@ -128,7 +125,6 @@ Popup
                     id: alignToBottomSwitch
                     text: qsTr("Align apps to bottom")
                     Keys.onEnterPressed: checked = !checked
-                    Keys.onReturnPressed: checked = !checked
                     Keys.onLeftPressed: checked = false
                     Keys.onRightPressed: checked = true
                     checked: settingsProvider.alignToBottom
@@ -142,7 +138,6 @@ Popup
                     id: showAsListSwitch
                     text: qsTr("Show as list instead of a grid")
                     Keys.onEnterPressed: checked = !checked
-                    Keys.onReturnPressed: checked = !checked
                     Keys.onLeftPressed: checked = false
                     Keys.onRightPressed: checked = true
                     checked: settingsProvider.showAsList
@@ -156,7 +151,6 @@ Popup
                     id: loremPicsumBackgroundSwitch
                     text: qsTr("Use Random (Lorem Picsum) Wallpaper")
                     Keys.onEnterPressed: checked = !checked
-                    Keys.onReturnPressed: checked = !checked
                     Keys.onLeftPressed: checked = false
                     Keys.onRightPressed: checked = true
                     checked: settingsProvider.useLoremPicsumWallpaper
@@ -287,7 +281,6 @@ Popup
                     Component.onCompleted: loadModel()
 
                     Keys.onEnterPressed: addApp(appModel.get(currentIndex).packageName)
-                    Keys.onReturnPressed: addApp(appModel.get(currentIndex).packageName)
                     KeyNavigation.up: appsTabButton
 
                     delegate: IconBanner
@@ -374,7 +367,6 @@ Popup
                         text: model.inputLabel
                         highlighted: activeFocus
                         Keys.onEnterPressed: clicked()
-                        Keys.onReturnPressed: clicked()
                         onClicked: platformProvider.setTvInput(model.inputId)
                     }
                 }
@@ -400,7 +392,6 @@ Popup
                     height: 60
                     highlighted: activeFocus
                     Keys.onEnterPressed: clicked()
-                    Keys.onReturnPressed: clicked()
                     onClicked: navigationProvider.go("/systemsettings")
                     KeyNavigation.up: tvInputsListView
                 }
