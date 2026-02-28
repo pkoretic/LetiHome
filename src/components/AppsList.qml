@@ -82,23 +82,30 @@ ListView {
     function reorderKeyHandler(event) {
         const currentIndex = listView.currentIndex;
         switch (event.key) {
-        case Qt.Key_Back:
-        case Qt.Key_Return:
-        case Qt.Key_Enter:
-        case Qt.Key_Escape:
-            event.accepted = true;
-            state = "default";
-            break;
-        case Qt.Key_Right:
-            event.accepted = true;
-            if (currentIndex < listView.model.count - 1)
-                listView.model.move(currentIndex, currentIndex + 1, 1);
-            break;
-        case Qt.Key_Left:
-            event.accepted = true;
-            if (currentIndex > 0)
-                listView.model.move(currentIndex, currentIndex - 1, 1);
-            break;
+            case Qt.Key_Back:
+            case Qt.Key_Return:
+            case Qt.Key_Enter:
+            case Qt.Key_Escape:
+                event.accepted = true;
+                state = "default";
+                break;
+            case Qt.Key_Right:
+                event.accepted = true;
+                if (currentIndex < listView.model.count - 1)
+                    listView.model.move(currentIndex, currentIndex + 1, 1);
+                break;
+            case Qt.Key_Left:
+                event.accepted = true;
+                if (currentIndex > 0)
+                    listView.model.move(currentIndex, currentIndex - 1, 1);
+                break;
+            case Qt.Key_Up:
+                event.accepted = true
+            break
+
+            case Qt.Key_Down:
+                event.accepted = true
+            break
         }
     }
 
