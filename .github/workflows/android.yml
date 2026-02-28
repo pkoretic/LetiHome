@@ -108,20 +108,16 @@ jobs:
           MINOR="${REMAINDER%%.*}"
           PATCH="${REMAINDER#*.}"
           VERSION_CODE=$(( MAJOR * 10000 + MINOR * 100 + PATCH ))
-          # Detect variant from branch name
-          BRANCH="${GITHUB_REF_NAME}"
-          if [[ "$GITHUB_REF" == refs/tags/* ]]; then
-            # For tags, use the branch the tag was created on via GITHUB_BASE_REF,
-            # falling back to the default branch detection via repository default.
-            # We rely on the repo default branch being 'main' for Plus and 'lite' for Lite.
-            BRANCH=$(git branch -r --contains "$GITHUB_SHA" | grep -v 'HEAD' | sed 's|origin/||' | xargs | awk '{print $1}')
-          fi
-          if [[ "$BRANCH" == "lite" ]]; then
-            VARIANT="LetiHomeLite"
+          # Derive variant from major version (2.x.x = Lite/LetiHome)
+          if [[ "$MAJOR" == "2" ]]; then
+            VARIANT="LetiHome"
             PACKAGE_NAME="hr.envizia.letihome"
-          else
+          elif [[ "$MAJOR" == "3" ]]; then
             VARIANT="LetiHomePlus"
             PACKAGE_NAME="hr.envizia.letihomeplus"
+          else
+            echo "::error::Unknown major version '$MAJOR' — cannot determine variant"
+            exit 1
           fi
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
           echo "version_code=$VERSION_CODE" >> "$GITHUB_OUTPUT"
