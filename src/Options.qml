@@ -247,11 +247,13 @@ Popup
                 {
                     id: allAppsList
                     width: parent.width - 20
-                    height: 100
+                    height: delegateHeight
                     spacing: 10
-                    z: 1
                     anchors.horizontalCenter: parent.horizontalCenter
                     visible: appModel.count != 0
+
+                    property int delegateWidth: (width / 10) | 0
+                    property int delegateHeight: delegateWidth * 0.5625 // 9/16
 
                     model: ListModel { id: appModel }
 
@@ -288,11 +290,10 @@ Popup
                         property bool isCurrentItem: ListView.isCurrentItem && activeFocus
                         required property var model
                         property string applicationName: model.applicationName
-                        loadTVBanner: false
                         async: true
 
-                        height: ListView.view.height - 20
-                        width: height
+                        width: allAppsList.delegateWidth
+                        height: allAppsList.delegateHeight
 
                         appPackage: model.packageName
 
