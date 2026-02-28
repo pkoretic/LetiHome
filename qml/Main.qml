@@ -299,13 +299,11 @@ ApplicationWindow
                 textFormat: Text.StyledText
                 font.pixelSize: 20
                 wrapMode: Text.Wrap
-                text: `<p>Thank you for using <strong>LetiHome Lite</strong> application!</p><br/>
-                <strong>LetiHome Lite</strong> is a lightweight <u>open-source</u> app launcher application
-                that aims to work on as many TV devices as possible, especially low power ones.<br/><br/>
-                <strong>OK</strong> opens current application.
-                <strong>Menu</strong> or <strong>Back</strong> opens application info where app can be disabled/hidden.<br/><br/>
-                <strong> LetiHome Plus</strong> is available for those who need more features and to support development of this application. <br/><br/>
-                As there is <u>zero</u> data collection, your feedback is very valuable!
+                text: `<p>Thank you for using <strong>LetiHome Lite</strong> application, a very lightweight app launcher!
+                Open-source and with <u>no ADS</u>!</p><br/>
+                <strong>OK</strong> opens current application.<br/>
+                <strong>Menu/Back</strong> opens application info where app can be disabled/hidden.<br/><br/>
+                <strong>LetiHome Plus</strong> has features like List display, Wallpaper, Apps Reordering and more. It supports development of this application.
                 `
             }
 
@@ -363,6 +361,14 @@ ApplicationWindow
                     Keys.onEnterPressed: clicked()
                     onClicked: aboutPopup.close()
                 }
+            }
+
+            Label
+            {
+                text: "As there is <u>zero</u> data collection, your feedback is very valuable! Leave a review and enjoy!"
+                width: parent.width * 0.95
+                textFormat: Text.StyledText
+                wrapMode: Text.Wrap
             }
         }
     }
