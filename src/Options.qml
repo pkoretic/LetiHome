@@ -257,6 +257,7 @@ Popup
                     spacing: 10
                     z: 1
                     anchors.horizontalCenter: parent.horizontalCenter
+                    visible: appModel.count != 0
 
                     model: ListModel { id: appModel }
 
@@ -312,8 +313,16 @@ Popup
                 {
                     text: qsTr("Press <strong>OK</strong> to unhide <strong>%1</strong>").arg(allAppsList.currentItem?.applicationName)
                     font.pixelSize: 18
-                    visible: allAppsList.activeFocus
+                    visible: allAppsList.activeFocus && appModel.count != 0
                 }
+
+                Label
+                {
+                    text: qsTr("All apps shown")
+                    visible: appModel.count === 0
+                    font.italic: true
+                }
+
             }
         }
     }
@@ -344,6 +353,8 @@ Popup
                     spacing: 10
                     clip: true
                     orientation: ListView.Horizontal
+
+                    visible: tvInputsModel.count != 0
 
                     model: ListModel { id: tvInputsModel }
 

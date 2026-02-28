@@ -64,6 +64,13 @@ if (ANDROID)
         set(QT_ANDROID_VERSION_CODE 1)
     endif()
 
+    if(NOT DEFINED QT_ANDROID_BUILD_ALL_ABIS)
+        set(QT_ANDROID_BUILD_ALL_ABIS FALSE)
+    endif()
+    if(NOT DEFINED QT_ANDROID_ABIS)
+        set(QT_ANDROID_ABIS "arm64-v8a")
+    endif()
+
     set_target_properties(LetiHomePlus PROPERTIES
         QT_ANDROID_PACKAGE_NAME "hr.envizia.letihomeplus"
         QT_ANDROID_PACKAGE_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/android
