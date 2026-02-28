@@ -1,4 +1,4 @@
-#include "KeyMapper.h"
+#include "keymapper.h"
 #include <QCoreApplication>
 
 KeyMapper::KeyMapper(QObject *parent) : QObject(parent) {}
