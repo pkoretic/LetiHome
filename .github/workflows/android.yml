@@ -16,6 +16,8 @@ permissions:
 env:
   QT_VERSION: "6.5.3"
   NDK_VERSION: "27.2.12479018"
+  VARIANT: "LetiHomePlus"
+  PACKAGE_NAME: "hr.envizia.letihomeplus"
 
 jobs:
   build:
@@ -93,7 +95,7 @@ jobs:
           key: fetchcontent-openssl-${{ runner.os }}-${{ hashFiles('CMakeLists.txt') }}
           restore-keys: fetchcontent-openssl-${{ runner.os }}-
 
-      - name: Resolve version and variant
+      - name: Resolve version
         id: meta
         run: |
           if [[ "$GITHUB_REF" == refs/tags/* ]]; then
@@ -108,23 +110,8 @@ jobs:
           MINOR="${REMAINDER%%.*}"
           PATCH="${REMAINDER#*.}"
           VERSION_CODE=$(( MAJOR * 10000 + MINOR * 100 + PATCH ))
-          # Detect variant from branch name
-          if [[ "$GITHUB_REF" == refs/tags/* ]]; then
-            BRANCH=$(git branch -r --contains "$GITHUB_SHA" | grep -v 'HEAD' | sed 's|origin/||' | xargs | awk '{print $1}')
-          else
-            BRANCH="${GITHUB_REF_NAME}"
-          fi
-          if [[ "$BRANCH" == "lite" ]]; then
-            VARIANT="LetiHomeLite"
-            PACKAGE_NAME="hr.envizia.letihome"
-          else
-            VARIANT="LetiHomePlus"
-            PACKAGE_NAME="hr.envizia.letihomeplus"
-          fi
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
           echo "version_code=$VERSION_CODE" >> "$GITHUB_OUTPUT"
-          echo "variant=$VARIANT" >> "$GITHUB_OUTPUT"
-          echo "package_name=$PACKAGE_NAME" >> "$GITHUB_OUTPUT"
 
       - name: Decode keystore
         env:
@@ -161,14 +148,14 @@ jobs:
 
       - name: Rename artifacts
         run: |
-          NAME="${{ steps.meta.outputs.variant }}-${{ steps.meta.outputs.version }}"
+          NAME="${{ env.VARIANT }}-${{ steps.meta.outputs.version }}"
           cp build_android/android-build/build/outputs/bundle/release/android-build-release.aab "${NAME}.aab"
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ steps.meta.outputs.variant }}-${{ steps.meta.outputs.version }}
-          path: ${{ steps.meta.outputs.variant }}-*.*
+          name: ${{ env.VARIANT }}-${{ steps.meta.outputs.version }}
+          path: ${{ env.VARIANT }}-*.*
           retention-days: 30
 
       - name: Generate what's new
@@ -191,8 +178,8 @@ jobs:
         if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v2
         with:
-          name: ${{ steps.meta.outputs.variant }} ${{ steps.meta.outputs.version }}
-          files: ${{ steps.meta.outputs.variant }}-*.*
+          name: ${{ env.VARIANT }} ${{ steps.meta.outputs.version }}
+          files: ${{ env.VARIANT }}-*.*
           generate_release_notes: true
 
       - name: Publish to Play Store (internal track)
@@ -200,8 +187,8 @@ jobs:
         uses: r0adkll/upload-google-play@v1
         with:
           serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON }}
-          packageName: ${{ steps.meta.outputs.package_name }}
-          releaseFiles: ${{ steps.meta.outputs.variant }}-${{ steps.meta.outputs.version }}.aab
+          packageName: ${{ env.PACKAGE_NAME }}
+          releaseFiles: ${{ env.VARIANT }}-${{ steps.meta.outputs.version }}.aab
           track: internal
           status: completed
           whatsNewDirectory: whatsnew
