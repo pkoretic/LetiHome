@@ -52,21 +52,11 @@ Rectangle
     {
         console.info("opening application:", packageName)
 
-        // open internal context options
+        // open internal about page
         if(packageName === "hr.envizia.letihomeplus")
-        {
-            const item = appsLoader.item.highlightItem
-
-            // for list, highlight is always at first item
-            const x = (settingsProvider.showAsList ? 0 : item.x) + item.width / 2
-            const y = item.y + item.height / 2
-
-            letiHomeContextMenu.popup(appsLoader.item, x, y, settingsMenu)
-        }
+            r.navigationProvider.go("/about")
         else
-        {
-            platformProvider.openApplication(packageName)
-        }
+            r.platformProvider.openApplication(packageName)
     }
 
     function openAppInfo(packageName)
@@ -98,6 +88,7 @@ Rectangle
 
                     return imgSource
                 }
+                return ""
             })
         }
 
@@ -128,6 +119,7 @@ Rectangle
         onSettingsClicked: r.navigationProvider.go("/options")
         onNetworkClicked: r.platformProvider.openNetworkSettings()
         onTvInputClicked: r.navigationProvider.go("/options", { initialTab: "system" })
+        onHelpClicked: r.navigationProvider.go("/about")
     }
 
     Loader
@@ -185,22 +177,6 @@ Rectangle
             onInfoClicked: packageName => r.openAppInfo(packageName)
             onRemoveClicked: packageName => r.appsProvider.removeApp(packageName)
             onOrderChanged: appsOrder => r.appsProvider.setOrder(appsOrder)
-        }
-    }
-
-    Menu
-    {
-        id: letiHomeContextMenu
-        MenuItem
-        {
-            id: settingsMenu
-            text: qsTr("Settings")
-            onTriggered: r.navigationProvider.go("/options")
-        }
-        MenuItem
-        {
-            text: qsTr("About")
-            onTriggered: r.navigationProvider.go("/about")
         }
     }
 }

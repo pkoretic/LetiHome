@@ -19,6 +19,7 @@ FocusScope
     signal settingsClicked
     signal networkClicked
     signal tvInputClicked
+    signal helpClicked
 
     // clock in locale format depending if 24 hour format is set in the system
     Text
@@ -115,6 +116,35 @@ FocusScope
 
             Keys.onReturnPressed: root.settingsClicked()
             Keys.onEnterPressed: root.settingsClicked()
+
+            layer.effect: MultiEffect
+            {
+                colorization: 1.0
+                colorizationColor: "#663388FF"
+            }
+
+            KeyNavigation.right: tvHelpIcon
+        }
+
+        Image
+        {
+            id: tvHelpIcon
+            source: "../../assets/help.svg"
+            scale: activeFocus ? 1.5 : 1
+            Behavior on scale { NumberAnimation { duration: 150; easing.type: Easing.InOutQuad } }
+            height: time.height - 10
+            width: height
+            layer.enabled: activeFocus
+            onStatusChanged: {
+                if (status === Image.Ready) {
+                    sourceSize.width = paintedWidth
+                    sourceSize.height = paintedHeight
+                }
+            }
+            anchors.verticalCenter: parent.verticalCenter
+
+            Keys.onReturnPressed: root.helpClicked()
+            Keys.onEnterPressed: root.helpClicked()
 
             layer.effect: MultiEffect
             {

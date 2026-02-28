@@ -50,6 +50,7 @@ qt_add_qml_module(LetiHomePlus
         assets/wifi-online.svg
         assets/settings.svg
         assets/tvinput.svg
+        assets/help.svg
 )
 
 if (ANDROID)
