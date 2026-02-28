@@ -21,9 +21,17 @@ GridView
         State { name: "reorder"; PropertyChanges { gridView.Keys.onPressed: event => reorderKeyHandler(event) }}
     ]
 
+    transitions: [
+        Transition {
+            from: "reorder"; to: "default"
+            ScriptAction { script: gridView.orderChanged(gridView.getOrder())}
+        }
+    ]
+
     property bool isTelevision
     property bool showAppLabels
-    property int appsShown: 5 // how many apps to show in grid
+    property int appsShown: 5 // how many apps to show in one row of a grid
+    property bool isOrdering
 
     signal openClicked(string packageName)
     signal infoClicked(string packageName)
@@ -82,14 +90,12 @@ GridView
                 event.accepted = true
                 if (currentIndex < gridView.model.count-1)
                     gridView.model.move(currentIndex, currentIndex+1, 1)
-                orderChanged(getOrder())
             break
 
             case Qt.Key_Left:
                 event.accepted = true
                 if (currentIndex > 0)
                     gridView.model.move(currentIndex, currentIndex-1, 1)
-                orderChanged(getOrder())
             break
 
             case Qt.Key_Up:

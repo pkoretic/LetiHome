@@ -12,13 +12,11 @@ ListView {
     orientation: Qt.Horizontal
     highlightRangeMode: ListView.ApplyRange
     highlightMoveDuration: 150
-    highlightFollowsCurrentItem: true
     spacing: 10
 
     property int appsShown: 5
     property int delegateWidth: (width / appsShown) | 0
     property int delegateHeight: delegateWidth * 0.5625 // 9/16
-
 
     height: delegateHeight
 
@@ -26,20 +24,24 @@ ListView {
     states: [
         State {
             name: "default"
-            PropertyChanges {
-                listView.Keys.onPressed: event => defaultKeyHandler(event)
-            }
+            PropertyChanges { listView.Keys.onPressed: event => defaultKeyHandler(event) }
         },
         State {
             name: "reorder"
-            PropertyChanges {
-                listView.Keys.onPressed: event => reorderKeyHandler(event)
-            }
+            PropertyChanges { listView.Keys.onPressed: event => reorderKeyHandler(event) }
+        }
+    ]
+
+    transitions: [
+        Transition {
+            from: "reorder"; to: "default"
+            ScriptAction { script: listView.orderChanged(listView.getOrder())}
         }
     ]
 
     property bool isTelevision
     property bool showAppLabels
+    property bool isOrdering
 
     signal openClicked(string packageName)
     signal infoClicked(string packageName)
@@ -91,13 +93,11 @@ ListView {
             event.accepted = true;
             if (currentIndex < listView.model.count - 1)
                 listView.model.move(currentIndex, currentIndex + 1, 1);
-            orderChanged(getOrder());
             break;
         case Qt.Key_Left:
             event.accepted = true;
             if (currentIndex > 0)
                 listView.model.move(currentIndex, currentIndex - 1, 1);
-            orderChanged(getOrder());
             break;
         }
     }
