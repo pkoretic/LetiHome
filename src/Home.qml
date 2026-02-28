@@ -137,7 +137,7 @@ Rectangle
         x: 40
         y: r.settingsProvider.alignToBottom ? (parent.height - height - 20) : (topBar.height + 40)
         width: parent.width - 80
-        height: item.delegateHeight || item.childrenRect.height
+        height: item?.delegateHeight || item?.childrenRect?.height || 0
 
         // load apps list or grid based on settings
         sourceComponent: settingsProvider.showAsList ? appsListComponent : appsGridComponent
