@@ -9,6 +9,7 @@ FocusScope
     property bool is24HourFormat: true
     property bool isOnline: true
     property bool isEthernet: true
+    property bool isTelevision: true
     property alias running: updateTimer.running
     property bool showClock
     property alias showDate: date.visible

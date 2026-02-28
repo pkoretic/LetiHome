@@ -119,6 +119,7 @@ Rectangle
 
         isOnline: r.platformProvider.isOnline
         isEthernet: r.platformProvider.isEthernet
+        isTelevision: r.platformProvider.isTelevision
         is24HourFormat: r.platformProvider.is24HourFormat()
         showClock: r.settingsProvider.showClock
         showDate: r.settingsProvider.showDate
