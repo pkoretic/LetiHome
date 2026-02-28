@@ -34,7 +34,7 @@ FocusScope
     Row
     {
         anchors.right: parent.right
-        spacing: 10
+        spacing: 15
 
         Image
         {
