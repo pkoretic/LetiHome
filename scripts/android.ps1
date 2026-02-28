@@ -14,8 +14,8 @@ param(
     # Delete the build directory before building (forces a full rebuild).
     [switch]$Clean,
 
-    # Override: path to qt-cmake.bat  (default: C:\Qt\6.5.3\android_x86\bin\qt-cmake.bat)
-    [string]$QtCmake = "C:\Qt\6.5.3\android_x86\bin\qt-cmake.bat",
+    # Override: path to qt-cmake.bat  (default: auto-selected per ABI)
+    [string]$QtCmake = "",
 
     # Override: Android SDK root  (default: C:\Android)
     [string]$SdkRoot = "C:\Android",
@@ -55,24 +55,39 @@ $ErrorActionPreference = "Stop"
 $timer = [System.Diagnostics.Stopwatch]::StartNew()
 
 # ── Constants ────────────────────────────────────────────────────────────────
-$PACKAGE_NAME  = "hr.envizia.letihomeplus"
-$MAIN_ACTIVITY = ".LetiHomePlus"
+$PACKAGE_NAME  = "hr.envizia.letihome"
+$MAIN_ACTIVITY = ".LetiHome"
 
 # ── Paths ────────────────────────────────────────────────────────────────────
 $scriptDir   = Split-Path -Parent $MyInvocation.MyCommand.Definition
 $projectRoot = (Resolve-Path (Join-Path $scriptDir "..")).Path
-$buildDir    = Join-Path $projectRoot "build_android"
+# use separate build tree for each ABI to avoid rebuilding unintended platforms
+$buildDir    = Join-Path $projectRoot "build_android\$Abi"
 
 # ── Extract version from CMakeLists.txt ──────────────────────────────────────
 $cmakeContent = Get-Content (Join-Path $projectRoot "CMakeLists.txt") -Raw
 $versionMatch = [regex]::Match($cmakeContent, 'QT_ANDROID_VERSION_NAME\s+"([0-9.]+)"')
 $version      = if ($versionMatch.Success) { $versionMatch.Groups[1].Value } else { "unknown" }
 
-# ── Validate tools ───────────────────────────────────────────────────────────
-if (-not (Test-Path $QtCmake)) {
-    Write-Error "qt-cmake not found at: $QtCmake"
-    exit 1
+# if user didn't specify QtCmake choose appropriate Qt for the ABI
+if (-not $QtCmake) {
+    $qtRoot = "C:\Qt\6.5.3"
+    switch ($Abi) {
+        'armeabi-v7a' { $sub = 'android_armv7' }
+        'arm64-v8a'   { $sub = 'android_arm64_v8a' }
+        'x86'         { $sub = 'android_x86' }
+        'x86_64'      { $sub = 'android_x86_64' }
+        default       { $sub = 'android_x86' }
+    }
+    $QtCmake = Join-Path $qtRoot "$sub\bin\qt-cmake.bat"
 }
+
+# ensure selected Qt installation actually contains the ABI plugin
+# compute Qt root by removing \bin\qt-cmake.bat
+$qtRootDir = Split-Path $QtCmake -Parent                     # <...>\bin
+$qtRootDir = Split-Path $qtRootDir -Parent                   # <...>\<abi>
+
+# ── Validate other tools ───────────────────────────────────────────────────────
 if (-not (Test-Path $SdkRoot)) {
     Write-Error "Android SDK not found at: $SdkRoot"
     exit 1
@@ -92,21 +107,36 @@ if ($Clean -and (Test-Path $buildDir)) {
     Remove-Item $buildDir -Recurse -Force
 }
 
+# ensure build directory exists for this ABI
 New-Item -ItemType Directory -Path $buildDir -Force | Out-Null
 
 # ── Print configuration ─────────────────────────────────────────────────────
 Write-Host ""
-Write-Host "┌─ LetiHome+ Debug APK (v$version) ─────────────────────────"
+Write-Host "┌─ LetiHome+ Debug APK (v$version) ───────────────────────────────────────────────────────"
 Write-Host "│  ABI        : $Abi"
 Write-Host "│  Action     : $(if ($Action) { $Action } else { '(none)' })"
 Write-Host "│  Qt cmake   : $QtCmake"
 Write-Host "│  SDK        : $SdkRoot"
 Write-Host "│  NDK        : $NdkRoot"
-Write-Host "└──────────────────────────────────────────────────────"
+Write-Host "└─────────────────────────────────────────────────────────────────────────────────────────"
 Write-Host ""
 
 # ── Configure (qt-cmake) ────────────────────────────────────────────────────
 $cmakeCache = Join-Path $buildDir "CMakeCache.txt"
+
+# if the cache exists but the ABI doesn't match, force reconfigure
+if (Test-Path $cmakeCache) {
+    $cacheText = Get-Content $cmakeCache
+    if ($cacheText -match 'QT_ANDROID_ABIS:INTERNAL=(.+)') {
+        $cached = $matches[1]
+        if ($cached -ne $Abi) {
+            Write-Host "ABI changed (was $cached, now $Abi) – deleting cache and old android_abi_builds."
+            Remove-Item $cmakeCache
+            $abiBuilds = Join-Path $buildDir "android_abi_builds"
+            if (Test-Path $abiBuilds) { Remove-Item $abiBuilds -Recurse -Force }
+        }
+    }
+}
 
 if ($SkipConfigure -and (Test-Path $cmakeCache)) {
     Write-Host "Skipping cmake configure (-SkipConfigure, CMakeCache exists)."
@@ -116,8 +146,10 @@ if ($SkipConfigure -and (Test-Path $cmakeCache)) {
         "-DANDROID_SDK_ROOT=$SdkRoot",
         "-DANDROID_NDK_ROOT=$NdkRoot",
         "-DCMAKE_BUILD_TYPE=Debug",
-        "-DQT_ANDROID_BUILD_ALL_ABIS=OFF",
         "-DQT_ANDROID_ABIS=$Abi",
+        "-DANDROID_ABI=$Abi",
+        "-DCMAKE_CXX_COMPILER_LAUNCHER=ccache",
+        "-DCMAKE_C_COMPILER_LAUNCHER=ccache",
         "-GNinja"
     )
     # If the FetchContent source was already downloaded, skip network access
