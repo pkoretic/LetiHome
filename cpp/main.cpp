@@ -5,10 +5,14 @@
 #include <QNetworkInformation>
 
 #include "platform.h"
+#include "keymapper.h"
 
 int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);
+
+    KeyMapper keyMapper;
+    app.installEventFilter(&keyMapper);
 
     QQuickView::setDefaultAlphaBuffer(true);
 

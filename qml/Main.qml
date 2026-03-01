@@ -191,11 +191,17 @@ ApplicationWindow
             cellWidth: (width / 5) |0
             cellHeight: cellWidth * 0.5625 // 9/16
 
-            Keys.onReturnPressed: openApplication(appGrid.model[appGrid.currentIndex].packageName)
-            Keys.onEnterPressed: openApplication(appGrid.model[appGrid.currentIndex].packageName)
-            Keys.onBackPressed: openAppInfo(appGrid.model[appGrid.currentIndex].packageName)
-            Keys.onEscapePressed: openAppInfo(appGrid.model[appGrid.currentIndex].packageName)
-            Keys.onMenuPressed: openAppInfo(appGrid.model[appGrid.currentIndex].packageName)
+            Keys.onBackPressed: keyPressHandler.longPressed()
+            Keys.onEscapePressed: keyPressHandler.longPressed()
+            Keys.onMenuPressed: keyPressHandler.longPressed()
+            Keys.forwardTo: [keyPressHandler]
+            KeyPress
+            {
+                id: keyPressHandler
+                onShortPressed: openApplication(appGrid.model[appGrid.currentIndex].packageName)
+                onLongPressed: openAppInfo(appGrid.model[appGrid.currentIndex].packageName)
+                targetKey: Qt.Key_Enter
+            }
 
             delegate: Rectangle
             {
