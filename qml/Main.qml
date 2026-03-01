@@ -100,7 +100,7 @@ ApplicationWindow
     {
         id: connections
         target: _platform
-        function onPackagesChanged() { loadApplications() }
+        function onPackagesChanged() { app.loadApplications() }
     }
 
     // background
@@ -109,9 +109,9 @@ ApplicationWindow
         anchors.fill: parent
         gradient: Gradient
         {
-            GradientStop { position: 0.0; color: "#0D1B2A" }
-            GradientStop { position: 0.5; color: "#1B263B" }
-            GradientStop { position: 1.0; color: "#0D1B2A" }
+            GradientStop { position: 0.0; color: Qt.color("#0D1B2A") }
+            GradientStop { position: 0.5; color: Qt.color("#1B263B") }
+            GradientStop { position: 1.0; color: Qt.color("#0D1B2A") }
         }
     }
 
@@ -122,7 +122,7 @@ ApplicationWindow
         interval: 5000
         repeat: true
         triggeredOnStart: true
-        onTriggered: updateDate()
+        onTriggered: app.updateDate()
     }
 
     // Layout used for padding, spacing and layout
@@ -145,7 +145,7 @@ ApplicationWindow
                 id: datetime
                 text: Qt.formatTime(app.currentDate, app.is24HourFormat ? "hh:mm" : "hh:mm ap")
                 font.pixelSize: 22
-                color: "#ffffff"
+                color: Qt.color("#ffffff")
                 style: Text.Outline
             }
 
@@ -169,7 +169,7 @@ ApplicationWindow
                 {
                     text: app.currentDate.toDateString()
                     font.pixelSize: 22
-                    color: "#ffffff"
+                    color: Qt.color("#ffffff")
                     style: Text.Outline
                 }
             }
@@ -198,8 +198,8 @@ ApplicationWindow
             KeyPress
             {
                 id: keyPressHandler
-                onShortPressed: openApplication(appGrid.model[appGrid.currentIndex].packageName)
-                onLongPressed: openAppInfo(appGrid.model[appGrid.currentIndex].packageName)
+                onShortPressed: app.openApplication(appGrid.model[appGrid.currentIndex].packageName)
+                onLongPressed: app.openAppInfo(appGrid.model[appGrid.currentIndex].packageName)
                 targetKey: Qt.Key_Enter
             }
 
@@ -213,7 +213,7 @@ ApplicationWindow
                 height: width * 0.5625 // 9/16
 
                 // TVBanner covers the background fully
-                color: isTVBanner ? "#ffffff" : colorByIndex(index)
+                color: isTVBanner ? Qt.color("#ffffff") : Qt.color(app.colorByIndex(index))
 
                 z: delegate.isCurrentItem ? 1 : 0
                 scale: delegate.isCurrentItem ? 1.3 : 1
@@ -240,7 +240,7 @@ ApplicationWindow
                     width: parent.width
                     height: appName.height
                     anchors.bottom: parent.bottom
-                    color: "#a6000000"
+                    color: Qt.color("#a6000000")
                 }
 
                 // app name
@@ -250,7 +250,7 @@ ApplicationWindow
                     x: 4
                     width: parent.width - x * 2
                     text: delegate.modelData.applicationName
-                    color: "#ffffff"
+                    color: Qt.color("#ffffff")
                     elide: Text.ElideRight
                     anchors.bottom: parent.bottom
                     visible: delegate.isCurrentItem || !app.isTelevision
@@ -262,9 +262,9 @@ ApplicationWindow
                 {
                     anchors.fill: parent
                     visible: delegate.isCurrentItem
-                    color: "transparent"
+                    color: Qt.color("#00000000")
                     border.width: 1
-                    border.color: "#222222"
+                    border.color: Qt.color("#222222")
                 }
 
                 // open application on mouse click/finger tap
@@ -274,7 +274,7 @@ ApplicationWindow
                     onClicked:
                     {
                         appGrid.currentIndex = delegate.index
-                        openApplication(delegate.modelData.packageName)
+                        app.openApplication(delegate.modelData.packageName)
                     }
                 }
             }
@@ -324,7 +324,7 @@ ApplicationWindow
                     highlighted: activeFocus
                     Keys.onReturnPressed: clicked()
                     Keys.onEnterPressed: clicked()
-                    onClicked: openSettings()
+                    onClicked: app.openSettings()
 
                     KeyNavigation.right: reviewButton
                 }
@@ -337,7 +337,7 @@ ApplicationWindow
                     highlighted: activeFocus
                     Keys.onReturnPressed: clicked()
                     Keys.onEnterPressed: clicked()
-                    onClicked: openLetiHomePage()
+                    onClicked: app.openLetiHomePage()
 
                     KeyNavigation.right: getPlus
                 }
@@ -351,7 +351,7 @@ ApplicationWindow
                     highlighted: activeFocus
                     Keys.onReturnPressed: clicked()
                     Keys.onEnterPressed: clicked()
-                    onClicked: openLetiHomePlusPage()
+                    onClicked: app.openLetiHomePlusPage()
 
                     KeyNavigation.right: closeButton
                 }
