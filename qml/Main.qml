@@ -20,7 +20,7 @@ ApplicationWindow
     visibility: Window.FullScreen
 
     Material.theme: Material.Dark
-    Material.accent: Material.Blue
+    Material.accent: Material.Indigo
 
     // Platform abstraction inserted from main.cpp
     property bool isTelevision: _platform.isTelevision
