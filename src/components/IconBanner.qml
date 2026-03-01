@@ -9,6 +9,7 @@ Item
     property bool loadTVBanner: true
     property bool async: false
 
+    // background color based on app's dominant color, used when banner is not available or not wanted
     Rectangle
     {
         id: cover

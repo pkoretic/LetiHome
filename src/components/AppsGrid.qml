@@ -16,13 +16,16 @@ GridView
     implicitHeight: childrenRect.height
 
     state: "default"
-    states: [
+    states:
+    [
         State { name: "default"; PropertyChanges { gridView.Keys.onPressed: event => defaultKeyHandler(event) }},
         State { name: "reorder"; PropertyChanges { gridView.Keys.onPressed: event => reorderKeyHandler(event) }}
     ]
 
-    transitions: [
-        Transition {
+    transitions:
+    [
+        Transition
+        {
             from: "reorder"; to: "default"
             ScriptAction { script: gridView.orderChanged(gridView.getOrder())}
         }
@@ -86,7 +89,6 @@ GridView
         switch (event.key)
         {
             case Qt.Key_Back:
-            case Qt.Key_Enter:
             case Qt.Key_Escape:
                 event.accepted = true
                 state = "default"
@@ -204,23 +206,25 @@ GridView
         {
             visible: delegate.isCurrentItem && gridView.state === "reorder"
             font.pixelSize: 34
-            font.styleName: Text.Outline
+            style: Text.Outline
             color: Qt.color("#FFFFFF")
+            styleColor: Qt.color("#000000")
             text: "⇦"
             anchors.verticalCenter: parent.verticalCenter
             anchors.left: parent.left
-            anchors.leftMargin: -12
+            anchors.leftMargin: -10
         }
         Text
         {
             visible: delegate.isCurrentItem && gridView.state === "reorder"
             font.pixelSize: 34
-            font.styleName: Text.Outline
+            style: Text.Outline
             color: Qt.color("#FFFFFF")
+            styleColor: Qt.color("#000000")
             text: "⇨"
             anchors.verticalCenter: parent.verticalCenter
             anchors.right: parent.right
-            anchors.rightMargin: -12
+            anchors.rightMargin: -10
         }
     }
 }

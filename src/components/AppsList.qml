@@ -4,7 +4,8 @@ import QtQuick
 import QtQuick.Controls.Material
 
 // List view of applications
-ListView {
+ListView
+{
     id: listView
 
     boundsBehavior: ListView.StopAtBounds
@@ -12,10 +13,10 @@ ListView {
     orientation: Qt.Horizontal
     highlightRangeMode: ListView.ApplyRange
     highlightMoveDuration: 150
-    spacing: 10
+    spacing: 20
 
     property int appsShown: 5
-    property int delegateWidth: (width / appsShown) | 0
+    property int delegateWidth: ((width / appsShown) | 0) - 5
     property int delegateHeight: delegateWidth * 0.5625 // 9/16
 
     height: delegateHeight
@@ -198,23 +199,25 @@ ListView {
         {
             visible: delegate.isCurrentItem && listView.state === "reorder"
             font.pixelSize: 34
-            font.styleName: Text.Outline
+            style: Text.Outline
+            styleColor: Qt.color("#000000")
             color: Qt.color("#FFFFFF")
             text: "⇦"
             anchors.verticalCenter: parent.verticalCenter
             anchors.left: parent.left
-            anchors.leftMargin: -12
+            anchors.leftMargin: -10
         }
         Text
         {
             visible: delegate.isCurrentItem && listView.state === "reorder"
             font.pixelSize: 34
-            font.styleName: Text.Outline
+            style: Text.Outline
+            styleColor: Qt.color("#000000")
             color: Qt.color("#FFFFFF")
             text: "⇨"
             anchors.verticalCenter: parent.verticalCenter
             anchors.right: parent.right
-            anchors.rightMargin: -12
+            anchors.rightMargin: -10
         }
     }
 }
