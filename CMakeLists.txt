@@ -40,6 +40,7 @@ qt_add_qml_module(LetiHomePlus
         src/components/AppsList.qml
         src/components/ColorLogo.js
         src/components/IconBanner.qml
+        src/components/KeyPress.qml
         src/providers/PlatformProvider.qml
         src/providers/SettingsProvider.qml
         src/providers/AppsProvider.qml

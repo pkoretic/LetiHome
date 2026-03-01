@@ -63,12 +63,20 @@ ListView {
         return order;
     }
 
+    // handle Enter key long and short press in default mode
+    Keys.forwardTo: state === "default" ? [keyPressHandler] : []
+
+    KeyPress
+    {
+        id: keyPressHandler
+        onShortPressed: listView.openClicked(listView.currentItem.packageName)
+        onLongPressed: listView.state = "reorder"
+        targetKey: Qt.Key_Enter
+    }
+
+    // default handler when in navigation mode
     function defaultKeyHandler(event) {
         switch (event.key) {
-        case Qt.Key_Enter:
-            event.accepted = true;
-            openClicked(listView.currentItem.packageName);
-            break;
         case Qt.Key_Back:
         case Qt.Key_Menu:
         case Qt.Key_Escape:
@@ -78,11 +86,11 @@ ListView {
         }
     }
 
+    // navigation when in reorder mode
     function reorderKeyHandler(event) {
         const currentIndex = listView.currentIndex;
         switch (event.key) {
             case Qt.Key_Back:
-            case Qt.Key_Enter:
             case Qt.Key_Escape:
                 event.accepted = true;
                 state = "default";

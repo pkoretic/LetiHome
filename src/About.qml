@@ -33,7 +33,8 @@ Popup
                 <li><strong>Hide/Reorder</strong> current application</li>
                 <li><strong>Wallpaper</strong> from Lorem Picsum</li>
                 <li><strong>TV Input Switching</strong> support</li>
-                <li><strong>OK</strong> opens current application.</li>
+                <li><strong>OK short press</strong> opens current application</li>
+                <li><strong>OK long press</strong> enters reorder mode</li>
                 <li><strong>Menu/Back</strong> opens additional application options</li>
             </li>
             `

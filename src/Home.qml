@@ -142,13 +142,9 @@ Rectangle
         AppsList
         {
             id: appsList
-
-            model: appsModel
-
             focus: true
-
+            model: appsModel
             appsShown: r.settingsProvider.appsShown
-
             isTelevision: r.platformProvider.isTelevision
             showAppLabels: r.settingsProvider.showAppNames
             onOpenClicked: packageName => r.openApplication(packageName)
@@ -165,12 +161,9 @@ Rectangle
         AppsGrid
         {
             id: appsGrid
-
-            model: appsModel
-
             focus: true
+            model: appsModel
             appsShown: r.settingsProvider.appsShown
-
             isTelevision: r.platformProvider.isTelevision
             showAppLabels: r.settingsProvider.showAppNames
             onOpenClicked: packageName => r.openApplication(packageName)
