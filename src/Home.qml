@@ -78,11 +78,13 @@ Rectangle
         fillMode: Image.PreserveAspectCrop
         visible: r.settingsProvider.useLoremPicsumWallpaper
 
-        // We have to wait for the width and height to be set
+        // We have to wait for the main window width and height to be set on android
         Component.onCompleted:
         {
-            source = Qt.binding(function() {
-                if (r.settingsProvider.useLoremPicsumWallpaper) {
+            source = Qt.binding(function()
+            {
+                if (r.settingsProvider.useLoremPicsumWallpaper)
+                {
                     const imgSource = "https://picsum.photos/%1/%2?%3".arg(width).arg(height).arg(Math.random())
                     r.settingsProvider.wallpaperUrl = imgSource
 
@@ -106,7 +108,7 @@ Rectangle
         id: topBar
         y: 20
         x: 20
-        width: parent.width - 40
+        width: parent.width - 40 // x * 2
 
         isOnline: r.platformProvider.isOnline
         isEthernet: r.platformProvider.isEthernet
@@ -127,9 +129,9 @@ Rectangle
         id: appsLoader
         focus: true
         x: 40
-        y: r.settingsProvider.alignToBottom ? (parent.height - height - 20) : (topBar.height + 40)
-        width: parent.width - 80
-        height: item?.delegateHeight || item?.childrenRect?.height || 0
+        y: r.settingsProvider.alignToBottom ? (parent.height - height - 20) : (topBar.height + 40) // 20 is spacing from top or bottom, 40 is topBar.y * 2
+        width: parent.width - 80 // x * 2
+        height: sourceComponent === appsListComponent ? (item?.delegateHeight) : (parent.height - topBar.height - topBar.y * 2 - 20)
 
         // load apps list or grid based on settings
         sourceComponent: settingsProvider.showAsList ? appsListComponent : appsGridComponent
