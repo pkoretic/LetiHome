@@ -14,6 +14,8 @@ qt_add_executable(LetiHome
     cpp/main.cpp
     cpp/platform.cpp
     cpp/platform.h
+    cpp/keymapper.cpp
+    cpp/keymapper.h
     android/AndroidManifest.xml
     android/src/hr/envizia/letihome/LetiHome.java
     android/src/hr/envizia/letihome/PackagesChangedReceiver.java
@@ -24,6 +26,7 @@ qt_add_qml_module(LetiHome
     VERSION 1.0
     QML_FILES
         qml/Main.qml
+        qml/KeyPress.qml
     RESOURCES
         qml/ethernet-online.svg
         qml/wifi-online.svg
