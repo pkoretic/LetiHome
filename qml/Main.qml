@@ -308,7 +308,7 @@ ApplicationWindow
                 text: `<p>Thank you for using <strong>LetiHome Lite</strong> application, a very lightweight app launcher!
                 Open-source and with <u>no ADS</u>!</p><br/>
                 <strong>OK</strong> opens current application.<br/>
-                <strong>Menu/Back</strong> opens application info where app can be disabled/hidden.<br/><br/>
+                <strong>OK Long Press/Menu/Back</strong> opens application info where app can be disabled/hidden.<br/><br/>
                 <strong>LetiHome Plus</strong> has features like List display, Wallpaper, Apps Reordering and more. It supports development of this application.
                 `
             }
