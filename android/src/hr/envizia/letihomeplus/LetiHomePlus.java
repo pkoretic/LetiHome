@@ -115,14 +115,19 @@ public class LetiHomePlus extends QtActivity
         }
 
         // convert to byte array
-        Bitmap bitmap = Bitmap.createBitmap(icon.getIntrinsicWidth(), icon.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-        final Canvas canvas = new Canvas(bitmap);
-        icon.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
-        icon.draw(canvas);
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100 /* ignored for PNG */, stream);
+        if (icon != null)
+        {
+            Bitmap bitmap = Bitmap.createBitmap(icon.getIntrinsicWidth(), icon.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+            final Canvas canvas = new Canvas(bitmap);
+            icon.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+            icon.draw(canvas);
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100 /* ignored for PNG */, stream);
+            return stream.toByteArray();
+        }
 
-        return stream.toByteArray();
+        // return empty byte array if no banner available
+        return new byte[0];
     }
 
     // get generic application icon
