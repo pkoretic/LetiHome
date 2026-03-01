@@ -23,7 +23,7 @@ ApplicationWindow
     visibility: Window.FullScreen
 
     Material.theme: Material.Dark
-    Material.accent: Material.Blue
+    Material.accent: Material.Indigo
 
     // providers / domain-models
     AppsProvider     { id: appsProvider }
