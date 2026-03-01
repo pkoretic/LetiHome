@@ -82,9 +82,9 @@ signals:
     void isEthernetChanged();
 
 private:
-    int m_online;
-    int m_isTelevision;
-    int m_isEthernet;
+    bool m_online;
+    bool m_isTelevision;
+    bool m_isEthernet;
 
 };
 
