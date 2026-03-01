@@ -54,15 +54,22 @@ GridView
         return order
     }
 
+    // handle Enter key long and short press in default mode
+    Keys.forwardTo: state === "default" ? [keyPressHandler] : []
+
+    KeyPress
+    {
+        id: keyPressHandler
+        onShortPressed: gridView.openClicked(gridView.currentItem.packageName)
+        onLongPressed: gridView.state = "reorder"
+        targetKey: Qt.Key_Enter
+    }
+
+    // default handler when in navigation mode
     function defaultKeyHandler(event)
     {
         switch (event.key)
         {
-            case Qt.Key_Enter:
-                event.accepted = true
-                openClicked(gridView.currentItem.packageName)
-            break
-
             case Qt.Key_Back:
             case Qt.Key_Menu:
             case Qt.Key_Escape:
@@ -72,6 +79,7 @@ GridView
         }
     }
 
+    // navigation when in reorder mode
     function reorderKeyHandler(event)
     {
         const currentIndex = gridView.currentIndex
@@ -186,9 +194,33 @@ GridView
         {
             anchors.fill: parent
             visible: delegate.isCurrentItem
-            color: Qt.color("transparent")
-            border.width: gridView.state === "reorder" ? 3 : 2
-            border.color: gridView.state === "reorder" ? Qt.color("red") : Qt.color("#222222")
+            color: gridView.state === "reorder" ? Qt.color("#AA000000") : Qt.color("#00000000")
+            border.width: 1
+            border.color: Qt.color("#222222")
+        }
+
+        // Arrows indicating that the item can be moved left or right in reorder mode
+        Text
+        {
+            visible: delegate.isCurrentItem && gridView.state === "reorder"
+            font.pixelSize: 34
+            font.styleName: Text.Outline
+            color: Qt.color("#FFFFFF")
+            text: "⇦"
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.left: parent.left
+            anchors.leftMargin: -12
+        }
+        Text
+        {
+            visible: delegate.isCurrentItem && gridView.state === "reorder"
+            font.pixelSize: 34
+            font.styleName: Text.Outline
+            color: Qt.color("#FFFFFF")
+            text: "⇨"
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.right: parent.right
+            anchors.rightMargin: -12
         }
     }
 }

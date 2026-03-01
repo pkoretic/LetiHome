@@ -75,14 +75,16 @@ ListView {
     }
 
     // default handler when in navigation mode
-    function defaultKeyHandler(event) {
-        switch (event.key) {
-        case Qt.Key_Back:
-        case Qt.Key_Menu:
-        case Qt.Key_Escape:
-            event.accepted = true;
-            openContextualMenu();
-            break;
+    function defaultKeyHandler(event)
+    {
+        switch (event.key)
+        {
+            case Qt.Key_Back:
+            case Qt.Key_Menu:
+            case Qt.Key_Escape:
+                event.accepted = true
+                openContextualMenu()
+            break
         }
     }
 
@@ -150,20 +152,12 @@ ListView {
         property bool isCurrentItem: activeFocus && ListView.isCurrentItem
         property string packageName: model.packageName
 
-        // width: parent.width - 20
-        // height: width * 0.5625 // 9/16
-
         width: listView.delegateWidth
         height: listView.delegateHeight
 
         z: delegate.isCurrentItem ? 1 : 0
-        scale: delegate.isCurrentItem && listView.state === "default" ? 1.3 : 1
-        Behavior on scale {
-            NumberAnimation {
-                duration: 150
-                easing.type: Easing.InOutQuad
-            }
-        }
+        scale: delegate.isCurrentItem ? 1.3 : 1
+        Behavior on scale { NumberAnimation { duration: 150; easing.type: Easing.InOutQuad } }
 
         appPackage: delegate.packageName
 
@@ -190,12 +184,37 @@ ListView {
         }
 
         // border around current item
-        Rectangle {
+        Rectangle
+        {
             anchors.fill: parent
             visible: delegate.isCurrentItem
-            color: Qt.color("transparent")
-            border.width: listView.state === "reorder" ? 3 : 2
-            border.color: listView.state === "reorder" ? Qt.color("red") : Qt.color("#222222")
+            color: listView.state === "reorder" ? Qt.color("#AA000000") : Qt.color("#00000000")
+            border.width: 1
+            border.color: Qt.color("#222222")
+        }
+
+        // Arrows indicating that the item can be moved left or right in reorder mode
+        Text
+        {
+            visible: delegate.isCurrentItem && listView.state === "reorder"
+            font.pixelSize: 34
+            font.styleName: Text.Outline
+            color: Qt.color("#FFFFFF")
+            text: "⇦"
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.left: parent.left
+            anchors.leftMargin: -12
+        }
+        Text
+        {
+            visible: delegate.isCurrentItem && listView.state === "reorder"
+            font.pixelSize: 34
+            font.styleName: Text.Outline
+            color: Qt.color("#FFFFFF")
+            text: "⇨"
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.right: parent.right
+            anchors.rightMargin: -12
         }
     }
 }
