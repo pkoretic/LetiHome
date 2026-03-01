@@ -131,7 +131,8 @@ Rectangle
         x: 40
         y: r.settingsProvider.alignToBottom ? (parent.height - height - 20) : (topBar.height + 40) // 20 is spacing from top or bottom, 40 is topBar.y * 2
         width: parent.width - 80 // x * 2
-        height: sourceComponent === appsListComponent ? (item?.delegateHeight) : (parent.height - topBar.height - topBar.y * 2 - 20)
+        height: sourceComponent === appsListComponent ? (item?.delegateHeight) : Math.min((parent.height - topBar.height - topBar.y * 2 - 20), item?.childrenRect.height) // if list use delegate height, if grid use available height but not more than needed
+         Keys.onUpPressed: topBar.focus = true
 
         // load apps list or grid based on settings
         sourceComponent: settingsProvider.showAsList ? appsListComponent : appsGridComponent
