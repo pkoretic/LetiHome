@@ -25,7 +25,7 @@ Item
         anchors.fill: parent
         fillMode: Image.PreserveAspectFit
         cache: true
-        asynchronous: async
+        asynchronous: true
     }
 
     Image
@@ -36,7 +36,7 @@ Item
         anchors.fill: parent
         anchors.margins: loadTVBanner ? 15 : 0
         fillMode: Image.PreserveAspectFit
-        asynchronous: async
+        asynchronous: true
         cache: true
     }
 }
