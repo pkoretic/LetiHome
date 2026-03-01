@@ -19,8 +19,8 @@ set -euo pipefail
 #   ./android.sh -a arm64-v8a -r run -s       # same, skip configure
 #   ./android.sh -a arm64-v8a -c              # clean build from scratch
 
-PACKAGE_NAME="hr.envizia.letihomeplus"
-MAIN_ACTIVITY=".LetiHomePlus"
+PACKAGE_NAME="hr.envizia.letihome"
+MAIN_ACTIVITY=".LetiHome"
 
 # Defaults
 ABI="x86"
