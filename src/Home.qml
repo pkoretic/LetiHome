@@ -20,6 +20,9 @@ Rectangle
     // load apps when component is ready
     Component.onCompleted:
     {
+        // screen dimensions are known on android only after the main window is shown, so we set them here
+        r.platformProvider.setScreenDimensions(r.width, r.height)
+
         loadApps()
 
         // when packages are changed update list
@@ -79,20 +82,7 @@ Rectangle
         visible: r.settingsProvider.useLoremPicsumWallpaper
 
         // We have to wait for the main window width and height to be set on android
-        Component.onCompleted:
-        {
-            source = Qt.binding(function()
-            {
-                if (r.settingsProvider.useLoremPicsumWallpaper)
-                {
-                    const imgSource = "https://picsum.photos/%1/%2?%3".arg(width).arg(height).arg(Math.random())
-                    r.settingsProvider.wallpaperUrl = imgSource
-
-                    return imgSource
-                }
-                return ""
-            })
-        }
+        Component.onCompleted: source = Qt.binding(() => r.settingsProvider.wallpaperUrl)
 
         Rectangle
         {

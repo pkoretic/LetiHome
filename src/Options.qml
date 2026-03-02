@@ -19,7 +19,7 @@ Popup
     required property var platformProvider
 
     // Tab name to index mapping
-    readonly property var tabIndices: { "options": 0, "apps": 1, "system": 2 }
+    readonly property var tabIndices: { "options": 0, "wallpaper": 1, "apps": 2, "system": 3 }
     property string initialTab: "options"
 
     Component.onCompleted: tabBar.setCurrentIndex(-1) // start unloaded
@@ -42,14 +42,22 @@ Popup
         {
             case -1: contentLoader.sourceComponent = undefined; break
             case 0: contentLoader.sourceComponent = optionsTab; optionsTabButton.forceActiveFocus(); break
-            case 1: contentLoader.sourceComponent = appsTab; appsTabButton.forceActiveFocus(); break
-            case 2: contentLoader.sourceComponent = systemTab; systemTabButton.forceActiveFocus(); break
+            case 1: contentLoader.sourceComponent = wallpaperTab; wallpaperTabButton.forceActiveFocus(); break
+            case 2: contentLoader.sourceComponent = appsTab; appsTabButton.forceActiveFocus(); break
+            case 3: contentLoader.sourceComponent = systemTab; systemTabButton.forceActiveFocus(); break
         }
+
 
         TabButton
         {
             id: optionsTabButton
             text: qsTr("Options")
+        }
+
+        TabButton
+        {
+            id: wallpaperTabButton
+            text: qsTr("Wallpaper")
         }
 
         TabButton
@@ -144,31 +152,17 @@ Popup
                     onCheckedChanged: settingsProvider.showAsList = checked
 
                     KeyNavigation.up: alignToBottomSwitch
-                }
-
-                Switch
-                {
-                    id: loremPicsumBackgroundSwitch
-                    text: qsTr("Use Random (Lorem Picsum) Wallpaper")
-                    Keys.onEnterPressed: checked = !checked
-                    Keys.onLeftPressed: checked = false
-                    Keys.onRightPressed: checked = true
-                    checked: settingsProvider.useLoremPicsumWallpaper
-                    onCheckedChanged: settingsProvider.useLoremPicsumWallpaper = checked
-
-                    KeyNavigation.up: showAsListSwitch
                     KeyNavigation.down: appsShownSpinBox
                 }
 
                 // Input field that allows to change the number of apps shown in the grid/list
-
                 Row
                 {
                     spacing: 10
                     SpinBox
                     {
                         id: appsShownSpinBox
-                        height: loremPicsumBackgroundSwitch.height
+                        height: showAsListSwitch.height
                         from: 3
                         to: 10
                         value: settingsProvider.appsShown
@@ -176,8 +170,8 @@ Popup
 
                         Keys.onLeftPressed: value = Math.max(from, value - 1)
                         Keys.onRightPressed: value = Math.min(to, value + 1)
-                        Keys.onUpPressed: { loremPicsumBackgroundSwitch.focus = true; loremPicsumBackgroundSwitch.focusReason = Qt.ShortcutFocusReason }
-                        Keys.onDownPressed: {}
+                        Keys.onUpPressed: { showAsListSwitch.focus = true; showAsListSwitch.focusReason = Qt.ShortcutFocusReason }
+                        Keys.onDownPressed: {} // disabled lowering value by down button
                     }
                     Label
                     {
@@ -187,38 +181,83 @@ Popup
                 }
             }
 
-            Image
-            {
-                id: imagePreview
-                anchors.right: parent.right
-                anchors.verticalCenter: parent.verticalCenter
-                height: parent.height / 2
-                width: height
-                fillMode: Image.PreserveAspectCrop
-                visible: settingsProvider.useLoremPicsumWallpaper
-                source: visible ? settingsProvider.wallpaperUrl : "" // unload when not visible
+        }
+    }
 
-                // rounded corners
-                layer.enabled: visible
-                layer.effect: MultiEffect {
-                    maskEnabled: true
-                    maskSource: ShaderEffectSource {
-                        sourceItem: Rectangle {
-                            width: imagePreview.width
-                            height: imagePreview.height
-                            radius: 10
-                        }
-                        hideSource: true  // hides from scene but still renders to texture
-                        live: false       // static mask, no need to update every frame
+    Component 
+    {
+        id: wallpaperTab
+
+        GroupBox
+        {
+            Column
+            {
+                width: parent.width
+                spacing: 20
+
+                Switch
+                {
+                    id: loremPicsumBackgroundSwitch
+                    text: qsTr("Use Random Wallpaper from Lorem Picsum")
+                    Keys.onEnterPressed: checked = !checked
+                    Keys.onLeftPressed: checked = false
+                    Keys.onRightPressed: checked = true
+                    checked: settingsProvider.useLoremPicsumWallpaper
+                    onCheckedChanged: 
+                    {
+                        // generate initial wallpaper url if not set
+                        if (checked && !settingsProvider.wallpaperUrl)
+                            refreshWallpaperButton.clicked() 
+
+                        settingsProvider.useLoremPicsumWallpaper = checked
+                    }
+
+                    KeyNavigation.up: wallpaperTabButton
+                    KeyNavigation.down: refreshWallpaperButton
+                }
+
+                Button
+                {
+                    id: refreshWallpaperButton
+                    text: qsTr("Refresh Wallpaper")
+                    height: 60
+                    highlighted: activeFocus
+                    visible: settingsProvider.useLoremPicsumWallpaper
+                    Keys.onEnterPressed: clicked()
+                    onClicked:
+                    {
+                        // ensure always a new image is loaded by adding a random query parameter to bypass any caching
+                        r.settingsProvider.wallpaperUrl = "https://picsum.photos/%1/%2?%3"
+                                                            .arg(r.platformProvider.screenWidth)
+                                                            .arg(r.platformProvider.screenHeight)
+                                                            .arg(Math.random())
                     }
                 }
-                Label
+
+                Image
                 {
-                    text: qsTr("Wallpaper preview")
-                    font.italic: true
-                    style: Label.Outline
-                    anchors.bottom: parent.bottom
-                    anchors.horizontalCenter: parent.horizontalCenter
+                    id: imagePreview
+                    width: parent.width / 2
+                    height: width * 0.5625 // 16:9 aspect ratio
+                    fillMode: Image.PreserveAspectCrop
+                    visible: settingsProvider.useLoremPicsumWallpaper
+                    source: settingsProvider.wallpaperUrl
+                    asynchronous: true
+
+                    // rounded corners
+                    layer.enabled: visible
+                    layer.effect: MultiEffect {
+                        maskEnabled: true
+                        maskSource: ShaderEffectSource {
+                            sourceItem: Rectangle {
+                                width: imagePreview.width
+                                height: imagePreview.height
+                                radius: 10
+                            }
+                            hideSource: true  // hides from scene but still renders to texture
+                            live: false       // static mask, no need to update every frame
+                        }
+                    }
                 }
             }
         }

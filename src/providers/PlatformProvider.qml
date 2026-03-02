@@ -10,6 +10,8 @@ Item
     property bool isOnline: _Platform.isOnline
     property bool isEthernet: _Platform.isEthernet
     property bool isTelevision: _Platform.isTelevision
+    property int screenWidth: 1920 // default value, will be updated when main window is shown
+    property int screenHeight: 1080 // default value, will be updated when main window is shown
 
     function init()
     {
@@ -17,6 +19,12 @@ Item
         _Platform.onPackagesChanged.connect(appsChanged)
 
         console.info("platformProvider initialized")
+    }
+
+    function setScreenDimensions(width, height)
+    {
+        screenWidth = width
+        screenHeight = height
     }
 
     function is24HourFormat()
