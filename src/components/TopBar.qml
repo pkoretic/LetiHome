@@ -13,6 +13,7 @@ FocusScope
     property alias running: updateTimer.running
     property bool showClock
     property alias showDate: date.visible
+    property bool showIcons
 
     implicitHeight: childrenRect.height
 
@@ -37,6 +38,7 @@ FocusScope
         anchors.right: parent.right
         spacing: 15
 
+        // these are top bar icons behaving like buttons
         Image
         {
             id: tvInputIcon
@@ -45,7 +47,7 @@ FocusScope
             Behavior on scale { NumberAnimation { duration: 150; easing.type: Easing.InOutQuad } }
             height: time.height - 10
             width: height
-            visible: root.isTelevision
+            visible: root.isTelevision && root.showIcons
             layer.enabled: activeFocus
             onStatusChanged: {
                 if (status === Image.Ready) {
@@ -63,6 +65,7 @@ FocusScope
                 colorizationColor: "#663388FF"
             }
 
+            enabled: visible
             KeyNavigation.right: networkIcon
         }
 
@@ -74,7 +77,8 @@ FocusScope
             Behavior on scale { NumberAnimation { duration: 150; easing.type: Easing.InOutQuad } }
             height: time.height - 10
             width: height
-            layer.enabled: activeFocus
+            visible: root.showIcons
+            layer.enabled: visible && activeFocus
             onStatusChanged: {
                 if (status === Image.Ready) {
                     sourceSize.width = paintedWidth
@@ -91,6 +95,7 @@ FocusScope
                 colorizationColor: "#663388FF"
             }
 
+            enabled: visible
             KeyNavigation.right: settingsIcon
         }
 
@@ -103,7 +108,13 @@ FocusScope
             Behavior on scale { NumberAnimation { duration: 150; easing.type: Easing.InOutQuad } }
             height: time.height - 10
             width: height
-            layer.enabled: activeFocus
+            visible: root.showIcons
+            layer.enabled: visible && activeFocus
+            layer.effect: MultiEffect
+            {
+                colorization: 1.0
+                colorizationColor: "#663388FF"
+            }
             onStatusChanged: {
                 if (status === Image.Ready) {
                     sourceSize.width = paintedWidth
@@ -113,13 +124,6 @@ FocusScope
             anchors.verticalCenter: parent.verticalCenter
 
             Keys.onEnterPressed: root.settingsClicked()
-
-            layer.effect: MultiEffect
-            {
-                colorization: 1.0
-                colorizationColor: "#663388FF"
-            }
-
             KeyNavigation.right: tvHelpIcon
         }
 
@@ -131,7 +135,8 @@ FocusScope
             Behavior on scale { NumberAnimation { duration: 150; easing.type: Easing.InOutQuad } }
             height: time.height - 10
             width: height
-            layer.enabled: activeFocus
+            visible: root.showIcons
+            layer.enabled: visible && activeFocus
             onStatusChanged: {
                 if (status === Image.Ready) {
                     sourceSize.width = paintedWidth
@@ -140,6 +145,7 @@ FocusScope
             }
             anchors.verticalCenter: parent.verticalCenter
 
+            enabled: visible
             Keys.onEnterPressed: root.helpClicked()
 
             layer.effect: MultiEffect

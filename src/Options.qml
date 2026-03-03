@@ -105,31 +105,6 @@ Popup
                 }
                 Switch
                 {
-                    id: showClockSwitch
-                    text: qsTr("Show clock")
-                    Keys.onEnterPressed: checked = !checked
-                    Keys.onLeftPressed: checked = false
-                    Keys.onRightPressed: checked = true
-                    checked: settingsProvider.showClock
-                    onCheckedChanged: settingsProvider.showClock = checked
-
-                    KeyNavigation.up: showAppLabelsSwitch
-                }
-                Switch
-                {
-                    id: showDateSwitch
-                    text: qsTr("Show date")
-                    Keys.onEnterPressed: checked = !checked
-                    Keys.onLeftPressed: checked = false
-                    Keys.onRightPressed: checked = true
-                    checked: settingsProvider.showDate
-                    onCheckedChanged: settingsProvider.showDate = checked
-
-                    KeyNavigation.up: showClockSwitch
-                }
-
-                Switch
-                {
                     id: alignToBottomSwitch
                     text: qsTr("Align apps to bottom")
                     Keys.onEnterPressed: checked = !checked
@@ -138,7 +113,7 @@ Popup
                     checked: settingsProvider.alignToBottom
                     onCheckedChanged: settingsProvider.alignToBottom = checked
 
-                    KeyNavigation.up: showDateSwitch
+                    KeyNavigation.up: showAppLabelsSwitch
                 }
 
                 Switch
@@ -152,8 +127,45 @@ Popup
                     onCheckedChanged: settingsProvider.showAsList = checked
 
                     KeyNavigation.up: alignToBottomSwitch
-                    KeyNavigation.down: appsShownSpinBox
                 }
+
+                Switch
+                {
+                    id: showClockSwitch
+                    text: qsTr("Show clock")
+                    Keys.onEnterPressed: checked = !checked
+                    Keys.onLeftPressed: checked = false
+                    Keys.onRightPressed: checked = true
+                    checked: settingsProvider.showClock
+                    onCheckedChanged: settingsProvider.showClock = checked
+                    KeyNavigation.up: showAsListSwitch
+                }
+
+                Switch
+                {
+                    id: showDateSwitch
+                    text: qsTr("Show date")
+                    Keys.onEnterPressed: checked = !checked
+                    Keys.onLeftPressed: checked = false
+                    Keys.onRightPressed: checked = true
+                    checked: settingsProvider.showDate
+                    onCheckedChanged: settingsProvider.showDate = checked
+                    KeyNavigation.up: showClockSwitch
+                }
+
+                Switch
+                {
+                    id: showTopIconsSwitch
+                    text: qsTr("Always show top icons")
+                    Keys.onEnterPressed: checked = !checked
+                    Keys.onLeftPressed: checked = false
+                    Keys.onRightPressed: checked = true
+                    checked: settingsProvider.showTopIcons
+                    onCheckedChanged: settingsProvider.showTopIcons = checked
+
+                    KeyNavigation.up: showDateSwitch
+                }
+
 
                 // Input field that allows to change the number of apps shown in the grid/list
                 Row

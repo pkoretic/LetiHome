@@ -112,6 +112,9 @@ Rectangle
         onNetworkClicked: r.platformProvider.openNetworkSettings()
         onTvInputClicked: r.navigationProvider.go("/options", { initialTab: "system" })
         onHelpClicked: r.navigationProvider.go("/about")
+
+         // if showTopIcons is enabled always show icons, otherwise show only when focused
+         showIcons: r.settingsProvider.showTopIcons || activeFocus
     }
 
     Loader
