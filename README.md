@@ -1,6 +1,6 @@
 # LetiHome TV Launcher Lite
 
-[![License MIT](https://cdn.rawgit.com/pkoretic/letihome/badges/license.svg)](https://github.com/pkoretic/letihome/blob/master/LICENSE)
+[![License LGPLv3](https://img.shields.io/badge/License-LGPLv3-blue.svg)](https://github.com/pkoretic/letihome/blob/master/LICENSE)
 [![Language (Qt)](https://cdn.rawgit.com/pkoretic/letihome/badges/qt.svg)](https://www.qt.io)
 
 Android launcher optimized for the big screen. Targets embedded and TV/STB
@@ -93,3 +93,7 @@ application.
 Open `CmakeFiles.txt` in QtCreator and follow
 https://doc.qt.io/qt-6/android.html.
 
+## License
+
+This project is licensed under the GNU Lesser General Public License v3.0.
+See [LICENSE](LICENSE).
