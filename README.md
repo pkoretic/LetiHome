@@ -1,7 +1,9 @@
 # LetiHome
 
 [![License LGPLv3](https://img.shields.io/badge/License-LGPLv3-blue.svg)](https://github.com/pkoretic/letihome/blob/master/LICENSE)
-[![Language (Qt)](https://cdn.rawgit.com/pkoretic/letihome/badges/qt.svg)](https://www.qt.io)
+[![Language (Qt)](https://img.shields.io/badge/Language-Qt-green.svg)](https://www.qt.io)
+[![Language (QML)](https://img.shields.io/badge/Language-QML-green.svg)](https://www.qt.io)
+[![Platform (Android)](https://img.shields.io/badge/Platform-Android-blue.svg)](https://www.android.com)
 
 Android launcher optimized for the big screen. Targets embedded and TV/STB
 devices. It is intended to be very lightweight and simple.
