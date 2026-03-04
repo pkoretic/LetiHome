@@ -1,7 +1,7 @@
 # LetiHome TV Launcher Lite
 
 [![License LGPLv3](https://img.shields.io/badge/License-LGPLv3-blue.svg)](https://github.com/pkoretic/letihome/blob/master/LICENSE)
-[![Language (Qt)](https://cdn.rawgit.com/pkoretic/letihome/badges/qt.svg)](https://www.qt.io)
+[![Language (Qt)](https://img.shields.io/badge/Language-QML%20%2B%20C%2B%2B-green.svg)](https://www.qt.io)
 
 Android launcher optimized for the big screen. Targets embedded and TV/STB
 devices. It is very lightweight and simple to run on as many devices as possible.
