@@ -5,6 +5,7 @@ import QtQuick
 import QtQuick.Layouts
 import QtQuick.Window
 import QtQuick.Controls.Material
+import QtMultimedia
 
 import "components"
 import "providers"
@@ -49,6 +50,27 @@ ApplicationWindow
         if (settingsProvider.isFirstRun) {
             navigationProvider.go("/about")
             settingsProvider.isFirstRun = false
+        }
+
+        if (settingsProvider.playWhiteNoise) {
+            whiteNoisePlayer.play()
+        }
+    }
+
+    MediaPlayer
+    {
+        id: whiteNoisePlayer
+        source: "../assets/whitenoise.wav"
+        audioOutput: AudioOutput {}
+        loops: MediaPlayer.Infinite
+    }
+
+    Connections 
+    {
+        target: settingsProvider
+        function onPlayWhiteNoiseChanged()
+        {
+            settingsProvider.playWhiteNoise ? whiteNoisePlayer.play() : whiteNoisePlayer.stop()
         }
     }
 

@@ -13,6 +13,7 @@ Settings
     property string wallpaperUrl: ""
     property bool showAsList: true
     property bool showTopIcons: true
+    property bool playWhiteNoise: false
     property int appsShown: 7
     property bool isFirstRun: true
 

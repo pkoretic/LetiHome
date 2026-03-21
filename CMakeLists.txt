@@ -6,7 +6,7 @@ project(LetiHomePlus VERSION 0.1 LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Qt6 REQUIRED COMPONENTS Quick Network)
+find_package(Qt6 REQUIRED COMPONENTS Quick Network Multimedia)
 
 qt_standard_project_setup(REQUIRES 6.5)
 
@@ -55,6 +55,7 @@ qt_add_qml_module(LetiHomePlus
         assets/settings.svg
         assets/tvinput.svg
         assets/help.svg
+        assets/whitenoise.wav
 )
 
 if (ANDROID)
@@ -98,7 +99,7 @@ if (ANDROID)
     add_android_openssl_libraries(LetiHomePlus)
 endif()
 
-target_link_libraries(LetiHomePlus PRIVATE Qt6::Quick Qt6::Network)
+target_link_libraries(LetiHomePlus PRIVATE Qt6::Quick Qt6::Network Qt6::Multimedia)
 
 include(GNUInstallDirs)
 install(TARGETS LetiHomePlus

@@ -166,6 +166,18 @@ Popup
                     KeyNavigation.up: showDateSwitch
                 }
 
+                Switch
+                {
+                    id: playWhiteNoiseSwitch
+                    text: qsTr("Play white noise")
+                    Keys.onEnterPressed: checked = !checked
+                    Keys.onLeftPressed: checked = false
+                    Keys.onRightPressed: checked = true
+                    checked: settingsProvider.playWhiteNoise
+                    onCheckedChanged: settingsProvider.playWhiteNoise = checked
+
+                    KeyNavigation.up: showTopIconsSwitch
+                }
 
                 // Input field that allows to change the number of apps shown in the grid/list
                 Row
@@ -182,7 +194,7 @@ Popup
 
                         Keys.onLeftPressed: value = Math.max(from, value - 1)
                         Keys.onRightPressed: value = Math.min(to, value + 1)
-                        Keys.onUpPressed: { showAsListSwitch.focus = true; showAsListSwitch.focusReason = Qt.ShortcutFocusReason }
+                        Keys.onUpPressed: { playWhiteNoiseSwitch.focus = true; playWhiteNoiseSwitch.focusReason = Qt.ShortcutFocusReason }
                         Keys.onDownPressed: {} // disabled lowering value by down button
                     }
                     Label
