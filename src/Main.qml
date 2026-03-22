@@ -52,15 +52,24 @@ ApplicationWindow
             settingsProvider.isFirstRun = false
         }
 
+        updateNoisePlayback()
+    }
+
+    function updateNoisePlayback() {
         if (settingsProvider.playWhiteNoise) {
-            whiteNoisePlayer.play()
+            noisePlayer.source = "../assets/whitenoise.wav"
+            noisePlayer.play()
+        } else if (settingsProvider.playInaudibleNoise) {
+            noisePlayer.source = "../assets/inaudible.wav"
+            noisePlayer.play()
+        } else {
+            noisePlayer.stop()
         }
     }
 
     MediaPlayer
     {
-        id: whiteNoisePlayer
-        source: "../assets/whitenoise.wav"
+        id: noisePlayer
         audioOutput: AudioOutput {}
         loops: MediaPlayer.Infinite
     }
@@ -68,10 +77,8 @@ ApplicationWindow
     Connections 
     {
         target: settingsProvider
-        function onPlayWhiteNoiseChanged()
-        {
-            settingsProvider.playWhiteNoise ? whiteNoisePlayer.play() : whiteNoisePlayer.stop()
-        }
+        function onPlayWhiteNoiseChanged() { updateNoisePlayback() }
+        function onPlayInaudibleNoiseChanged() { updateNoisePlayback() }
     }
 
     // Leti Home default Home Screen

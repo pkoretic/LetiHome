@@ -1,5 +1,4 @@
 pragma ComponentBehavior: Bound
-import QtQuick
 import QtCore
 
 Settings
@@ -14,6 +13,7 @@ Settings
     property bool showAsList: true
     property bool showTopIcons: true
     property bool playWhiteNoise: false
+    property bool playInaudibleNoise: false
     property int appsShown: 7
     property bool isFirstRun: true
 

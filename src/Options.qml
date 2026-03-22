@@ -168,15 +168,35 @@ Popup
 
                 Switch
                 {
+                    id: playInaudibleNoiseSwitch
+                    text: qsTr("Play inaudible noise (prevents HDMI device sleep)")
+                    enabled: !settingsProvider.playWhiteNoise
+                    Keys.onEnterPressed: checked = !checked
+                    Keys.onLeftPressed: checked = false
+                    Keys.onRightPressed: checked = true
+                    checked: settingsProvider.playInaudibleNoise
+                    onCheckedChanged: settingsProvider.playInaudibleNoise = checked
+
+                    KeyNavigation.up: showTopIconsSwitch
+                }
+
+                Switch
+                {
                     id: playWhiteNoiseSwitch
                     text: qsTr("Play white noise")
                     Keys.onEnterPressed: checked = !checked
                     Keys.onLeftPressed: checked = false
                     Keys.onRightPressed: checked = true
                     checked: settingsProvider.playWhiteNoise
-                    onCheckedChanged: settingsProvider.playWhiteNoise = checked
+                    onCheckedChanged: {
+                        settingsProvider.playWhiteNoise = checked
+                        if (checked) {
+                            settingsProvider.playInaudibleNoise = false
+                        }
+                    }
 
-                    KeyNavigation.up: showTopIconsSwitch
+                    KeyNavigation.up: playInaudibleNoiseSwitch
+                    KeyNavigation.down: appsShownSpinBox
                 }
 
                 // Input field that allows to change the number of apps shown in the grid/list
@@ -199,7 +219,7 @@ Popup
                     }
                     Label
                     {
-                        text: qsTr("Number of apps shown (Press Left/Right to change)")
+                        text: qsTr("Apps per row (Press Left/Right to change)")
                         anchors.verticalCenter: parent.verticalCenter
                     }
                 }

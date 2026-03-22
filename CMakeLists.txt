@@ -56,6 +56,7 @@ qt_add_qml_module(LetiHomePlus
         assets/tvinput.svg
         assets/help.svg
         assets/whitenoise.wav
+        assets/inaudible.wav
 )
 
 if (ANDROID)
