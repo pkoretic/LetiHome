@@ -129,9 +129,10 @@ ApplicationWindow
     Options
     {
         id: optionsPopup
-        anchors.centerIn: parent
-        width: app.width * 0.9
-        height: app.height * 0.9
+        x: parent.width - width
+        y: 0
+        width: Math.min(app.width * 0.5, 600)
+        height: app.height
 
         appsProvider: appsProvider
         settingsProvider: settingsProvider

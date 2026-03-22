@@ -10,7 +10,6 @@ Popup
 {
     id: r
 
-    modal: true
     focus: true
 
     required property var settingsProvider
@@ -19,13 +18,13 @@ Popup
     required property var platformProvider
 
     // Tab name to index mapping
-    readonly property var tabIndices: { "options": 0, "wallpaper": 1, "apps": 2, "system": 3 }
-    property string initialTab: "options"
+    readonly property var tabIndices: { "general": 0, "wallpaper": 1, "apps": 2, "system": 3 }
+    property string initialTab: "general"
 
     Component.onCompleted: tabBar.setCurrentIndex(-1) // start unloaded
     onOpened: {
         tabBar.setCurrentIndex(tabIndices[initialTab] ?? 0)
-        initialTab = "options" // reset for next open
+        initialTab = "general" // reset for next open
     }
     onClosed: tabBar.setCurrentIndex(-1) // unload
 
@@ -41,7 +40,7 @@ Popup
         onCurrentIndexChanged: switch (currentIndex)
         {
             case -1: contentLoader.sourceComponent = undefined; break
-            case 0: contentLoader.sourceComponent = optionsTab; optionsTabButton.forceActiveFocus(); break
+            case 0: contentLoader.sourceComponent = generalTab; generalTabButton.forceActiveFocus(); break
             case 1: contentLoader.sourceComponent = wallpaperTab; wallpaperTabButton.forceActiveFocus(); break
             case 2: contentLoader.sourceComponent = appsTab; appsTabButton.forceActiveFocus(); break
             case 3: contentLoader.sourceComponent = systemTab; systemTabButton.forceActiveFocus(); break
@@ -50,8 +49,8 @@ Popup
 
         TabButton
         {
-            id: optionsTabButton
-            text: qsTr("Options")
+            id: generalTabButton
+            text: qsTr("General")
         }
 
         TabButton
@@ -86,7 +85,7 @@ Popup
 
     Component
     {
-        id: optionsTab
+        id: generalTab
         GroupBox
         {
             Column
@@ -101,7 +100,7 @@ Popup
                     Keys.onRightPressed: checked = true
                     checked: settingsProvider.showClock
                     onCheckedChanged: settingsProvider.showClock = checked
-                    KeyNavigation.up: optionsTabButton
+                    KeyNavigation.up: generalTabButton
                 }
 
                 Switch
@@ -330,14 +329,11 @@ Popup
                 ListView
                 {
                     id: allAppsList
-                    width: parent.width - 20
-                    height: delegateHeight
+                    width: parent.width
+                    height: 56
                     spacing: 10
                     anchors.horizontalCenter: parent.horizontalCenter
                     visible: appModel.count != 0
-
-                    property int delegateWidth: (width / 10) | 0
-                    property int delegateHeight: delegateWidth * 0.5625 // 9/16
 
                     model: ListModel { id: appModel }
 
@@ -376,8 +372,8 @@ Popup
                         property string applicationName: model.applicationName
                         async: true
 
-                        width: allAppsList.delegateWidth
-                        height: allAppsList.delegateHeight
+                        width: 100
+                        height: 56
 
                         appPackage: model.packageName
 
@@ -392,6 +388,8 @@ Popup
                     text: qsTr("Press <strong>OK</strong> to unhide <strong>%1</strong>").arg(allAppsList.currentItem?.applicationName)
                     font.pixelSize: 18
                     visible: allAppsList.activeFocus && appModel.count != 0
+                    width: parent.width
+                    elide: Text.ElideRight
                 }
 
                 Label
@@ -400,7 +398,6 @@ Popup
                     visible: appModel.count === 0
                     font.italic: true
                 }
-
             }
         }
     }
