@@ -34,6 +34,7 @@ ApplicationWindow
 
     Component.onCompleted:
     {
+        // initialize providers in the correct order (dependencies)
         settingsProvider.init()
         platformProvider.init()
         appsProvider.init(platformProvider)
@@ -52,10 +53,18 @@ ApplicationWindow
             settingsProvider.isFirstRun = false
         }
 
+        // start noise audio if enabled in settings
         updateNoisePlayback()
     }
 
-    function updateNoisePlayback() {
+    // Handle noise audio playback based on settings and app state
+    function updateNoisePlayback()
+    {
+        if (Qt.application.state !== Qt.ApplicationActive) {
+            noisePlayer.stop()
+            return
+        }
+
         if (settingsProvider.playWhiteNoise) {
             noisePlayer.source = "../assets/whitenoise.wav"
             noisePlayer.play()
@@ -67,6 +76,7 @@ ApplicationWindow
         }
     }
 
+    // main background noise audio player
     MediaPlayer
     {
         id: noisePlayer
@@ -74,11 +84,19 @@ ApplicationWindow
         loops: MediaPlayer.Infinite
     }
 
+    // react to changes in noise audio settings
     Connections 
     {
         target: settingsProvider
-        function onPlayWhiteNoiseChanged() { updateNoisePlayback() }
-        function onPlayInaudibleNoiseChanged() { updateNoisePlayback() }
+        function onPlayWhiteNoiseChanged() { app.updateNoisePlayback() }
+        function onPlayInaudibleNoiseChanged() { app.updateNoisePlayback() }
+    }
+
+    // pause noise audio when app is not active
+    Connections
+    {
+        target: Qt.application
+        function onStateChanged() { app.updateNoisePlayback() }
     }
 
     // Leti Home default Home Screen
