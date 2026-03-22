@@ -11,6 +11,11 @@ int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);
 
+    // QSettings requires these to be set
+    app.setOrganizationName("Envizia");
+    app.setOrganizationDomain("envizia.hr");
+    app.setApplicationName("LetiHome");
+
     KeyMapper keyMapper;
     app.installEventFilter(&keyMapper);
 
