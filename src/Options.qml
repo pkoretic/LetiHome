@@ -94,43 +94,6 @@ Popup
                 spacing: 20
                 Switch
                 {
-                    id: showAppLabelsSwitch
-                    text: qsTr("Show app labels on selection")
-                    Keys.onEnterPressed: checked = !checked
-                    Keys.onLeftPressed: checked = false
-                    Keys.onRightPressed: checked = true
-                    checked: settingsProvider.showAppNames
-                    onCheckedChanged: settingsProvider.showAppNames = checked
-                    KeyNavigation.up: optionsTabButton
-                }
-                Switch
-                {
-                    id: alignToBottomSwitch
-                    text: qsTr("Align apps to bottom")
-                    Keys.onEnterPressed: checked = !checked
-                    Keys.onLeftPressed: checked = false
-                    Keys.onRightPressed: checked = true
-                    checked: settingsProvider.alignToBottom
-                    onCheckedChanged: settingsProvider.alignToBottom = checked
-
-                    KeyNavigation.up: showAppLabelsSwitch
-                }
-
-                Switch
-                {
-                    id: showAsListSwitch
-                    text: qsTr("Show as list instead of a grid")
-                    Keys.onEnterPressed: checked = !checked
-                    Keys.onLeftPressed: checked = false
-                    Keys.onRightPressed: checked = true
-                    checked: settingsProvider.showAsList
-                    onCheckedChanged: settingsProvider.showAsList = checked
-
-                    KeyNavigation.up: alignToBottomSwitch
-                }
-
-                Switch
-                {
                     id: showClockSwitch
                     text: qsTr("Show clock")
                     Keys.onEnterPressed: checked = !checked
@@ -138,7 +101,7 @@ Popup
                     Keys.onRightPressed: checked = true
                     checked: settingsProvider.showClock
                     onCheckedChanged: settingsProvider.showClock = checked
-                    KeyNavigation.up: showAsListSwitch
+                    KeyNavigation.up: optionsTabButton
                 }
 
                 Switch
@@ -196,32 +159,6 @@ Popup
                     }
 
                     KeyNavigation.up: playInaudibleNoiseSwitch
-                    KeyNavigation.down: appsShownSpinBox
-                }
-
-                // Input field that allows to change the number of apps shown in the grid/list
-                Row
-                {
-                    spacing: 10
-                    SpinBox
-                    {
-                        id: appsShownSpinBox
-                        height: showAsListSwitch.height
-                        from: 3
-                        to: 10
-                        value: settingsProvider.appsShown
-                        onValueChanged: settingsProvider.appsShown = value
-
-                        Keys.onLeftPressed: value = Math.max(from, value - 1)
-                        Keys.onRightPressed: value = Math.min(to, value + 1)
-                        Keys.onUpPressed: { playWhiteNoiseSwitch.focus = true; playWhiteNoiseSwitch.focusReason = Qt.ShortcutFocusReason }
-                        Keys.onDownPressed: {} // disabled lowering value by down button
-                    }
-                    Label
-                    {
-                        text: qsTr("Apps per row (Press Left/Right to change)")
-                        anchors.verticalCenter: parent.verticalCenter
-                    }
                 }
             }
 
@@ -319,6 +256,70 @@ Popup
                 height: parent.height
                 spacing: 20
 
+                Switch
+                {
+                    id: showAppLabelsSwitch
+                    text: qsTr("Show app labels on selection")
+                    Keys.onEnterPressed: checked = !checked
+                    Keys.onLeftPressed: checked = false
+                    Keys.onRightPressed: checked = true
+                    checked: settingsProvider.showAppNames
+                    onCheckedChanged: settingsProvider.showAppNames = checked
+                    KeyNavigation.up: appsTabButton
+                }
+
+                Switch
+                {
+                    id: alignToBottomSwitch
+                    text: qsTr("Align apps to bottom")
+                    Keys.onEnterPressed: checked = !checked
+                    Keys.onLeftPressed: checked = false
+                    Keys.onRightPressed: checked = true
+                    checked: settingsProvider.alignToBottom
+                    onCheckedChanged: settingsProvider.alignToBottom = checked
+
+                    KeyNavigation.up: showAppLabelsSwitch
+                }
+
+                Switch
+                {
+                    id: showAsListSwitch
+                    text: qsTr("Show as list instead of a grid")
+                    Keys.onEnterPressed: checked = !checked
+                    Keys.onLeftPressed: checked = false
+                    Keys.onRightPressed: checked = true
+                    checked: settingsProvider.showAsList
+                    onCheckedChanged: settingsProvider.showAsList = checked
+
+                    KeyNavigation.up: alignToBottomSwitch
+                    KeyNavigation.down: appsShownSpinBox
+                }
+
+                // Input field that allows to change the number of apps shown in the grid/list
+                Row
+                {
+                    spacing: 10
+                    SpinBox
+                    {
+                        id: appsShownSpinBox
+                        height: showAsListSwitch.height
+                        from: 3
+                        to: 10
+                        value: settingsProvider.appsShown
+                        onValueChanged: settingsProvider.appsShown = value
+
+                        Keys.onLeftPressed: value = Math.max(from, value - 1)
+                        Keys.onRightPressed: value = Math.min(to, value + 1)
+                        Keys.onUpPressed: { showAsListSwitch.focus = true; showAsListSwitch.focusReason = Qt.ShortcutFocusReason }
+                        Keys.onDownPressed: { allAppsList.focus = true; allAppsList.focusReason = Qt.ShortcutFocusReason }
+                    }
+                    Label
+                    {
+                        text: qsTr("Apps per row (Press Left/Right to change)")
+                        anchors.verticalCenter: parent.verticalCenter
+                    }
+                }
+
                 Label
                 {
                     text: qsTr("Hidden apps")
@@ -366,7 +367,7 @@ Popup
                     Component.onCompleted: loadModel()
 
                     Keys.onEnterPressed: addApp(appModel.get(currentIndex).packageName)
-                    KeyNavigation.up: appsTabButton
+                    KeyNavigation.up: appsShownSpinBox
 
                     delegate: IconBanner
                     {
